@@ -444,7 +444,40 @@ function initProficiencyDots() {
   for (let i = 0; i < 6; i++) {
     const dot = document.createElement("div")
     dot.className = "proficiency-dot"
+    dot.dataset.index = i
+    dot.addEventListener("click", function () {
+      this.classList.toggle("checked")
+      saveProficiencyDotsState()
+    })
     proficiencyDots.appendChild(dot)
+  }
+
+  // 加载熟练度点状态
+  loadProficiencyDotsState()
+}
+
+// 保存熟练度点状态
+function saveProficiencyDotsState() {
+  const proficiencyState = []
+  document.querySelectorAll(".proficiency-dot").forEach((dot, index) => {
+    proficiencyState[index] = dot.classList.contains("checked")
+  })
+  localStorage.setItem("proficiencyState", JSON.stringify(proficiencyState))
+}
+
+// 加载熟练度点状态
+function loadProficiencyDotsState() {
+  try {
+    const proficiencyState = JSON.parse(localStorage.getItem("proficiencyState"))
+    if (proficiencyState) {
+      document.querySelectorAll(".proficiency-dot").forEach((dot, index) => {
+        if (proficiencyState[index]) {
+          dot.classList.add("checked")
+        }
+      })
+    }
+  } catch (error) {
+    console.error("加载熟练度点状态失败:", error)
   }
 }
 
@@ -1061,6 +1094,15 @@ function loadFromLocalStorage() {
       document.querySelectorAll(".gold-coin").forEach((coin, index) => {
         if (goldState[index]) {
           coin.classList.add("checked")
+        }
+      })
+    }
+
+    const proficiencyState = JSON.parse(localStorage.getItem("proficiencyState"))
+    if (proficiencyState) {
+      document.querySelectorAll(".proficiency-dot").forEach((dot, index) => {
+        if (proficiencyState[index]) {
+          dot.classList.add("checked")
         }
       })
     }
