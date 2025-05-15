@@ -1,0 +1,986 @@
+/* 基础样式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 210mm;
+  margin: 20px auto;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 标签页样式 */
+.tabs {
+  width: 100%;
+}
+
+.tab-list {
+  display: flex;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1;
+  transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+  background-color: #e0e0e0;
+}
+
+.tab-button.active {
+  background-color: #333;
+  color: white;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* 角色表样式 */
+.character-sheet,
+.character-sheet-page-two {
+  width: 100%;
+  background: white;
+  padding: 10px;
+}
+
+/* 头部样式 */
+.header {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.small-label {
+  font-size: 9px;
+  color: #ccc;
+}
+
+.profession-select {
+  width: 220px;
+  padding: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: white;
+  color: #333;
+  border: 1px solid #999;
+}
+
+.version-text {
+  font-size: 9px;
+  margin-top: 5px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input,
+.form-select {
+  padding: 5px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background-color: white;
+  color: #333;
+}
+
+.ancestry-selects {
+  display: flex;
+  align-items: center;
+}
+
+.form-select.small {
+  width: 80px;
+}
+
+.plus-sign {
+  margin: 0 5px;
+}
+
+.level-box {
+  width: 64px;
+  height: 64px;
+  background-color: white;
+  color: #333;
+  border: 4px solid #666;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.level-input {
+  width: 30px;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #999;
+  font-size: 20px;
+  font-weight: bold;
+  outline: none;
+}
+
+/* 主内容样式 */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 顶部行样式 */
+.top-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.character-image-container {
+  width: 96px;
+  height: 96px;
+  border: 2px solid #333;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.placeholder-text {
+  text-align: center;
+}
+
+.placeholder-title {
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.placeholder-subtitle {
+  font-size: 8px;
+}
+
+.image-upload {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.stat-box {
+  width: 96px;
+  height: 96px;
+  border: 2px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.evasion-box {
+  background-color: #333;
+  color: white;
+}
+
+.armor-box {
+  background-color: #333;
+  color: white;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.stat-value {
+  width: 40px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #999;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  outline: none;
+}
+
+.armor-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.armor-grid-container {
+  margin-top: 5px;
+}
+
+.armor-max {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 8px;
+}
+
+.max-label {
+  margin-right: 5px;
+}
+
+.max-input {
+  width: 25px;
+  text-align: center;
+  border: 1px solid #999;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+.armor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+/* 部分标题样式 */
+.section {
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  padding: 5px 0;
+  margin-bottom: 10px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.section-header::before,
+.section-header::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: #333;
+  margin: 0 10px;
+}
+
+/* 属性网格样式 */
+.attributes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.attribute {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.attribute-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.attribute-name {
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.attribute-check {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attribute-check.checked {
+  background-color: #333;
+}
+
+.attribute-check.checked::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.attribute-shield {
+  width: 100%;
+  height: 56px;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%);
+}
+
+.attribute-value {
+  width: 24px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #999;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+}
+
+.attribute-skills {
+  font-size: 6px;
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* 生命值和压力样式 */
+.thresholds {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 5px;
+  font-size: 9px;
+  text-align: center;
+}
+
+.threshold-input {
+  width: 24px;
+  text-align: center;
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+.damage-types {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.damage-type {
+  background-color: #eee;
+  padding: 5px;
+  width: 32%;
+}
+
+.damage-header {
+  background-color: #333;
+  color: white;
+  font-size: 9px;
+  padding: 5px;
+  text-align: center;
+}
+
+.damage-desc {
+  font-size: 9px;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.hp-section,
+.stress-section {
+  margin-bottom: 5px;
+}
+
+.hp-header,
+.stress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.hp-label,
+.stress-label {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.hp-max,
+.stress-max {
+  display: flex;
+  align-items: center;
+  font-size: 9px;
+}
+
+.hp-grid,
+.stress-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.hp-box,
+.stress-box {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+.hp-box.checked,
+.stress-box.checked {
+  background-color: #333;
+}
+
+.hp-box.disabled,
+.stress-box.disabled {
+  border: 2px dashed #999;
+  cursor: default;
+}
+
+/* 希望样式 */
+.hope-desc {
+  font-size: 9px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.hope-grid {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.hope-diamond {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #333;
+  transform: rotate(45deg);
+  cursor: pointer;
+  position: relative;
+}
+
+.hope-diamond.checked::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #333;
+  transform: rotate(0deg);
+}
+
+.hope-special {
+  text-align: center;
+}
+
+.hope-profession {
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.hope-text {
+  font-size: 9px;
+}
+
+/* 经验样式 */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.experience-item {
+  display: flex;
+  align-items: center;
+}
+
+.experience-desc {
+  flex-grow: 1;
+  border-bottom: 1px solid #999;
+  padding: 5px;
+  font-size: 12px;
+}
+
+.experience-value {
+  width: 32px;
+  text-align: center;
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* 金币样式 */
+.gold-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gold-label {
+  font-size: 9px;
+  margin-bottom: 5px;
+}
+
+.gold-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.gold-coin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+.gold-coin.checked {
+  background-color: #333;
+}
+
+.handfuls .gold-coin {
+  border-radius: 50%;
+}
+
+.gold-chest {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #333;
+}
+
+/* 武器部分样式 */
+.proficiency-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 5px;
+}
+
+.proficiency-label {
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.proficiency-dots {
+  display: flex;
+  gap: 2px;
+}
+
+.proficiency-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #333;
+  border-radius: 50%;
+}
+
+.weapon-section {
+  margin-bottom: 10px;
+}
+
+.weapon-header {
+  font-size: 10px;
+  font-weight: bold;
+  background-color: #333;
+  color: white;
+  padding: 5px;
+}
+
+.weapon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.weapon-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  font-size: 8px;
+  color: #666;
+}
+
+.weapon-select,
+.armor-select {
+  width: 100%;
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 2px;
+  font-size: 10px;
+}
+
+.weapon-input,
+.armor-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #999;
+  font-size: 10px;
+  outline: none;
+}
+
+.weapon-feature,
+.armor-feature {
+  margin-top: 5px;
+}
+
+/* 物品栏样式 */
+.inventory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inventory-item {
+  width: 100%;
+  border-bottom: 1px solid #999;
+  padding: 2px;
+  font-size: 10px;
+}
+
+.inventory-weapon-options {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.weapon-option {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.weapon-option label {
+  font-size: 8px;
+}
+
+/* 第二页样式 */
+.character-description {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin: 10px 0;
+  border: 2px solid #333;
+  padding: 5px;
+}
+
+.description-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.description-hint {
+  font-size: 9px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.description-textarea {
+  flex-grow: 1;
+  min-height: 140px;
+  border: 1px solid #999;
+  padding: 5px;
+  font-size: 12px;
+  resize: none;
+}
+
+.card-deck-section {
+  margin: 10px 0;
+  border: 2px solid #333;
+  padding: 5px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.card-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.card-number {
+  font-size: 9px;
+  width: 16px;
+}
+
+.card-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #999;
+  padding: 5px;
+  font-size: 12px;
+  outline: none;
+}
+
+.upgrade-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.tier-column {
+  border: 2px solid #333;
+}
+
+.tier-header {
+  background-color: #555;
+  color: white;
+  padding: 2px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tier-subheader {
+  background-color: #777;
+  color: white;
+  padding: 2px;
+  font-size: 12px;
+}
+
+.tier-content {
+  padding: 5px;
+}
+
+.tier-instruction {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.upgrade-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.upgrade-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.upgrade-checkbox {
+  display: flex;
+  margin-right: 5px;
+}
+
+.upgrade-box {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
+.upgrade-box.checked {
+  background-color: #333;
+}
+
+.upgrade-double-box {
+  display: flex;
+}
+
+.upgrade-double-box .upgrade-box {
+  margin-right: 2px;
+}
+
+.upgrade-label {
+  font-size: 9px;
+}
+
+.tier-footer {
+  margin-top: 5px;
+  font-size: 9px;
+}
+
+/* 页脚样式 */
+.footer {
+  font-size: 8px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* 操作按钮样式 */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-top: 1px solid #ddd;
+}
+
+.action-button {
+  padding: 8px 16px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #555;
+}
+
+.action-button.danger {
+  background-color: #d32f2f;
+}
+
+.action-button.danger:hover {
+  background-color: #b71c1c;
+}
+
+/* 打印样式 */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .container {
+    box-shadow: none;
+    margin: 0;
+  }
+
+  .tab-list,
+  .actions {
+    display: none !important;
+  }
+
+  .tab-content {
+    display: block !important;
+    padding: 0;
+  }
+
+  .tab-content:not(.active) {
+    display: none !important;
+  }
+
+  .character-sheet,
+  .character-sheet-page-two {
+    width: 210mm;
+    margin: 0;
+    padding: 5mm;
+    page-break-after: always;
+  }
+
+  /* 确保黑色背景区域中的下拉框在打印时显示为白色背景 */
+  .header select,
+  .header input,
+  .header .select-wrapper {
+    background-color: white !important;
+    color: black !important;
+    border-color: #999 !important;
+  }
+
+  .evasion-box,
+  .armor-box {
+    background-color: #333 !important;
+    color: white !important;
+  }
+
+  .evasion-box input,
+  .armor-box input {
+    color: white !important;
+  }
+
+  /* 确保预设值在打印时保留 */
+  input::placeholder,
+  textarea::placeholder {
+    color: transparent !important;
+  }
+
+  /* 添加以下样式，确保预设值在打印时不显示 */
+  input[data-has-default="true"],
+  select[data-has-default="true"] {
+    color: transparent !important;
+  }
+
+  /* 确保空白输入框在打印时没有边框 */
+  input:placeholder-shown,
+  textarea:placeholder-shown,
+  select:invalid {
+    border-color: transparent !important;
+  }
+
+  /* 确保下拉框在打印时如果没有选择值则不显示 */
+  select option:first-child {
+    display: none !important;
+  }
+}
