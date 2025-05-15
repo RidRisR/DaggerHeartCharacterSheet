@@ -203,10 +203,10 @@ body {
 }
 
 .armor-box {
-  width: 20px;
-  /* Adjusted width for better fit */
-  height: 20px;
-  /* Adjusted height for better fit */
+  width: 16px;
+    /* Reduced width */
+    height: 16px;
+    /* Reduced height */
   border: 2px solid #333;
   background-color: white;
   cursor: pointer;
@@ -246,8 +246,8 @@ body {
 
 .armor-container {
   display: flex;
-  align-items: flex-start;
-    /* Align items at the top */
+  align-items: center;
+    /* Align items vertically */
     gap: 10px;
     /* Add spacing between the armor value and grid */
 }
