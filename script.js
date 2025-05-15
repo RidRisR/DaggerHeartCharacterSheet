@@ -47,24 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("characterProfession", this.value)
   })
 
-  // 加载角色图像
-  document.getElementById("character-image-upload").addEventListener("change", (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        const placeholder = document.getElementById("character-image-placeholder")
-        placeholder.innerHTML = ""
-        placeholder.style.backgroundImage = `url(${event.target.result})`
-        placeholder.style.backgroundSize = "cover"
-        placeholder.style.backgroundPosition = "center"
-
-        // 保存图像到本地存储
-        localStorage.setItem("characterImage", event.target.result)
-      }
-      reader.readAsDataURL(e.target.files[0])
-    }
-  })
-
   // 尝试从本地存储加载数据
   loadFromLocalStorage()
 })
@@ -1143,16 +1125,6 @@ function loadFromLocalStorage() {
   document.getElementById("characterBackground").value = localStorage.getItem("characterBackground") || ""
   document.getElementById("characterAppearance").value = localStorage.getItem("characterAppearance") || ""
   document.getElementById("characterMotivation").value = localStorage.getItem("characterMotivation") || ""
-
-  // 加载角色图像
-  const characterImage = localStorage.getItem("characterImage")
-  if (characterImage) {
-    const placeholder = document.getElementById("character-image-placeholder")
-    placeholder.innerHTML = ""
-    placeholder.style.backgroundImage = `url(${characterImage})`
-    placeholder.style.backgroundSize = "cover"
-    placeholder.style.backgroundPosition = "center"
-  }
 
   // 加载升级选项状态
   for (let tier = 1; tier <= 3; tier++) {

@@ -186,48 +186,6 @@ body {
   margin-bottom: 10px;
 }
 
-.character-image-container {
-  width: 96px;
-  height: 96px;
-  border: 2px solid #333;
-  position: relative;
-  overflow: hidden;
-}
-
-.character-image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.placeholder-text {
-  text-align: center;
-}
-
-.placeholder-title {
-  font-size: 10px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.placeholder-subtitle {
-  font-size: 8px;
-}
-
-.image-upload {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
 .stat-box {
   width: 96px;
   height: 96px;
@@ -245,8 +203,28 @@ body {
 }
 
 .armor-box {
+  width: 20px;
+  /* Adjusted width for better fit */
+  height: 20px;
+  /* Adjusted height for better fit */
+  border: 2px solid #333;
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+}
+
+.armor-box.checked {
   background-color: #333;
   color: white;
+}
+
+.armor-box.disabled {
+  border: 2px dashed #999;
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
 
 .stat-label {
@@ -268,36 +246,23 @@ body {
 
 .armor-container {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+    /* Align items at the top */
+    gap: 10px;
+    /* Add spacing between the armor value and grid */
 }
 
 .armor-grid-container {
-  margin-top: 5px;
-}
-
-.armor-max {
   display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-  font-size: 8px;
-}
-
-.max-label {
-  margin-right: 5px;
-}
-
-.max-input {
-  width: 25px;
-  text-align: center;
-  border: 1px solid #999;
-  border-radius: 3px;
-  font-size: 10px;
+  flex-direction: column;
 }
 
 .armor-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+    /* Three boxes per row */
+    gap: 4px;
+    /* Spacing between boxes */
 }
 
 /* 部分标题样式 */
