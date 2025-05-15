@@ -601,10 +601,18 @@ body {
 .proficiency-dot {
   width: 12px;
   height: 12px;
-  border: 2px solid #333;
+  border: 1px solid #333;
   border-radius: 50%;
+  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+  
 
+.proficiency-check.checked {
+  background-color: #333;
+}
 .weapon-section {
   margin-bottom: 10px;
 }
