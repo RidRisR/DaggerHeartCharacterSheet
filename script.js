@@ -653,59 +653,6 @@ function initCardDeck() {
 
 // 初始化升级选项
 function initUpgradeOptions() {
-  // 升级选项数据
-  const upgradeOptionsData = {
-    baseUpgrades: [
-      { label: "增加生命值上限", doubleBox: false },
-      { label: "增加压力上限", doubleBox: false },
-      { label: "提高属性点", doubleBox: false },
-    ],
-    professionUpgrades: {
-      warrior: {
-        tier1: [
-          { label: "战士专属技能1", doubleBox: false },
-          { label: "战士专属技能2", doubleBox: true },
-        ],
-        tier2: [
-          { label: "战士专属技能3", doubleBox: false },
-          { label: "战士专属技能4", doubleBox: true },
-        ],
-        tier3: [
-          { label: "战士专属技能5", doubleBox: false },
-          { label: "战士专属技能6", doubleBox: true },
-        ],
-      },
-      mage: {
-        tier1: [
-          { label: "法师专属技能1", doubleBox: false },
-          { label: "法师专属技能2", doubleBox: true },
-        ],
-        tier2: [
-          { label: "法师专属技能3", doubleBox: false },
-          { label: "法师专属技能4", doubleBox: true },
-        ],
-        tier3: [
-          { label: "法师专属技能5", doubleBox: false },
-          { label: "法师专属技能6", doubleBox: true },
-        ],
-      },
-    },
-    tierSpecificUpgrades: {
-      tier1: [
-        { label: "通用技能1", doubleBox: false },
-        { label: "通用技能2", doubleBox: true },
-      ],
-      tier2: [
-        { label: "通用技能3", doubleBox: false },
-        { label: "通用技能4", doubleBox: true },
-      ],
-      tier3: [
-        { label: "通用技能5", doubleBox: false },
-        { label: "通用技能6", doubleBox: true },
-      ],
-    },
-  }
-
   // 初始化三个等级的升级选项
   for (let tier = 1; tier <= 3; tier++) {
     const upgradeList = document.getElementById(`tier${tier}-upgrades`)
@@ -714,8 +661,21 @@ function initUpgradeOptions() {
     // 获取当前职业
     const profession = document.getElementById("profession").value || "warrior"
 
-    // 获取升级选项
-    const options = getUpgradeOptions(profession, tier, upgradeOptionsData)
+    // 基础升级选项
+    const baseUpgrades = upgradeOptionsData.baseUpgrades
+
+    // 获取职业特定升级选项
+    const professionUpgrades = upgradeOptionsData.professionUpgrades[profession]?.[`tier${tier}`] || []
+
+    // 获取特定等级升级选项
+    const tierUpgrades = upgradeOptionsData.tierSpecificUpgrades[`tier${tier}`] || []
+
+    // 合并所有升级选项
+    const options = [...baseUpgrades]
+    if (tier > 1) {
+      options.push(...tierUpgrades)
+    }
+    options.push(...professionUpgrades)
 
     // 创建升级选项
     options.forEach((option, index) => {
@@ -724,17 +684,17 @@ function initUpgradeOptions() {
 
       if (option.doubleBox) {
         item.innerHTML = `
-                    <div class="upgrade-double-box">
-                        <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
-                        <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
-                    </div>
-                    <span class="upgrade-label">${option.label}</span>
-                `
+          <div class="upgrade-double-box">
+            <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
+            <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
+          </div>
+          <span class="upgrade-label">${option.label}</span>
+        `
       } else {
         item.innerHTML = `
-                    <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
-                    <span class="upgrade-label">${option.label}</span>
-                `
+          <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
+          <span class="upgrade-label">${option.label}</span>
+        `
       }
 
       upgradeList.appendChild(item)
@@ -754,27 +714,6 @@ function initUpgradeOptions() {
   document.getElementById("profession").addEventListener("change", () => {
     initUpgradeOptions()
   })
-}
-
-// 获取升级选项
-function getUpgradeOptions(profession, tier, upgradeOptionsData) {
-  // 获取基础升级选项
-  const baseUpgrades = [...upgradeOptionsData.baseUpgrades]
-
-  // 添加职业特定升级选项
-  const tierKey = `tier${tier}`
-  const professionTierUpgrades = upgradeOptionsData.professionUpgrades[profession]?.[tierKey] || []
-
-  // 添加特定等级升级选项
-  const tierSpecificUpgrades = upgradeOptionsData.tierSpecificUpgrades[tierKey] || []
-
-  return [...baseUpgrades, ...professionTierUpgrades, ...tierSpecificUpgrades]
-}
-
-// 保存升级状态
-function saveUpgradeState(tier, index, checked) {
-  const key = `upgrade-tier${tier}-${index}`
-  localStorage.setItem(key, checked)
 }
 
 // 获取职业名称

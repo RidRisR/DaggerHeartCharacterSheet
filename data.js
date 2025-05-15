@@ -338,22 +338,19 @@ const classFeatureData = {
 const upgradeOptionsData = {
   // 基础升级选项（所有职业通用）
   baseUpgrades: [
-    { label: "Increase two unmarked Character Traits by +1 and mark them.", doubleBox: false },
-    { label: "Permanently add one Hit Point Slot.", doubleBox: false },
-    { label: "Permanently add one Stress Slot.", doubleBox: false },
-    { label: "Increase two Experiences by +1.", doubleBox: false },
-    { label: "Permanently add one Armor Slot.", doubleBox: false },
-    { label: "Add +1 to your Evasion.", doubleBox: false },
-    { label: "Choose an additional domain card at your level or lower.", doubleBox: false },
-    { label: "Increase your Major Damage Threshold by +1.", doubleBox: true },
-    { label: "Increase your Severe Damage Threshold by +2.", doubleBox: true },
+    { label: "一个例子.", doubleBox: false },
+    { label: "一个例子.", doubleBox: false },
+    { label: "一个例子.", doubleBox: false },
+    { label: "一个例子.", doubleBox: false },
+    { label: "一个例子.", doubleBox: true },
+    { label: "一个例子.", doubleBox: true },
   ],
 
   // 职业特定升级选项
   professionUpgrades: {
     warrior: {
       tier1: [
-        { label: "Gain the Battle Strategist ability.", doubleBox: false },
+        { label: "战士的例子.", doubleBox: false },
         { label: "Gain the Weapon Mastery ability: +1 damage with your chosen weapon type.", doubleBox: false },
         { label: "Gain the Intimidating Presence ability: Advantage on Intimidation checks.", doubleBox: false },
       ],
