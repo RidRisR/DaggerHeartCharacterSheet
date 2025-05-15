@@ -195,6 +195,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+  background-color: #333;
 }
 
 .evasion-box {
@@ -230,6 +231,7 @@ body {
 .stat-label {
   font-size: 10px;
   font-weight: bold;
+  color: white;
 }
 
 .stat-value {
