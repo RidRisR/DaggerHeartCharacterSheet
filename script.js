@@ -306,8 +306,8 @@ function initAttributes() {
     { name: "敏捷", key: "agility", skills: ["奔跑", "跳跃", "机动"] },
     { name: "力量", key: "strength", skills: ["举起", "破坏", "擒拿"] },
     { name: "灵巧", key: "finesse", skills: ["操控", "隐藏", "修理"] },
-    { name: "直觉", key: "instinct", skills: ["感知", "感应", "导航"] },
-    { name: "魅力", key: "presence", skills: ["魅惑", "表演", "欺骗"] },
+    { name: "本能", key: "instinct", skills: ["感知", "感应", "导航"] },
+    { name: "风度", key: "presence", skills: ["魅惑", "表演", "欺骗"] },
     { name: "知识", key: "knowledge", skills: ["回忆", "分析", "理解"] },
   ]
 
