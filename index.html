@@ -420,8 +420,24 @@
         </div>
     </div>
 
+    <!-- 添加侧边栏 -->
+    <div id="floating-sidebar" class="floating-sidebar">
+        <div class="sidebar-content">
+            <h3>快速操作</h3>
+            <div class="sidebar-actions">
+                <button class="sidebar-button" id="quickSave">快速保存</button>
+                <button class="sidebar-button" id="quickLoad">快速读取</button>
+            </div>
+            <div class="sidebar-notes">
+                <h4>笔记</h4>
+                <textarea id="sidebarNotes" placeholder="在此处记录临时笔记..."></textarea>
+            </div>
+        </div>
+    </div>
+
     <!-- 数据文件 - 最先加载 -->
-    <script src="data/all_card.js"></script> <!-- Move this first -->
+    <link rel="stylesheet" href="css/sidebar.css">
+    <script src="data/all_card.js"></script>
     <script src="data/races_data.js"></script>
     <script src="data/groups_data.js"></script>
     <script src="data/equipment_data.js"></script>
@@ -448,5 +464,6 @@
     <script src="js/main.js"></script>
     <script src="js/weapon_selector.js"></script>
     <script src="js/armor_selector.js"></script>
+    <script src="js/sidebar.js"></script>
 </body>
 </html>
