@@ -88,7 +88,6 @@ class WeaponSelector {
             padding: 8px;
             font-weight: bold;
             border-bottom: 2px solid #ccc;
-            background: #f5f5f5;
         }
     `;
 
