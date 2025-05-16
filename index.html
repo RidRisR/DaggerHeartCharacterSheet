@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daggerheart 角色表</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
@@ -245,7 +245,7 @@
                                         <select id="armorName" class="armor-select"></select>
                                     </div>
                                     <div class="armor-field">
-                                        <label class="field-label">基础分数</label>
+                                        <label class="field-label">防御力</label>
                                         <input type="text" id="armorBaseScore" class="armor-input">
                                     </div>
                                 </div>
@@ -420,11 +420,30 @@
         </div>
     </div>
 
-    <!-- 先加载所有数据文件 -->
+    <!-- 数据文件 - 最先加载 -->
     <script src="data/races_data.js"></script>
     <script src="data/groups_data.js"></script>
+    <script src="data/equipment_data.js"></script>
     <script src="data/data.js"></script>
-    <!-- 最后加载主脚本 -->
-    <script src="script.js"></script>
+    <!-- 工具函数 -->
+    <script src="js/util.js"></script>
+    
+    <!-- 核心功能模块 -->
+    <script src="js/upgrades.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/combat.js"></script>
+    <script src="js/hope.js"></script>
+    <script src="js/progress.js"></script>
+    
+    <!-- 界面组件 -->
+    <script src="js/select.js"></script>
+    <script src="js/attributes.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/state.js"></script>
+    
+    <!-- 主脚本 -->
+    <script src="js/main.js"></script>
+    <script src="js/weapon_selector.js"></script>
+    <script src="js/armor_selector.js"></script>
 </body>
 </html>
