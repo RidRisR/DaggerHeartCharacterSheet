@@ -48,8 +48,8 @@ function initWeaponSelects() {
         const button = document.createElement('button');
         button.className = 'weapon-select-button form-select';
         button.dataset.originalId = selectId;
-        button.dataset.printPlaceholder = true; // 添加打印占位符标记
-        button.textContent = ''; // 初始为空
+        button.dataset.printPlaceholder = true;
+        button.textContent = '';
 
         // 恢复已保存的武器数据
         const savedWeaponId = localStorage.getItem(selectId);
@@ -58,6 +58,16 @@ function initWeaponSelects() {
             if (weapon) {
                 button.textContent = removeEnglishText(weapon.名称);
                 button.dataset.printPlaceholder = false;
+
+                // 恢复其他武器相关数据
+                const cleanedId = selectId.replace('Name', '');
+                const traitEl = document.getElementById(`${cleanedId}Trait`);
+                const damageEl = document.getElementById(`${cleanedId}Damage`);
+                const featureEl = document.getElementById(`${cleanedId}Feature`);
+
+                if (traitEl) traitEl.value = localStorage.getItem(`${selectId}Trait`) || '';
+                if (damageEl) damageEl.value = localStorage.getItem(`${selectId}Damage`) || '';
+                if (featureEl) featureEl.value = localStorage.getItem(`${selectId}Feature`) || '';
             }
         }
 
