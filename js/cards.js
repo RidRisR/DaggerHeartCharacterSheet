@@ -9,8 +9,9 @@ function initCardDeck() {
     if (!cardGrid) return;
     cardGrid.innerHTML = "";
 
-    // 初始化卡牌选择器
+    // 初始化卡牌选择器和全局变量
     CardSelector.init();
+    window.currentCardSlot = null;  // 添加这行，确保全局变量被正确初始化
 
     for (let i = 0; i < 20; i++) {
         const item = document.createElement("div");
@@ -22,9 +23,9 @@ function initCardDeck() {
                     <input type="text" class="card-name" id="card-name-${i}" placeholder="点击选择卡牌..." readonly>
                 </div>
                 <div class="card-details">
-                    <input type="text" class="card-type" id="card-type-${i}" readonly>
-                    <input type="text" class="card-level" id="card-level-${i}" readonly>
-                    <input type="text" class="card-recall" id="card-recall-${i}" readonly>
+                    <input type="text" class="card-field card-type" id="card-type-${i}" readonly>
+                    <input type="text" class="card-field card-level" id="card-level-${i}" readonly>
+                    <input type="text" class="card-field card-recall" id="card-recall-${i}" readonly>
                 </div>
                 <div class="card-tooltip" id="card-tooltip-${i}"></div>
             </div>
@@ -58,6 +59,7 @@ function initCardDeck() {
 
 // 处理卡牌选择
 window.handleCardSelection = function (card) {
+    if (window.currentCardSlot === null) return;  // 添加这行，防止未定义情况
     const slot = window.currentCardSlot;
     const cardBox = document.querySelector(`.card-box[data-slot="${slot}"]`);
     if (!cardBox) return;
@@ -66,11 +68,30 @@ window.handleCardSelection = function (card) {
 
     document.getElementById(`card-name-${slot}`).value = removeEnglishText(card.名称);
     document.getElementById(`card-type-${slot}`).value = card.领域;
-    document.getElementById(`card-level-${slot}`).value = card.等级;
-    document.getElementById(`card-recall-${slot}`).value = card.回想;
+    document.getElementById(`card-level-${slot}`).value = `LV.${card.等级}`;
+    document.getElementById(`card-recall-${slot}`).value = `RC.${card.回想}`;
 
     // 保存到 localStorage
-    ['名称', '领域', '等级', '回想', '描述'].forEach(field => {
-        localStorage.setItem(`card-${field}-${slot}`, card[field]);
-    });
+    localStorage.setItem(`card-名称-${slot}`, card.名称);
+    localStorage.setItem(`card-领域-${slot}`, card.领域);
+    localStorage.setItem(`card-等级-${slot}`, `LV.${card.等级}`);
+    localStorage.setItem(`card-回想-${slot}`, `RC.${card.回想}`);
+    localStorage.setItem(`card-描述-${slot}`, card.描述);
 }
+
+// 修改样式定义
+const style = document.createElement('style');
+style.textContent = `
+    .card-details {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+    .card-field {
+        width: 100%;  // 设置固定宽度
+        text-align: center;
+        padding: 2px 5px;
+        bottom: 1px solid #ccc;
+    }
+`;
+document.head.appendChild(style);
