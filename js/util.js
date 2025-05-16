@@ -1,0 +1,96 @@
+// 更新格子最大值
+function updateBoxesMax(grid, className, max) {
+    if (!grid) return;
+    const boxes = grid.querySelectorAll(`.${className}`)
+    boxes.forEach((box, index) => {
+        if (index < max) {
+            box.classList.remove("disabled")
+        } else {
+            box.classList.remove("checked")
+            box.classList.add("disabled")
+        }
+    })
+}
+
+// 获取职业名称
+function getProfessionName(professionId) {
+    if (typeof professions === 'undefined') return professionId || "";
+    return (professions && professionId && professions[professionId]) ? professions[professionId].name : "";
+}
+
+// 初始化标签页
+function initTabs() {
+    const tabButtons = document.querySelectorAll(".tab-button")
+    const tabContents = document.querySelectorAll(".tab-content")
+
+    tabButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const tabId = this.getAttribute("data-tab")
+
+            // 移除所有活动标签
+            tabButtons.forEach((btn) => btn.classList.remove("active"))
+            tabContents.forEach((content) => content.classList.remove("active"))
+
+            // 激活当前标签
+            this.classList.add("active")
+            document.getElementById(tabId).classList.add("active")
+        })
+    })
+}
+
+// 处理打印
+function handlePrint() {
+    const savedValues = {}
+    const defaultElements = document.querySelectorAll("[data-has-default='true']")
+
+    defaultElements.forEach((element) => {
+        savedValues[element.id] = element.value
+        if (
+            element.value === element.getAttribute("data-default-value") ||
+            (element.tagName === "SELECT" && (element.value === "" || element.value === "none"))
+        ) {
+            element.value = ""
+        }
+    })
+
+    window.print()
+
+    setTimeout(() => {
+        defaultElements.forEach((element) => {
+            if (element.id in savedValues) {
+                element.value = savedValues[element.id]
+            }
+        })
+    }, 500)
+}
+
+// 标记默认值元素
+function markDefaultElements() {
+    const defaultElements = [
+        { id: "evasion", defaultValue: "10" },
+        { id: "minorThreshold", defaultValue: "7" },
+        { id: "majorThreshold", defaultValue: "14" },
+        { id: "hpMax", defaultValue: "6" },
+        { id: "stressMax", defaultValue: "6" },
+        { id: "armorMax", defaultValue: "6" },
+    ]
+
+    defaultElements.forEach((item) => {
+        const element = document.getElementById(item.id)
+        if (element) {
+            element.setAttribute("data-has-default", "true")
+            element.setAttribute("data-default-value", item.defaultValue)
+        }
+    })
+
+    document.querySelectorAll("select").forEach((select) => {
+        select.setAttribute("data-has-default", "true")
+        // Default value for selects is usually empty or a specific "none" value
+        // The check in handlePrint already considers "" or "none" for selects.
+    })
+}
+
+// Placeholder for exportToPDF
+function exportToPDF() {
+    alert("导出PDF功能尚未实现。Export to PDF function not yet implemented.");
+}

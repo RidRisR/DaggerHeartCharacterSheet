@@ -269,10 +269,11 @@ body {
 
 /* 部分标题样式 */
 .section {
-  border-bottom: 2px solid #333;
+  border-bottom: 1px solid #333;
   padding: 5px 0;
   margin-bottom: 5px;
 }
+
 
 .section-header {
   display: flex;
