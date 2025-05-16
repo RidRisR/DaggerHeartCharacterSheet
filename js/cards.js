@@ -35,6 +35,9 @@ function initCardDeck() {
         `;
         cardGrid.appendChild(item);
 
+        // 从localStorage加载已保存的卡牌数据
+        loadSavedCard(i);
+
         // 为每个卡槽添加点击事件
         const cardBox = item.querySelector('.card-box');
         cardBox.addEventListener('click', function () {
@@ -59,6 +62,35 @@ function initCardDeck() {
             const tooltip = document.getElementById(`card-tooltip-${i}`);
             tooltip.style.display = 'none';
         });
+    }
+}
+
+// 添加新函数用于加载已保存的卡牌
+function loadSavedCard(slot) {
+    const savedName = localStorage.getItem(`card-名称-${slot}`);
+    if (!savedName) return;
+
+    const cardData = {
+        名称: savedName,
+        领域: localStorage.getItem(`card-领域-${slot}`),
+        等级: localStorage.getItem(`card-等级-${slot}`),
+        回想: localStorage.getItem(`card-回想-${slot}`),
+        描述: localStorage.getItem(`card-描述-${slot}`)
+    };
+
+    const cardBox = document.querySelector(`.card-box[data-slot="${slot}"]`);
+    if (cardBox) {
+        cardBox.dataset.cardData = JSON.stringify(cardData);
+
+        const nameInput = document.getElementById(`card-name-${slot}`);
+        const typeInput = document.getElementById(`card-type-${slot}`);
+        const levelInput = document.getElementById(`card-level-${slot}`);
+        const recallInput = document.getElementById(`card-recall-${slot}`);
+
+        if (nameInput) nameInput.value = removeEnglishText(cardData.名称);
+        if (typeInput) typeInput.value = cardData.领域;
+        if (levelInput) levelInput.value = `LV.${cardData.等级}`;
+        if (recallInput) recallInput.value = `RC.${cardData.回想}`;
     }
 }
 
@@ -124,10 +156,28 @@ style.textContent = `
         justify-content: flex-start;
     }
     .card-field {
-        width: 100%;  // 设置固定宽度
+        width: 100%;
         text-align: center;
         padding: 2px 5px;
         bottom: 1px solid #ccc;
+    }
+    .card-tooltip {
+        display: none;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        z-index: 1000;
+        max-width: 300px;
+        white-space: pre-wrap;
+        top: 100%;
+        left: 0;
+        margin-top: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .card-box {
+        position: relative;
     }
 `;
 document.head.appendChild(style);

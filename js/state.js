@@ -58,11 +58,24 @@ function saveCharacter() {
     // 7. 收集卡组数据
     formData.cardData = [];
     for (let i = 0; i < 20; i++) {
+        const cardBox = document.querySelector(`.card-box[data-slot="${i}"]`);
+        const cardDataStr = cardBox?.dataset.cardData;
+        let description = "";
+        if (cardDataStr) {
+            try {
+                const cardData = JSON.parse(cardDataStr);
+                description = cardData.描述 || "";
+            } catch (e) {
+                console.error(`Error parsing card data for slot ${i}:`, e);
+            }
+        }
+
         formData.cardData.push({
             name: document.getElementById(`card-name-${i}`)?.value || "",
             type: document.getElementById(`card-type-${i}`)?.value || "",
             level: document.getElementById(`card-level-${i}`)?.value || "",
-            recall: document.getElementById(`card-recall-${i}`)?.value || ""
+            recall: document.getElementById(`card-recall-${i}`)?.value || "",
+            description: description
         });
     }
 
@@ -92,9 +105,17 @@ function saveCharacter() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
+
+    // 获取角色名称、职业、血统和社区信息
     const charName = formData.characterName || "character";
     const profName = currentProfessionId ? professions[currentProfessionId]?.name.replace(/\s+/g, '_') || "prof" : "prof";
-    a.download = `${charName}_${profName}.json`;
+    const ancestry1 = formData.ancestry1?.replace(/\s+/g, '_') || "";
+    const ancestry2 = formData.ancestry2?.replace(/\s+/g, '_') || "";
+    const community = formData.community?.replace(/\s+/g, '_') || "";
+
+    // 构建文件名
+    a.download = `${charName}_${profName}_${ancestry1}_${ancestry2}_${community}.json`;
+
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -456,12 +477,24 @@ function fillFormData(sourceData) {
     // 7. 卡组数据
     if (sourceData.cardData) {
         sourceData.cardData.forEach((card, i) => {
+            const cardBox = document.querySelector(`.card-box[data-slot="${i}"]`);
+            if (cardBox) {
+                const cardData = {
+                    名称: card.name,
+                    领域: card.type,
+                    等级: card.level?.replace("LV.", "") || "",
+                    回想: card.recall?.replace("RC.", "") || "",
+                    描述: card.description || ""
+                };
+                cardBox.dataset.cardData = JSON.stringify(cardData);
+            }
+
             ["name", "type", "level", "recall"].forEach(key => {
                 const el = document.getElementById(`card-${key}-${i}`);
                 const val = card[key] || "";
                 if (el) {
                     el.value = val;
-                    localStorage.setItem(`card-${key}-${i}`, el.value);
+                    localStorage.setItem(`card-${key}-${i}`, val);
                 }
             });
         });
