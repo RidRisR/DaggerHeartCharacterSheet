@@ -37,7 +37,6 @@ function loadInventoryItem(index, element) {
 
 // 修改initWeaponSelects函数
 function initWeaponSelects() {
-    // 确保 WeaponSelector 已初始化
     WeaponSelector.init();
 
     const weaponSelectIds = ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"];
@@ -46,12 +45,13 @@ function initWeaponSelects() {
         const select = document.getElementById(selectId);
         if (!select) return;
 
-        // 将select替换为button
         const button = document.createElement('button');
-        button.className = 'weapon-select-button';
+        button.className = 'weapon-select-button form-select'; // 添加form-select类来继承select的样式
+        button.dataset.originalId = selectId;
         button.textContent = '选择武器';
+        button.style.width = '100%'; // 确保按钮填满容器宽度
+        button.style.textAlign = 'left'; // 文本左对齐
 
-        // 直接在按钮点击事件中处理
         button.onclick = (e) => {
             e.preventDefault();
             window.currentWeaponTarget = selectId;
