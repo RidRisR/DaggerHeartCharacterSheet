@@ -328,3 +328,130 @@ function setBoxStates(selector, states, isDataIndexBased = true) {
         }
     });
 }
+
+// 填充表单数据 (核心加载逻辑)
+function fillFormData(sourceData) {
+    // 1. 基本表单数据 (inputs, selects, textareas)
+    const formElementIds = [
+        "characterName", "profession", "level", "community", "ancestry1", "ancestry2", "subclass",
+        "evasion", "armorValue", "armorMax", "minorThreshold", "majorThreshold", "hpMax", "stressMax",
+        "primaryWeaponName", "primaryWeaponTrait", "primaryWeaponDamage", "primaryWeaponFeature",
+        "secondaryWeaponName", "secondaryWeaponTrait", "secondaryWeaponDamage", "secondaryWeaponFeature",
+        "armorName", "armorBaseScore", "armorFeature",
+        "inventoryWeapon1Name", "inventoryWeapon1Trait", "inventoryWeapon1Damage", "inventoryWeapon1Feature",
+        "inventoryWeapon2Name", "inventoryWeapon2Trait", "inventoryWeapon2Damage", "inventoryWeapon2Feature",
+        "characterBackground", "characterAppearance", "characterMotivation"
+    ];
+
+    formElementIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && sourceData[id] !== undefined) {
+            el.value = sourceData[id];
+            localStorage.setItem(id, sourceData[id]);
+        }
+    });
+
+    // 2. 复选框状态
+    if (sourceData.weaponCheckboxes) {
+        Object.entries(sourceData.weaponCheckboxes).forEach(([id, checked]) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.checked = checked;
+                localStorage.setItem(id, checked.toString());
+            }
+        });
+    }
+
+    // 3. 属性状态
+    if (sourceData.attributeStates) {
+        Object.entries(sourceData.attributeStates).forEach(([attrId, state]) => {
+            setAttributeState(attrId, state);
+        });
+    }
+
+    // 4. 格子状态
+    if (sourceData.hpState) {
+        setBoxStates("#hp-grid .hp-box", sourceData.hpState);
+        localStorage.setItem("hpState", JSON.stringify(sourceData.hpState));
+    }
+    if (sourceData.stressState) {
+        setBoxStates("#stress-grid .stress-box", sourceData.stressState);
+        localStorage.setItem("stressState", JSON.stringify(sourceData.stressState));
+    }
+    if (sourceData.armorState) {
+        setBoxStates("#armor-grid .armor-box", sourceData.armorState);
+        localStorage.setItem("armorState", JSON.stringify(sourceData.armorState));
+    }
+    if (sourceData.hopeState) {
+        setBoxStates("#hope-grid .hope-diamond", sourceData.hopeState, false);
+        localStorage.setItem("hopeState", JSON.stringify(sourceData.hopeState));
+    }
+    if (sourceData.goldState) {
+        setBoxStates("#gold-handfuls .gold-coin, #gold-bags .gold-coin-bag, #gold-chest .gold-coin-chest", sourceData.goldState);
+        localStorage.setItem("goldState", JSON.stringify(sourceData.goldState));
+    }
+    if (sourceData.proficiencyState) {
+        setBoxStates("#proficiency-dots .proficiency-dot", sourceData.proficiencyState, false);
+        localStorage.setItem("proficiencyState", JSON.stringify(sourceData.proficiencyState));
+    }
+
+    // 5. 经验列表数据
+    if (sourceData.experienceData) {
+        sourceData.experienceData.forEach((exp, i) => {
+            const descEl = document.getElementById(`experience-${i}`);
+            const valueEl = document.getElementById(`experience-value-${i}`);
+            if (descEl) {
+                descEl.value = exp.desc || "";
+                localStorage.setItem(`experience-${i}`, descEl.value);
+            }
+            if (valueEl) {
+                valueEl.value = exp.value || "";
+                localStorage.setItem(`experience-value-${i}`, valueEl.value);
+            }
+        });
+    }
+
+    // 6. 物品栏数据
+    if (sourceData.inventoryData) {
+        sourceData.inventoryData.forEach((item, i) => {
+            const el = document.getElementById(`inventory-${i}`);
+            if (el) {
+                el.value = item || "";
+                localStorage.setItem(`inventory-${i}`, el.value);
+            }
+        });
+    }
+
+    // 7. 卡组数据
+    if (sourceData.cardData) {
+        sourceData.cardData.forEach((card, i) => {
+            ["name", "type", "level", "recall"].forEach(key => {
+                const el = document.getElementById(`card-${key}-${i}`);
+                const val = card[key] || "";
+                if (el) {
+                    el.value = val;
+                    localStorage.setItem(`card-${key}-${i}`, el.value);
+                }
+            });
+        });
+    }
+
+    // 8. 职业和升级状态
+    const loadedProfessionId = sourceData.profession || "";
+    localStorage.setItem("characterProfession", loadedProfessionId);
+
+    if (loadedProfessionId && sourceData.upgradeStates && sourceData.upgradeStates[loadedProfessionId]) {
+        const profUpgradeStates = sourceData.upgradeStates[loadedProfessionId];
+        for (let tier = 1; tier <= 3; tier++) {
+            if (profUpgradeStates[`tier${tier}`]) {
+                localStorage.setItem(
+                    `upgradeStates_${loadedProfessionId}_tier${tier}`,
+                    JSON.stringify(profUpgradeStates[`tier${tier}`])
+                );
+            }
+        }
+    }
+}
+
+// 确保函数被导出
+window.fillFormData = fillFormData;
