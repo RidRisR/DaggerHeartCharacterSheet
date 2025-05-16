@@ -46,11 +46,20 @@ function initWeaponSelects() {
         if (!select) return;
 
         const button = document.createElement('button');
-        button.className = 'weapon-select-button form-select'; // 添加form-select类来继承select的样式
+        button.className = 'weapon-select-button form-select';
         button.dataset.originalId = selectId;
-        button.textContent = '选择武器';
-        button.style.width = '100%'; // 确保按钮填满容器宽度
-        button.style.textAlign = 'left'; // 文本左对齐
+        button.dataset.printPlaceholder = true; // 添加打印占位符标记
+        button.textContent = ''; // 初始为空
+
+        // 恢复已保存的武器数据
+        const savedWeaponId = localStorage.getItem(selectId);
+        if (savedWeaponId) {
+            const weapon = WeaponSelector.getAllWeapons().find(w => w.ID === savedWeaponId);
+            if (weapon) {
+                button.textContent = removeEnglishText(weapon.名称);
+                button.dataset.printPlaceholder = false;
+            }
+        }
 
         button.onclick = (e) => {
             e.preventDefault();
@@ -72,66 +81,77 @@ function handleWeaponSelection(weapon) {
     if (!window.currentWeaponTarget) return;
 
     const baseId = window.currentWeaponTarget;
-    updateWeaponDisplay(baseId, weapon);
-    saveWeaponData(baseId, weapon);
+    const buttonEl = document.querySelector(`.weapon-select-button[data-original-id="${baseId}"]`);
+    const traitEl = document.getElementById(`${baseId}Trait`);
+    const damageEl = document.getElementById(`${baseId}Damage`);
+    const featureEl = document.getElementById(`${baseId}Feature`);
+
+    if (buttonEl) {
+        buttonEl.textContent = removeEnglishText(weapon.名称);
+        buttonEl.dataset.printPlaceholder = false;
+    }
+    if (traitEl) traitEl.value = `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`;
+    if (damageEl) damageEl.value = `${removeEnglishText(weapon.检定)} ${weapon.伤害}`;
+    if (featureEl) featureEl.value = removeEnglishText(weapon.特性);
+
+    // 保存武器数据
+    localStorage.setItem(baseId, weapon.ID);
+    localStorage.setItem(`${baseId}Trait`, `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`);
+    localStorage.setItem(`${baseId}Damage`, `${removeEnglishText(weapon.检定)} ${weapon.伤害}`);
+    localStorage.setItem(`${baseId}Feature`, removeEnglishText(weapon.特性));
 
     WeaponSelector.hide();
     window.currentWeaponTarget = null;
 }
 
-function updateWeaponDisplay(baseId, weapon) {
-    // 查找按钮元素（使用父元素查找）
-    const buttonEl = document.getElementById(baseId)?.parentElement.querySelector('.weapon-select-button');
-    const traitEl = document.getElementById(`${baseId}Trait`);
-    const damageEl = document.getElementById(`${baseId}Damage`);
-    const featureEl = document.getElementById(`${baseId}Feature`);
-
-    if (buttonEl) buttonEl.textContent = removeEnglishText(weapon.名称);
-    if (traitEl) traitEl.value = `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`;
-    if (damageEl) damageEl.value = `${removeEnglishText(weapon.检定)} ${weapon.伤害}`;
-    if (featureEl) featureEl.value = removeEnglishText(weapon.特性);
-}
-
-function saveWeaponData(baseId, weapon) {
-    localStorage.setItem(`${baseId}`, weapon.ID);
-    localStorage.setItem(`${baseId}Trait`, `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`);
-    localStorage.setItem(`${baseId}Damage`, `${removeEnglishText(weapon.检定)} ${weapon.伤害}`);
-    localStorage.setItem(`${baseId}Feature`, removeEnglishText(weapon.特性));
-}
-
-// 初始化护甲下拉框
+// 修改护甲选择器初始化函数
 function initArmorSelect() {
-    const armorSelect = document.getElementById("armorName");
-    if (!armorSelect) return;
-    if (typeof armorData === 'undefined') {
-        console.error("armorData is not defined.");
-        return;
-    }
-    armorSelect.innerHTML = '<option value=""></option><option value="none">None</option>';
-    armorData.forEach((armor) => {
-        const option = document.createElement("option");
-        option.value = armor.id;
-        option.textContent = armor.name;
-        armorSelect.appendChild(option);
-    });
+    ArmorSelector.init();
 
-    armorSelect.addEventListener("change", function () {
-        const armorId = this.value;
-        const selectedArmor = armorData.find((a) => a.id === armorId);
-        const baseScoreEl = document.getElementById("armorBaseScore");
-        const featureEl = document.getElementById("armorFeature");
+    const armorButton = document.createElement('button');
+    armorButton.className = 'weapon-select-button form-select';
+    armorButton.dataset.originalId = 'armorName';  // 添加originalId
+    armorButton.dataset.printPlaceholder = true;
+    armorButton.textContent = '';
 
-        if (selectedArmor && armorId !== "none") {
-            if (baseScoreEl) baseScoreEl.value = selectedArmor.baseScore || "";
-            if (featureEl) featureEl.value = selectedArmor.feature || "";
-        } else {
-            if (baseScoreEl) baseScoreEl.value = "";
-            if (featureEl) featureEl.value = "";
+    // 恢复已保存的护甲数据
+    const savedArmorId = localStorage.getItem('armorName');
+    if (savedArmorId) {
+        const armor = ArmorSelector.getAllArmors().find(a => a.ID === savedArmorId);
+        if (armor) {
+            armorButton.textContent = removeEnglishText(armor.名称);
+            armorButton.dataset.printPlaceholder = false;
         }
-        localStorage.setItem("armorName", armorId);
-        if (baseScoreEl) localStorage.setItem("armorBaseScore", baseScoreEl.value);
-        if (featureEl) localStorage.setItem("armorFeature", featureEl.value);
-    });
+    }
+
+    armorButton.onclick = (e) => {
+        e.preventDefault();
+        ArmorSelector.show();
+    };
+
+    const select = document.getElementById('armorName');
+    if (select) {
+        select.parentNode.replaceChild(armorButton, select);
+    }
+}
+
+function handleArmorSelection(armor) {
+    // 修改data-original-id的查找方式
+    const buttonEl = document.querySelector('.weapon-select-button[data-original-id="armorName"]');
+    const baseScoreEl = document.getElementById('armorBaseScore');
+    const featureEl = document.getElementById('armorFeature');
+
+    if (buttonEl) {
+        buttonEl.textContent = removeEnglishText(armor.名称);
+        buttonEl.dataset.printPlaceholder = false;
+    }
+    if (baseScoreEl) baseScoreEl.value = armor.防御;
+    if (featureEl) featureEl.value = removeEnglishText(armor.特性);
+
+    // 保存护甲数据
+    localStorage.setItem('armorName', armor.ID);
+    localStorage.setItem('armorBaseScore', armor.防御);
+    localStorage.setItem('armorFeature', removeEnglishText(armor.特性));
 }
 
 // 初始化金币格子

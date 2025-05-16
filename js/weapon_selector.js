@@ -145,17 +145,8 @@ class WeaponSelector {
                 <div title="${removeEnglishText(weapon.负荷)}">${removeEnglishText(weapon.负荷)}</div>
                 <div title="${removeEnglishText(weapon.特性)}">${removeEnglishText(weapon.特性)}</div>
             `;
-            // 保存完整数据用于选择
-            div.dataset.weaponData = JSON.stringify({
-                ID: weapon.ID,
-                名称: weapon.名称,
-                检定: weapon.检定,
-                属性: weapon.属性,
-                范围: weapon.范围,
-                伤害: weapon.伤害,
-                负荷: weapon.负荷,
-                特性: weapon.特性
-            });
+            // 直接存储原始数据对象，不做转换
+            div.dataset.weaponData = JSON.stringify(weapon);
             container.appendChild(div);
         });
     }

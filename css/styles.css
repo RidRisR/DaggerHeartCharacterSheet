@@ -533,7 +533,6 @@ body {
 
 .experience-desc {
   flex-grow: 1;
-  border-bottom: 1px solid #999;
   padding: 5px;
   font-size: 12px;
 }
@@ -728,7 +727,6 @@ body {
 
 .inventory-item {
   width: 100%;
-  border-bottom: 1px solid #999;
   padding: 2px;
   font-size: 15px;
 }
@@ -1024,4 +1022,25 @@ body {
   textarea::placeholder {
     color: transparent !important;
   }
+.weapon-select-button[data-print-placeholder="true"] {
+  color: transparent;
+  background: transparent;
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 4px 0;
+  width: 100%;
+  min-height: 28px;
+}
+
+.weapon-select-button {
+  color: #333;
+  background: transparent;
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 4px 0;
+  width: 100%;
+  min-height: 28px;
+}
 }
