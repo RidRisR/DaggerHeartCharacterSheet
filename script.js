@@ -167,16 +167,42 @@ function initProfessionSelects() {
 
 // 初始化血统选择框
 function initAncestrySelects() {
+  console.log('Initializing ancestry selects...');
+  console.log('RACES_DATA status:', {
+    defined: typeof RACES_DATA !== 'undefined',
+    value: typeof RACES_DATA !== 'undefined' ? RACES_DATA : 'undefined'
+  });
+
   const ancestrySelects = ['ancestry1', 'ancestry2'];
   ancestrySelects.forEach(selectId => {
     const select = document.getElementById(selectId);
-    if (!select) return;
+    if (!select) {
+      console.warn(`Select element with id ${selectId} not found`);
+      return;
+    }
+
     select.innerHTML = '<option value="none">无</option>'; // "None" option
-    if (typeof ancestryData === 'undefined') return;
-    ancestryData.forEach(ancestry => {
+
+    if (typeof RACES_DATA === 'undefined') {
+      console.error('RACES_DATA is not defined! Please check if races_data.js is properly loaded before script.js');
+      return;
+    }
+
+    if (!Array.isArray(RACES_DATA)) {
+      console.error('RACES_DATA is not an array!', RACES_DATA);
+      return;
+    }
+
+    console.log(`Loading ${RACES_DATA.length} races into select ${selectId}`);
+
+    RACES_DATA.forEach((race, index) => {
+      if (!race || !race.race) {
+        console.warn(`Invalid race data at index ${index}`, race);
+        return;
+      }
       const option = document.createElement('option');
-      option.value = ancestry.id;
-      option.textContent = ancestry.name;
+      option.value = race.race;
+      option.textContent = race.race;
       select.appendChild(option);
     });
   });
@@ -184,14 +210,40 @@ function initAncestrySelects() {
 
 // 初始化社群选择框
 function initCommunitySelects() {
+  console.log('Initializing community selects...');
+  console.log('GROUPS_DATA status:', {
+    defined: typeof GROUPS_DATA !== 'undefined',
+    value: typeof GROUPS_DATA !== 'undefined' ? GROUPS_DATA : 'undefined'
+  });
+
   const select = document.getElementById('community');
-  if (!select) return;
+  if (!select) {
+    console.warn('Community select element not found');
+    return;
+  }
+
   select.innerHTML = '<option value=""></option>'; // Default empty option
-  if (typeof communityData === 'undefined') return;
-  communityData.forEach(community => {
+
+  if (typeof GROUPS_DATA === 'undefined') {
+    console.error('GROUPS_DATA is not defined! Please check if groups_data.js is properly loaded before script.js');
+    return;
+  }
+
+  if (!Array.isArray(GROUPS_DATA)) {
+    console.error('GROUPS_DATA is not an array!', GROUPS_DATA);
+    return;
+  }
+
+  console.log(`Loading ${GROUPS_DATA.length} communities into select`);
+
+  GROUPS_DATA.forEach((group, index) => {
+    if (!group || !group.社群) {
+      console.warn(`Invalid group data at index ${index}`, group);
+      return;
+    }
     const option = document.createElement('option');
-    option.value = community.id;
-    option.textContent = community.name;
+    option.value = group.社群;
+    option.textContent = group.社群;
     select.appendChild(option);
   });
 }
