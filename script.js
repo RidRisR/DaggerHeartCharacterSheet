@@ -511,7 +511,7 @@ function initWeaponSelects() {
 
   weaponSelects.forEach((selectId) => {
     const select = document.getElementById(selectId)
-    select.innerHTML = '<option value="">选择武器</option>'
+    select.innerHTML = '<option value=""></option>'
 
     // 添加"无"选项
     const noneOption = document.createElement("option")
@@ -580,7 +580,7 @@ function initWeaponSelects() {
 // 初始化护甲下拉框
 function initArmorSelect() {
   const armorSelect = document.getElementById("armorName")
-  armorSelect.innerHTML = '<option value="">选择护甲</option>'
+  armorSelect.innerHTML = '<option value=""></option>'
 
   // 添加"无"选项
   const noneOption = document.createElement("option")
