@@ -35,62 +35,68 @@ function loadInventoryItem(index, element) {
     }
 }
 
-// 初始化武器下拉框
+// 修改initWeaponSelects函数
 function initWeaponSelects() {
+    // 确保 WeaponSelector 已初始化
+    WeaponSelector.init();
+
     const weaponSelectIds = ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"];
-    if (typeof weapon_t1_physics === 'undefined') {
-        console.error("weapon_t1_physics is not defined.");
-        return;
-    }
 
     weaponSelectIds.forEach((selectId) => {
         const select = document.getElementById(selectId);
         if (!select) return;
-        select.innerHTML = '<option value=""></option><option value="none">None</option>';
-        weapon_t1_physics.forEach((weapon) => {
-            const option = document.createElement("option");
-            option.value = weapon.ID; // Using ID field instead of index
-            option.textContent = removeEnglishText(weapon.名称);
-            select.appendChild(option);
-        });
 
-        select.addEventListener("change", function () {
-            handleWeaponSelectChange(this);
-        });
-    });
+        // 将select替换为button
+        const button = document.createElement('button');
+        button.className = 'weapon-select-button';
+        button.textContent = '选择武器';
 
-    // Add checkbox event listeners
-    ["inventoryWeapon1Primary", "inventoryWeapon1Secondary", "inventoryWeapon2Primary", "inventoryWeapon2Secondary"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener("change", function () {
-            localStorage.setItem(id, this.checked.toString());
-        });
+        // 直接在按钮点击事件中处理
+        button.onclick = (e) => {
+            e.preventDefault();
+            window.currentWeaponTarget = selectId;
+            WeaponSelector.show();
+        };
+
+        select.parentNode.replaceChild(button, select);
     });
 }
 
-function handleWeaponSelectChange(select) {
-    const weaponId = select.value;
-    const selectedWeapon = weapon_t1_physics.find(w => w.ID === weaponId);
-    const baseId = select.id.replace("Name", "");
+function openWeaponSelector(targetId) {
+    window.currentWeaponTarget = targetId;
+    WeaponSelector.show();
+}
 
+// 修改handleWeaponSelection函数为武器选择回调
+function handleWeaponSelection(weapon) {
+    if (!window.currentWeaponTarget) return;
+
+    const baseId = window.currentWeaponTarget;
+    updateWeaponDisplay(baseId, weapon);
+    saveWeaponData(baseId, weapon);
+
+    WeaponSelector.hide();
+    window.currentWeaponTarget = null;
+}
+
+function updateWeaponDisplay(baseId, weapon) {
+    // 查找按钮元素（使用父元素查找）
+    const buttonEl = document.getElementById(baseId)?.parentElement.querySelector('.weapon-select-button');
     const traitEl = document.getElementById(`${baseId}Trait`);
     const damageEl = document.getElementById(`${baseId}Damage`);
     const featureEl = document.getElementById(`${baseId}Feature`);
 
-    if (selectedWeapon && weaponId !== "none") {
-        if (traitEl) traitEl.value = `${removeEnglishText(selectedWeapon.负荷)} ${removeEnglishText(selectedWeapon.范围)} ${removeEnglishText(selectedWeapon.属性)}`;
-        if (damageEl) damageEl.value = `${removeEnglishText(selectedWeapon.检定)} ${selectedWeapon.伤害}`;
-        if (featureEl) featureEl.value = removeEnglishText(selectedWeapon.特性);
-    } else {
-        if (traitEl) traitEl.value = "";
-        if (damageEl) damageEl.value = "";
-        if (featureEl) featureEl.value = "";
-    }
+    if (buttonEl) buttonEl.textContent = removeEnglishText(weapon.名称);
+    if (traitEl) traitEl.value = `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`;
+    if (damageEl) damageEl.value = `${removeEnglishText(weapon.检定)} ${weapon.伤害}`;
+    if (featureEl) featureEl.value = removeEnglishText(weapon.特性);
+}
 
-    localStorage.setItem(select.id, weaponId);
-    if (traitEl) localStorage.setItem(`${baseId}Trait`, traitEl.value);
-    if (damageEl) localStorage.setItem(`${baseId}Damage`, damageEl.value);
-    if (featureEl) localStorage.setItem(`${baseId}Feature`, featureEl.value);
+function saveWeaponData(baseId, weapon) {
+    localStorage.setItem(`${baseId}`, weapon.ID);
+    localStorage.setItem(`${baseId}Trait`, `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`);
+    localStorage.setItem(`${baseId}Damage`, `${removeEnglishText(weapon.检定)} ${weapon.伤害}`);
+    localStorage.setItem(`${baseId}Feature`, removeEnglishText(weapon.特性));
 }
 
 // 初始化护甲下拉框

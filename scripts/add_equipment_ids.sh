@@ -13,9 +13,24 @@ temp_file=$(mktemp)
 
 # 状态标志，用于追踪是否在处理对象内部
 in_object=0
+in_array=0
 current_object=""
 
 while IFS= read -r line; do
+    # 检测数组开始
+    if [[ $line =~ ^const.*=.*\[ ]]; then
+        in_array=1
+        echo "$line" >> "$temp_file"
+        continue
+    fi
+
+    # 检测数组结束
+    if [[ $line =~ ^\] ]]; then
+        in_array=0
+        echo "$line" >> "$temp_file"
+        continue
+    fi
+
     # 检测对象开始
     if [[ $line =~ ^[[:space:]]*\{ ]]; then
         in_object=1
@@ -51,6 +66,7 @@ while IFS= read -r line; do
             current_object=""
         fi
     else
+        # 不在对象内则直接写入行
         echo "$line" >> "$temp_file"
     fi
 done < "$equipment_file"
