@@ -549,19 +549,24 @@ body {
 
 .gold-label {
   font-size: 9px;
-  margin-bottom: 5px;
 }
 
 .gold-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  margin-inline: 2px;
 }
 
+.gold-grid.chest {
+  display: grid;
+  margin: 6px;
+}
 .gold-coin {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #333;
+  width: 20px;
+    height: 20px;
+    border: 1px solid #999;
+    border-radius: 50%;
   cursor: pointer;
 }
 
@@ -569,8 +574,26 @@ body {
   background-color: #333;
 }
 
-.handfuls .gold-coin {
-  border-radius: 50%;
+.gold-coin-bag {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #999;
+  cursor: pointer;
+}
+
+.gold-coin-bag.checked {
+  background-color: #333;
+}
+
+.gold-coin-chest {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #999;
+  cursor: pointer;
+}
+
+.gold-coin-chest.checked {
+  background-color: #333;
 }
 
 .gold-chest {

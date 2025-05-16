@@ -35,13 +35,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // 同步两个页面的职业选择
   document.getElementById("profession").addEventListener("change", function () {
     document.getElementById("profession-page2").value = this.value
-    document.getElementById("profession-name").textContent = getProfessionName(this.value)
+    const profNameElement = document.getElementById("profession-name")
+    if (profNameElement) {
+      profNameElement.textContent = getProfessionName(this.value)
+    }
     localStorage.setItem("characterProfession", this.value)
   })
 
   document.getElementById("profession-page2").addEventListener("change", function () {
     document.getElementById("profession").value = this.value
-    document.getElementById("profession-name").textContent = getProfessionName(this.value)
+    const profNameElement = document.getElementById("profession-name")
+    if (profNameElement) {
+      profNameElement.textContent = getProfessionName(this.value)
+    }
     localStorage.setItem("characterProfession", this.value)
   })
 
@@ -396,6 +402,7 @@ function initExperienceList() {
 function initGoldCoins() {
   const handfulGrid = document.getElementById("gold-handfuls")
   const bagsGrid = document.getElementById("gold-bags")
+  const chestGrid = document.getElementById("gold-chest")
 
   // 一把金币
   handfulGrid.innerHTML = ""
@@ -414,13 +421,26 @@ function initGoldCoins() {
   bagsGrid.innerHTML = ""
   for (let i = 0; i < 10; i++) {
     const coin = document.createElement("div")
-    coin.className = "gold-coin"
+    coin.className = "gold-coin-bag"
     coin.dataset.index = i + 10
     coin.addEventListener("click", function () {
       this.classList.toggle("checked")
       saveGoldState()
     })
     bagsGrid.appendChild(coin)
+  }
+
+  // 一箱金币
+  chestGrid.innerHTML = ""
+  for (let i = 0; i < 1; i++) {
+    const coin = document.createElement("div")
+    coin.className = "gold-coin-chest"
+    coin.dataset.index = i + 20
+    coin.addEventListener("click", function () {
+      this.classList.toggle("checked")
+      saveGoldState()
+    })
+    chestGrid.appendChild(coin)
   }
 }
 
@@ -430,7 +450,6 @@ function saveGoldState() {
   document.querySelectorAll(".gold-coin").forEach((coin, index) => {
     goldState[index] = coin.classList.contains("checked")
   })
-
   localStorage.setItem("goldState", JSON.stringify(goldState))
 }
 
@@ -864,7 +883,10 @@ function fillFormData(formData) {
   document.getElementById("characterName").value = formData.characterName || ""
   document.getElementById("profession").value = formData.profession || ""
   document.getElementById("profession-page2").value = formData.profession || ""
-  document.getElementById("profession-name").textContent = getProfessionName(formData.profession)
+  const profNameElement = document.getElementById("profession-name")
+  if (profNameElement) {
+    profNameElement.textContent = getProfessionName(formData.profession)
+  }
   document.getElementById("level").value = formData.level || ""
   document.getElementById("community").value = formData.community || ""
   document.getElementById("ancestry1").value = formData.ancestry1 || ""
@@ -961,7 +983,10 @@ function loadFromLocalStorage() {
   const profession = localStorage.getItem("characterProfession") || ""
   document.getElementById("profession").value = profession
   document.getElementById("profession-page2").value = profession
-  document.getElementById("profession-name").textContent = getProfessionName(profession)
+  const profNameElement = document.getElementById("profession-name")
+  if (profNameElement) {
+    profNameElement.textContent = getProfessionName(profession)
+  }
 
   document.getElementById("level").value = localStorage.getItem("level") || ""
   document.getElementById("community").value = localStorage.getItem("community") || ""

@@ -340,8 +340,6 @@ const upgradeOptionsData = {
   baseUpgrades: [
     { label: "一个例子.", doubleBox: false },
     { label: "一个例子.", doubleBox: false },
-    { label: "一个例子.", doubleBox: false },
-    { label: "一个例子.", doubleBox: false },
     { label: "一个例子.", doubleBox: true },
     { label: "一个例子.", doubleBox: true },
   ],
