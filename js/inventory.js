@@ -38,8 +38,8 @@ function loadInventoryItem(index, element) {
 // 初始化武器下拉框
 function initWeaponSelects() {
     const weaponSelectIds = ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"];
-    if (typeof weaponData === 'undefined') {
-        console.error("weaponData is not defined.");
+    if (typeof weapon_t1_physics === 'undefined') {
+        console.error("weapon_t1_physics is not defined.");
         return;
     }
 
@@ -47,14 +47,13 @@ function initWeaponSelects() {
         const select = document.getElementById(selectId);
         if (!select) return;
         select.innerHTML = '<option value=""></option><option value="none">None</option>';
-        weaponData.forEach((weapon) => {
+        weapon_t1_physics.forEach((weapon) => {
             const option = document.createElement("option");
-            option.value = weapon.id;
-            option.textContent = weapon.name;
+            option.value = weapon.ID; // Using ID field instead of index
+            option.textContent = removeEnglishText(weapon.名称);
             select.appendChild(option);
         });
 
-        // Add change event listener
         select.addEventListener("change", function () {
             handleWeaponSelectChange(this);
         });
@@ -71,7 +70,7 @@ function initWeaponSelects() {
 
 function handleWeaponSelectChange(select) {
     const weaponId = select.value;
-    const selectedWeapon = weaponData.find((w) => w.id === weaponId);
+    const selectedWeapon = weapon_t1_physics.find(w => w.ID === weaponId);
     const baseId = select.id.replace("Name", "");
 
     const traitEl = document.getElementById(`${baseId}Trait`);
@@ -79,9 +78,9 @@ function handleWeaponSelectChange(select) {
     const featureEl = document.getElementById(`${baseId}Feature`);
 
     if (selectedWeapon && weaponId !== "none") {
-        if (traitEl) traitEl.value = selectedWeapon.trait || "";
-        if (damageEl) damageEl.value = selectedWeapon.damage || "";
-        if (featureEl) featureEl.value = selectedWeapon.feature || "";
+        if (traitEl) traitEl.value = `${removeEnglishText(selectedWeapon.负荷)} ${removeEnglishText(selectedWeapon.范围)} ${removeEnglishText(selectedWeapon.属性)}`;
+        if (damageEl) damageEl.value = `${removeEnglishText(selectedWeapon.检定)} ${selectedWeapon.伤害}`;
+        if (featureEl) featureEl.value = removeEnglishText(selectedWeapon.特性);
     } else {
         if (traitEl) traitEl.value = "";
         if (damageEl) damageEl.value = "";

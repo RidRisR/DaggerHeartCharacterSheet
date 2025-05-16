@@ -90,6 +90,16 @@ function markDefaultElements() {
     })
 }
 
+// 移除中英文混合字符串中的英文部分
+function removeEnglishText(text) {
+    if (!text) return "";
+    // 匹配含有英文的部分，格式为"中文English"
+    return text.replace(/([^\x00-\xff]+)([A-Za-z&\s]+)/g, '$1');
+}
+
+// Add to window object
+window.removeEnglishText = removeEnglishText;
+
 // Placeholder for exportToPDF
 function exportToPDF() {
     alert("导出PDF功能尚未实现。Export to PDF function not yet implemented.");
