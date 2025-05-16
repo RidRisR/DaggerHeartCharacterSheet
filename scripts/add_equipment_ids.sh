@@ -1,6 +1,6 @@
 #!/bin/bash
 
-equipment_file="/Users/ris/Desktop/uuu/data/equipment_data.js"
+equipment_file="/Users/ris/Desktop/uuu/data/all_card.js"
 
 # 检查文件是否存在
 if [ ! -f "$equipment_file" ]; then

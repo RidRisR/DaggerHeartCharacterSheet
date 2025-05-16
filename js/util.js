@@ -94,6 +94,19 @@ function removeEnglishText(text) {
     return text.replace(/([^\x00-\xff]+)([A-Za-z&\s]+)/g, '$1');
 }
 
+// 初始化全局卡牌数据
+function initGlobalCards() {
+    if (typeof DOMAIN_CARDS !== 'undefined') {
+        window.DOMAIN_CARDS = DOMAIN_CARDS;
+    }
+    if (typeof RACES_CARD !== 'undefined') {
+        window.RACES_CARD = RACES_CARD;
+    }
+}
+
+// 确保在页面加载时初始化
+document.addEventListener('DOMContentLoaded', initGlobalCards);
+
 // Add to window object
 window.removeEnglishText = removeEnglishText;
 
