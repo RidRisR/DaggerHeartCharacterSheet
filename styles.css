@@ -909,4 +909,9 @@ body {
     page-break-after: always;
   }
 
+    /* 确保预设值在打印时保留 */
+    input::placeholder,
+    textarea::placeholder {
+      color: transparent !important;
+    }
 }
