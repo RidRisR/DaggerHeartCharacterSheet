@@ -1,5 +1,6 @@
 // 初始化属性
 function initAttributes() {
+    console.log("Initializing attributes...");
     const attributes = [
         { name: "敏捷", key: "agility", skills: ["奔跑", "跳跃", "机动"] },
         { name: "力量", key: "strength", skills: ["举起", "破坏", "擒拿"] },
@@ -29,14 +30,32 @@ function initAttributes() {
         attributesGrid.appendChild(attributeDiv)
 
         const attributeCheck = attributeDiv.querySelector(".attribute-check")
+        // 读取并设置复选框状态
+        const isChecked = localStorage.getItem(`${attr.key}-checked`) === 'true'
+        if (isChecked) {
+            attributeCheck.classList.add('checked')
+        }
+
         attributeCheck.addEventListener("click", function () {
             this.classList.toggle("checked")
             localStorage.setItem(`${attr.key}-checked`, this.classList.contains("checked").toString())
         })
 
-        const attributeValue = attributeDiv.querySelector(".attribute-value")
-        attributeValue.addEventListener("change", function () {
+        const attributeValue = attributeDiv.querySelector(`#${attr.key}-value`)
+        const savedValue = localStorage.getItem(`${attr.key}-value`)
+        console.log(`Loading attribute ${attr.key}:`, {
+            element: attributeValue,
+            savedValue: savedValue
+        });
+
+        if (savedValue) {
+            attributeValue.value = savedValue
+            console.log(`Set ${attr.key} value to:`, savedValue);
+        }
+
+        attributeValue.addEventListener("input", function () {
             localStorage.setItem(`${attr.key}-value`, this.value)
         })
     })
+    console.log("Attributes initialization completed");
 }

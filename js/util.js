@@ -67,9 +67,6 @@ function handlePrint() {
 // 标记默认值元素
 function markDefaultElements() {
     const defaultElements = [
-        { id: "evasion", defaultValue: "10" },
-        { id: "minorThreshold", defaultValue: "7" },
-        { id: "majorThreshold", defaultValue: "14" },
         { id: "hpMax", defaultValue: "6" },
         { id: "stressMax", defaultValue: "6" },
         { id: "armorMax", defaultValue: "6" },
@@ -96,6 +93,19 @@ function removeEnglishText(text) {
     // 匹配含有英文的部分，格式为"中文English"
     return text.replace(/([^\x00-\xff]+)([A-Za-z&\s]+)/g, '$1');
 }
+
+// 初始化全局卡牌数据
+function initGlobalCards() {
+    if (typeof DOMAIN_CARDS !== 'undefined') {
+        window.DOMAIN_CARDS = DOMAIN_CARDS;
+    }
+    if (typeof RACES_CARD !== 'undefined') {
+        window.RACES_CARD = RACES_CARD;
+    }
+}
+
+// 确保在页面加载时初始化
+document.addEventListener('DOMContentLoaded', initGlobalCards);
 
 // Add to window object
 window.removeEnglishText = removeEnglishText;

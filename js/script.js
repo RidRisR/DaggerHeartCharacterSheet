@@ -143,8 +143,6 @@ function initCharacterSheet() {
 // 标记默认值元素
 function markDefaultElements() {
     const defaultElements = [
-        { id: "minorThreshold", defaultValue: "7" },
-        { id: "majorThreshold", defaultValue: "14" },
         { id: "hpMax", defaultValue: "6" },
         { id: "stressMax", defaultValue: "6" },
         { id: "armorMax", defaultValue: "6" },

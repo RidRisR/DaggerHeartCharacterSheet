@@ -748,6 +748,43 @@ body {
   font-size: 8px;
 }
 
+/* 卡牌样式 */
+.card-tooltip {
+  display: none;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1000;
+  max-width: 300px;
+  /* 增加最大宽度 */
+  width: max-content;
+  /* 根据内容自动调整宽度 */
+  left: 100%;
+  top: 0;
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.card-box {
+  position: relative;
+  cursor: pointer;
+}
+
+.card-box:hover {
+  background-color: #f0f0f0;
+}
+
+.card-name,
+.card-type,
+.card-level,
+.card-recall {
+  cursor: pointer;
+  background: transparent;
+}
 /* 第二页样式 */
 .character-description {
   display: grid;

@@ -112,12 +112,15 @@ function loadCharacter() {
     document.body.appendChild(fileInput);
 
     fileInput.addEventListener("change", (event) => {
+        console.log("File selected, starting to read...");
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
+                    console.log("File read successfully, parsing JSON...");
                     const jsonData = JSON.parse(e.target.result);
+                    console.log("Loaded character data:", jsonData);
                     document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
                     document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
                     document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
@@ -128,6 +131,7 @@ function loadCharacter() {
                         if (upgradeList) upgradeList.innerHTML = "";
                     }
                     fillFormData(jsonData);
+                    console.log("Character data filled successfully");
                     alert("角色数据已从文件加载！");
                 } catch (error) {
                     console.error("加载角色数据失败:", error);
@@ -331,6 +335,8 @@ function setBoxStates(selector, states, isDataIndexBased = true) {
 
 // 填充表单数据 (核心加载逻辑)
 function fillFormData(sourceData) {
+    console.log("Starting to fill form data...");
+
     // 导入武器和护甲数据
     if (sourceData.weapons) {
         window.importWeaponsData(sourceData.weapons);
@@ -355,7 +361,37 @@ function fillFormData(sourceData) {
         }
     });
 
-    // 2. 复选框状态
+    // 2. 属性状态
+    if (sourceData.attributes) {
+        console.log("Loading attributes:", sourceData.attributes);
+        Object.entries(sourceData.attributes).forEach(([attrKey, attrData]) => {
+            console.log(`Setting attribute ${attrKey}:`, attrData);
+            const valueEl = document.getElementById(`${attrKey}-value`);
+            const checkEl = document.querySelector(`.attribute-check[data-attribute="${attrKey}"]`);
+
+            if (valueEl) {
+                console.log(`Setting ${attrKey} value to:`, attrData.value);
+                valueEl.value = attrData.value;
+                localStorage.setItem(`${attrKey}-value`, attrData.value);
+            } else {
+                console.warn(`Value element not found for ${attrKey}`);
+            }
+
+            if (checkEl) {
+                console.log(`Setting ${attrKey} checked state to:`, attrData.checked);
+                if (attrData.checked) {
+                    checkEl.classList.add('checked');
+                } else {
+                    checkEl.classList.remove('checked');
+                }
+                localStorage.setItem(`${attrKey}-checked`, attrData.checked.toString());
+            } else {
+                console.warn(`Check element not found for ${attrKey}`);
+            }
+        });
+    }
+
+    // 3. 复选框状态
     if (sourceData.weaponCheckboxes) {
         Object.entries(sourceData.weaponCheckboxes).forEach(([id, checked]) => {
             const el = document.getElementById(id);
@@ -363,13 +399,6 @@ function fillFormData(sourceData) {
                 el.checked = checked;
                 localStorage.setItem(id, checked.toString());
             }
-        });
-    }
-
-    // 3. 属性状态
-    if (sourceData.attributeStates) {
-        Object.entries(sourceData.attributeStates).forEach(([attrId, state]) => {
-            setAttributeState(attrId, state);
         });
     }
 
@@ -455,6 +484,8 @@ function fillFormData(sourceData) {
             }
         }
     }
+
+    console.log("Form data fill completed");
 }
 
 // 确保函数被导出
