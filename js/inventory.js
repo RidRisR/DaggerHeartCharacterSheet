@@ -78,30 +78,152 @@ function openWeaponSelector(targetId) {
 
 // 修改handleWeaponSelection函数为武器选择回调
 function handleWeaponSelection(weapon) {
-    if (!window.currentWeaponTarget) return;
+    console.log('==== Weapon Selection START ====');
+    console.log('Selected weapon:', weapon);
+    console.log('Current target:', window.currentWeaponTarget);
+
+    if (!window.currentWeaponTarget) {
+        console.error('No weapon target selected');
+        return;
+    }
 
     const baseId = window.currentWeaponTarget;
-    const buttonEl = document.querySelector(`.weapon-select-button[data-original-id="${baseId}"]`);
-    const traitEl = document.getElementById(`${baseId}Trait`);
-    const damageEl = document.getElementById(`${baseId}Damage`);
-    const featureEl = document.getElementById(`${baseId}Feature`);
 
-    if (buttonEl) {
-        buttonEl.textContent = removeEnglishText(weapon.名称);
-        buttonEl.dataset.printPlaceholder = false;
+    // 修复ID匹配：去掉"Name"后缀
+    const cleanedId = baseId.replace('Name', '');
+
+    // 记录元素查找过程
+    const buttonEl = document.querySelector(`button[data-original-id="${baseId}"]`);
+    const traitEl = document.getElementById(`${cleanedId}Trait`);
+    const damageEl = document.getElementById(`${cleanedId}Damage`);
+    const featureEl = document.getElementById(`${cleanedId}Feature`);
+
+    console.log('Clean ID:', cleanedId);
+    console.log('Looking for elements with IDs:', {
+        button: baseId,
+        trait: `${cleanedId}Trait`,
+        damage: `${cleanedId}Damage`,
+        feature: `${cleanedId}Feature`
+    });
+
+    console.log('Found Elements:', {
+        buttonFound: !!buttonEl,
+        traitFound: !!traitEl,
+        damageFound: !!damageEl,
+        featureFound: !!featureEl
+    });
+
+    if (!buttonEl || !traitEl || !damageEl || !featureEl) {
+        console.error('Missing elements for IDs:', {
+            button: baseId,
+            trait: `${cleanedId}Trait`,
+            damage: `${cleanedId}Damage`,
+            feature: `${cleanedId}Feature`
+        });
+        return;
     }
-    if (traitEl) traitEl.value = `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`;
-    if (damageEl) damageEl.value = `${removeEnglishText(weapon.检定)} ${weapon.伤害}`;
-    if (featureEl) featureEl.value = removeEnglishText(weapon.特性);
 
-    // 保存武器数据
-    localStorage.setItem(baseId, weapon.ID);
-    localStorage.setItem(`${baseId}Trait`, `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`);
-    localStorage.setItem(`${baseId}Damage`, `${removeEnglishText(weapon.检定)} ${weapon.伤害}`);
-    localStorage.setItem(`${baseId}Feature`, removeEnglishText(weapon.特性));
+    try {
+        // 记录即将更新的值
+        const updates = {
+            name: removeEnglishText(weapon.名称),
+            trait: `${removeEnglishText(weapon.负荷)} ${removeEnglishText(weapon.范围)} ${removeEnglishText(weapon.属性)}`,
+            damage: `${removeEnglishText(weapon.检定)} ${weapon.伤害}`,
+            feature: removeEnglishText(weapon.特性)
+        };
+        console.log('Updating with values:', updates);
 
-    WeaponSelector.hide();
-    window.currentWeaponTarget = null;
+        // 更新显示
+        buttonEl.textContent = updates.name;
+        buttonEl.dataset.printPlaceholder = false;
+        traitEl.value = updates.trait;
+        damageEl.value = updates.damage;
+        featureEl.value = updates.feature;
+
+        // 保存完整的武器数据
+        localStorage.setItem(baseId, weapon.ID);  // 保存武器ID
+        localStorage.setItem(`${baseId}Trait`, updates.trait);
+        localStorage.setItem(`${baseId}Damage`, updates.damage);
+        localStorage.setItem(`${baseId}Feature`, updates.feature);
+
+        console.log('Before calling WeaponSelector.hide()');
+        WeaponSelector.hide();
+        console.log('After WeaponSelector.hide(), clearing currentWeaponTarget');
+        window.currentWeaponTarget = null;
+        console.log('Selection process completed');
+
+    } catch (error) {
+        console.error('Update failed:', error);
+        console.error('Stack:', error.stack);
+    }
+
+    console.log('==== Weapon Selection END ====');
+}
+
+// 导出武器数据
+function exportWeaponsData() {
+    const weaponData = {};
+    const weaponSelectIds = ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"];
+
+    weaponSelectIds.forEach(baseId => {
+        const cleanedId = baseId.replace('Name', '');
+        const buttonEl = document.querySelector(`button[data-original-id="${baseId}"]`);
+
+        const weapon = WeaponSelector.getAllWeapons().find(w => w.ID === localStorage.getItem(baseId));
+        const weaponName = weapon ? removeEnglishText(weapon.名称) : '';
+
+        weaponData[baseId] = {
+            weaponId: localStorage.getItem(baseId),
+            weaponName: weaponName,  // 添加武器名称
+            trait: localStorage.getItem(`${baseId}Trait`),
+            damage: localStorage.getItem(`${baseId}Damage`),
+            feature: localStorage.getItem(`${baseId}Feature`)
+        };
+    });
+
+    return weaponData;
+}
+
+// 导入武器数据
+function importWeaponsData(weaponData) {
+    console.log('==== Import Weapons Data START ====');
+    console.log('Importing weapon data:', weaponData);
+
+    for (const [baseId, data] of Object.entries(weaponData)) {
+        console.log(`\nProcessing weapon: ${baseId}`);
+        console.log('Data:', data);
+
+        if (!data.weaponId) {
+            console.log(`Skipping ${baseId} - no weaponId found`);
+            continue;
+        }
+
+        const cleanedId = baseId.replace('Name', '');
+        const buttonEl = document.querySelector(`button[data-original-id="${baseId}"]`);
+
+        if (buttonEl) {
+            console.log('Setting button text to:', data.weaponName);
+            buttonEl.textContent = data.weaponName || '';
+            buttonEl.dataset.printPlaceholder = !data.weaponName;
+        }
+
+        const traitEl = document.getElementById(`${cleanedId}Trait`);
+        const damageEl = document.getElementById(`${cleanedId}Damage`);
+        const featureEl = document.getElementById(`${cleanedId}Feature`);
+
+        if (traitEl) traitEl.value = data.trait || '';
+        if (damageEl) damageEl.value = data.damage || '';
+        if (featureEl) featureEl.value = data.feature || '';
+
+        // 保存到localStorage
+        localStorage.setItem(baseId, data.weaponId);
+        localStorage.setItem(`${baseId}Name`, data.weaponName || '');  // 保存武器名称
+        localStorage.setItem(`${baseId}Trait`, data.trait || '');
+        localStorage.setItem(`${baseId}Damage`, data.damage || '');
+        localStorage.setItem(`${baseId}Feature`, data.feature || '');
+    }
+
+    console.log('==== Import Weapons Data END ====');
 }
 
 // 修改护甲选择器初始化函数
@@ -154,6 +276,51 @@ function handleArmorSelection(armor) {
     localStorage.setItem('armorFeature', removeEnglishText(armor.特性));
 }
 
+// 导出护甲数据
+function exportArmorData() {
+    const armorButton = document.querySelector('button[data-original-id="armorName"]');
+    const armor = ArmorSelector.getAllArmors().find(a => a.ID === localStorage.getItem('armorName'));
+    const armorName = armor ? removeEnglishText(armor.名称) : '';
+
+    return {
+        armorId: localStorage.getItem('armorName'),
+        armorName: armorName,
+        baseScore: localStorage.getItem('armorBaseScore'),
+        feature: localStorage.getItem('armorFeature')
+    };
+}
+
+// 导入护甲数据
+function importArmorData(armorData) {
+    console.log('==== Import Armor Data START ====');
+    console.log('Importing armor data:', armorData);
+
+    if (!armorData.armorId) {
+        console.log('No armor ID found, skipping import');
+        return;
+    }
+
+    const buttonEl = document.querySelector('button[data-original-id="armorName"]');
+    const baseScoreEl = document.getElementById('armorBaseScore');
+    const featureEl = document.getElementById('armorFeature');
+
+    if (buttonEl) {
+        console.log('Setting armor name to:', armorData.armorName);
+        buttonEl.textContent = armorData.armorName || '';
+        buttonEl.dataset.printPlaceholder = !armorData.armorName;
+    }
+
+    if (baseScoreEl) baseScoreEl.value = armorData.baseScore || '';
+    if (featureEl) featureEl.value = armorData.feature || '';
+
+    // 保存到localStorage
+    localStorage.setItem('armorName', armorData.armorId);
+    localStorage.setItem('armorBaseScore', armorData.baseScore || '');
+    localStorage.setItem('armorFeature', armorData.feature || '');
+
+    console.log('==== Import Armor Data END ====');
+}
+
 // 初始化金币格子
 function initGoldCoins() {
     const handfulGrid = document.getElementById("gold-handfuls")
@@ -195,3 +362,7 @@ function saveGoldState() {
 window.initInventoryList = initInventoryList;
 window.initWeaponSelects = initWeaponSelects;
 window.initArmorSelect = initArmorSelect;
+window.exportWeaponsData = exportWeaponsData;
+window.importWeaponsData = importWeaponsData;
+window.exportArmorData = exportArmorData;
+window.importArmorData = importArmorData;

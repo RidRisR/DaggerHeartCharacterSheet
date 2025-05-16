@@ -177,48 +177,71 @@ class WeaponSelector {
     }
 
     static hide() {
+        console.log('WeaponSelector.hide() called');
         const overlay = document.querySelector('.weapon-selector-overlay');
         if (overlay) {
+            console.log('Found overlay, removing active class');
             overlay.classList.remove('active');
+            console.log('Active class removed');
+        } else {
+            console.error('No overlay found to hide');
         }
     }
 
     static show() {
+        console.log('WeaponSelector.show() called');
         const overlay = document.querySelector('.weapon-selector-overlay');
         if (overlay) {
+            console.log('Found overlay, adding active class');
             overlay.classList.add('active');
             this.displayWeapons();
+            console.log('Weapons displayed');
+        } else {
+            console.error('No overlay found to show');
         }
     }
 
     static initEvents() {
+        console.log('Initializing weapon selector events');
         const overlay = document.querySelector('.weapon-selector-overlay');
         const closeButton = document.querySelector('.weapon-selector-overlay .close-button');
         const weaponList = document.getElementById('weaponListContainer');
 
         if (overlay) {
             overlay.onclick = (e) => {
+                console.log('Overlay clicked');
                 if (e.target === overlay) {
+                    console.log('Clicking outside selector, hiding');
                     this.hide();
                 }
             };
         }
 
         if (closeButton) {
-            closeButton.onclick = () => this.hide();
+            closeButton.onclick = () => {
+                console.log('Close button clicked');
+                this.hide();
+            };
         }
 
         if (weaponList) {
             weaponList.onclick = (e) => {
                 const weaponItem = e.target.closest('.weapon-item');
-                if (!weaponItem) return;
-
-                const weapon = JSON.parse(weaponItem.dataset.weaponData);
-
-                if (window.currentWeaponTarget && typeof handleWeaponSelection === 'function') {
-                    handleWeaponSelection(weapon);
+                if (!weaponItem) {
+                    console.log('No weapon item clicked');
+                    return;
                 }
-                this.hide();
+
+                console.log('Weapon item clicked, processing selection');
+                try {
+                    const weapon = JSON.parse(weaponItem.dataset.weaponData);
+                    if (window.currentWeaponTarget && typeof handleWeaponSelection === 'function') {
+                        console.log('Calling handleWeaponSelection');
+                        handleWeaponSelection(weapon);
+                    }
+                } catch (error) {
+                    console.error('Error processing weapon selection:', error);
+                }
             };
         }
     }

@@ -102,5 +102,5 @@ window.removeEnglishText = removeEnglishText;
 
 // Placeholder for exportToPDF
 function exportToPDF() {
-    alert("导出PDF功能尚未实现。Export to PDF function not yet implemented.");
+    alert("请点击打印按钮，然后选择A4大小纸张，即可保存到PDF");
 }

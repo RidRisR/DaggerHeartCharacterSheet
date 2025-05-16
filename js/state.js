@@ -7,11 +7,6 @@ function saveCharacter() {
     const formElementIds = [
         "characterName", "profession", "level", "community", "ancestry1", "ancestry2", "subclass",
         "evasion", "armorValue", "armorMax", "minorThreshold", "majorThreshold", "hpMax", "stressMax",
-        "primaryWeaponName", "primaryWeaponTrait", "primaryWeaponDamage", "primaryWeaponFeature",
-        "secondaryWeaponName", "secondaryWeaponTrait", "secondaryWeaponDamage", "secondaryWeaponFeature",
-        "armorName", "armorBaseScore", "armorFeature",
-        "inventoryWeapon1Name", "inventoryWeapon1Trait", "inventoryWeapon1Damage", "inventoryWeapon1Feature",
-        "inventoryWeapon2Name", "inventoryWeapon2Trait", "inventoryWeapon2Damage", "inventoryWeapon2Feature",
         "characterBackground", "characterNotes", "characterAppearance", "characterMotivation"
     ];
     formElementIds.forEach(id => {
@@ -87,6 +82,10 @@ function saveCharacter() {
             });
         }
     }
+
+    // 添加武器和护甲数据
+    formData.weapons = window.exportWeaponsData();
+    formData.armor = window.exportArmorData();
 
     const jsonData = JSON.stringify(formData, null, 2);
     const blob = new Blob([jsonData], { type: "application/json" });
@@ -327,19 +326,24 @@ function setBoxStates(selector, states, isDataIndexBased = true) {
             el.classList.remove("checked");
         }
     });
+    return states;
 }
 
 // 填充表单数据 (核心加载逻辑)
 function fillFormData(sourceData) {
+    // 导入武器和护甲数据
+    if (sourceData.weapons) {
+        window.importWeaponsData(sourceData.weapons);
+    }
+    if (sourceData.armor) {
+        window.importArmorData(sourceData.armor);
+    }
+
     // 1. 基本表单数据 (inputs, selects, textareas)
     const formElementIds = [
         "characterName", "profession", "level", "community", "ancestry1", "ancestry2", "subclass",
         "evasion", "armorValue", "armorMax", "minorThreshold", "majorThreshold", "hpMax", "stressMax",
-        "primaryWeaponName", "primaryWeaponTrait", "primaryWeaponDamage", "primaryWeaponFeature",
-        "secondaryWeaponName", "secondaryWeaponTrait", "secondaryWeaponDamage", "secondaryWeaponFeature",
         "armorName", "armorBaseScore", "armorFeature",
-        "inventoryWeapon1Name", "inventoryWeapon1Trait", "inventoryWeapon1Damage", "inventoryWeapon1Feature",
-        "inventoryWeapon2Name", "inventoryWeapon2Trait", "inventoryWeapon2Damage", "inventoryWeapon2Feature",
         "characterBackground", "characterAppearance", "characterMotivation"
     ];
 
