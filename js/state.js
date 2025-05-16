@@ -365,12 +365,10 @@ function fillFormData(sourceData) {
     if (sourceData.attributes) {
         console.log("Loading attributes:", sourceData.attributes);
         Object.entries(sourceData.attributes).forEach(([attrKey, attrData]) => {
-            console.log(`Setting attribute ${attrKey}:`, attrData);
             const valueEl = document.getElementById(`${attrKey}-value`);
             const checkEl = document.querySelector(`.attribute-check[data-attribute="${attrKey}"]`);
 
             if (valueEl) {
-                console.log(`Setting ${attrKey} value to:`, attrData.value);
                 valueEl.value = attrData.value;
                 localStorage.setItem(`${attrKey}-value`, attrData.value);
             } else {
@@ -378,7 +376,7 @@ function fillFormData(sourceData) {
             }
 
             if (checkEl) {
-                console.log(`Setting ${attrKey} checked state to:`, attrData.checked);
+                console.log(` ${attrKey} checked state to:`, attrData.checked);
                 if (attrData.checked) {
                     checkEl.classList.add('checked');
                 } else {

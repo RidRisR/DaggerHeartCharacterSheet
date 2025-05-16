@@ -1,4 +1,8 @@
 function initCardDeck() {
+    console.log('Initializing card deck...');
+    // 确保在最开始就初始化 currentCardSlot
+    window.currentCardSlot = null;
+
     // Ensure DOMAIN_CARDS is available
     if (typeof window.DOMAIN_CARDS === 'undefined') {
         console.error('DOMAIN_CARDS not loaded. Please ensure domain_cards.js is included before cards.js');
@@ -9,9 +13,8 @@ function initCardDeck() {
     if (!cardGrid) return;
     cardGrid.innerHTML = "";
 
-    // 初始化卡牌选择器和全局变量
+    // 初始化卡牌选择器
     CardSelector.init();
-    window.currentCardSlot = null;  // 添加这行，确保全局变量被正确初始化
 
     for (let i = 0; i < 20; i++) {
         const item = document.createElement("div");
@@ -35,7 +38,9 @@ function initCardDeck() {
         // 为每个卡槽添加点击事件
         const cardBox = item.querySelector('.card-box');
         cardBox.addEventListener('click', function () {
+            console.log(`Card slot ${i} clicked, setting currentCardSlot`);
             window.currentCardSlot = i;
+            console.log('Current slot value:', window.currentCardSlot);
             CardSelector.show();
         });
 
@@ -59,24 +64,55 @@ function initCardDeck() {
 
 // 处理卡牌选择
 window.handleCardSelection = function (card) {
-    if (window.currentCardSlot === null) return;  // 添加这行，防止未定义情况
+    console.log('handleCardSelection called with card:', card);
+    console.log('Current slot before processing:', window.currentCardSlot);
+
+    // 确保 currentCardSlot 是有效数字
+    if (typeof window.currentCardSlot !== 'number') {
+        console.error('Invalid card slot:', window.currentCardSlot);
+        return;
+    }
+
     const slot = window.currentCardSlot;
-    const cardBox = document.querySelector(`.card-box[data-slot="${slot}"]`);
-    if (!cardBox) return;
+    console.log(`Processing card selection for slot ${slot}`);
 
-    cardBox.dataset.cardData = JSON.stringify(card);
+    // 使用更精确的选择器
+    const cardBox = document.querySelector(`#card-grid .card-box[data-slot="${slot}"]`);
+    if (!cardBox) {
+        console.error(`Could not find card box for slot ${slot}`);
+        return;
+    }
 
-    document.getElementById(`card-name-${slot}`).value = removeEnglishText(card.名称);
-    document.getElementById(`card-type-${slot}`).value = card.领域;
-    document.getElementById(`card-level-${slot}`).value = `LV.${card.等级}`;
-    document.getElementById(`card-recall-${slot}`).value = `RC.${card.回想}`;
+    try {
+    // 更新卡牌数据
+        cardBox.dataset.cardData = JSON.stringify(card);
 
-    // 保存到 localStorage
-    localStorage.setItem(`card-名称-${slot}`, card.名称);
-    localStorage.setItem(`card-领域-${slot}`, card.领域);
-    localStorage.setItem(`card-等级-${slot}`, `LV.${card.等级}`);
-    localStorage.setItem(`card-回想-${slot}`, `RC.${card.回想}`);
-    localStorage.setItem(`card-描述-${slot}`, card.描述);
+        // 获取并更新所有相关输入字段
+        const nameInput = document.getElementById(`card-name-${slot}`);
+        const typeInput = document.getElementById(`card-type-${slot}`);
+        const levelInput = document.getElementById(`card-level-${slot}`);
+        const recallInput = document.getElementById(`card-recall-${slot}`);
+
+        if (!nameInput || !typeInput || !levelInput || !recallInput) {
+            throw new Error('One or more card inputs not found');
+        }
+
+        nameInput.value = removeEnglishText(card.名称);
+        typeInput.value = card.领域;
+        levelInput.value = `LV.${card.等级}`;
+        recallInput.value = `RC.${card.回想}`;
+
+        // 保存到 localStorage
+        localStorage.setItem(`card-名称-${slot}`, card.名称);
+        localStorage.setItem(`card-领域-${slot}`, card.领域);
+        localStorage.setItem(`card-等级-${slot}`, card.等级);
+        localStorage.setItem(`card-回想-${slot}`, card.回想);
+        localStorage.setItem(`card-描述-${slot}`, card.描述);
+
+        console.log(`Successfully updated card in slot ${slot}`);
+    } catch (error) {
+        console.error('Error updating card:', error);
+    }
 }
 
 // 修改样式定义
