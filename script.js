@@ -1,9 +1,11 @@
+// Assume data.js is loaded before this script, making professions, ancestryData, etc., globally available.
+
 document.addEventListener("DOMContentLoaded", () => {
   // 初始化标签页
   initTabs()
 
   // 初始化角色表单元素
-  initCharacterSheet()
+  initCharacterSheet() // This will call initUpgradeOptions for the initial/loaded profession
 
   markDefaultElements()
 
@@ -33,26 +35,32 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   // 同步两个页面的职业选择
-  document.getElementById("profession").addEventListener("change", function () {
-    document.getElementById("profession-page2").value = this.value
-    const profNameElement = document.getElementById("profession-name")
-    if (profNameElement) {
-      profNameElement.textContent = getProfessionName(this.value)
-    }
-    localStorage.setItem("characterProfession", this.value)
-  })
+  const professionSelect1 = document.getElementById("profession");
+  const professionSelect2 = document.getElementById("profession-page2");
 
-  document.getElementById("profession-page2").addEventListener("change", function () {
-    document.getElementById("profession").value = this.value
-    const profNameElement = document.getElementById("profession-name")
+  function handleProfessionChange(selectedProfessionId) {
+    professionSelect1.value = selectedProfessionId;
+    professionSelect2.value = selectedProfessionId;
+
+    const profNameElement = document.getElementById("profession-name");
     if (profNameElement) {
-      profNameElement.textContent = getProfessionName(this.value)
+      profNameElement.textContent = getProfessionName(selectedProfessionId);
     }
-    localStorage.setItem("characterProfession", this.value)
-  })
+    localStorage.setItem("characterProfession", selectedProfessionId);
+    initUpgradeOptions(); // Rebuild DOM for new profession's upgrades
+    loadUpgradeStatesForProfession(selectedProfessionId); // Load saved states for these new upgrades
+  }
+
+  professionSelect1.addEventListener("change", function () {
+    handleProfessionChange(this.value);
+  });
+
+  professionSelect2.addEventListener("change", function () {
+    handleProfessionChange(this.value);
+  });
 
   // 尝试从本地存储加载数据
-  loadFromLocalStorage()
+  loadFromLocalStorage() // This will load saved states, including for upgrades based on the loaded profession
 })
 
 // 初始化标签页
@@ -101,17 +109,77 @@ function initCharacterSheet() {
   // 初始化物品栏
   initInventoryList()
 
-  // 初始化武器下拉框
+  // 初始化武器下拉框 (Uses global weaponData from data.js)
   initWeaponSelects()
 
-  // 初始化护甲下拉框
+  // 初始化护甲下拉框 (Uses global armorData from data.js)
   initArmorSelect()
 
   // 初始化卡组
   initCardDeck()
 
-  // 初始化升级选项
+  // 初始化升级选项 (Uses global professions and upgradeOptionsData from data.js)
   initUpgradeOptions()
+
+  // 初始化职业选择框 (Uses global professions from data.js)
+  initProfessionSelects()
+
+  // 初始化血统选择框 (Uses global ancestryData from data.js)
+  initAncestrySelects()
+
+  // 初始化社群选择框 (Uses global communityData from data.js)
+  initCommunitySelects()
+}
+
+// 初始化职业选择框
+function initProfessionSelects() {
+  const professionSelects = ['profession', 'profession-page2'];
+  professionSelects.forEach(selectId => {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    select.innerHTML = '<option value=""></option>'; // Default empty option
+
+    // Use the global 'professions' object from data.js
+    Object.values(professions).forEach(prof => {
+      const option = document.createElement('option');
+      option.value = prof.id;
+      option.textContent = prof.name; // Assumes 'name' is already translated in data.js
+      select.appendChild(option);
+    });
+  });
+}
+
+// 初始化血统选择框
+function initAncestrySelects() {
+  const ancestrySelects = ['ancestry1', 'ancestry2'];
+  ancestrySelects.forEach(selectId => {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    select.innerHTML = '<option value="none">无</option>'; // "None" option
+
+    // Use the global 'ancestryData' from data.js
+    ancestryData.forEach(ancestry => {
+      const option = document.createElement('option');
+      option.value = ancestry.id;
+      option.textContent = ancestry.name; // Assumes 'name' is translated
+      select.appendChild(option);
+    });
+  });
+}
+
+// 初始化社群选择框
+function initCommunitySelects() {
+  const select = document.getElementById('community');
+  if (!select) return;
+  select.innerHTML = '<option value=""></option>'; // Default empty option
+
+  // Use the global 'communityData' from data.js
+  communityData.forEach(community => {
+    const option = document.createElement('option');
+    option.value = community.id;
+    option.textContent = community.name; // Assumes 'name' is translated
+    select.appendChild(option);
+  });
 }
 
 // 标记默认值元素
@@ -186,6 +254,7 @@ function initAttributes() {
   ]
 
   const attributesGrid = document.querySelector(".attributes-grid")
+  if (!attributesGrid) return;
   attributesGrid.innerHTML = ""
 
   attributes.forEach((attr) => {
@@ -223,80 +292,87 @@ function initHPStressGrid() {
   const hpGrid = document.getElementById("hp-grid")
   const stressGrid = document.getElementById("stress-grid")
 
-  // 生命值格子
-  hpGrid.innerHTML = ""
-  for (let i = 0; i < 18; i++) {
-    const box = document.createElement("div")
-    box.className = "hp-box"
-    box.dataset.index = i
-    if (i >= 6) {
-      box.classList.add("disabled")
-    }
-    box.addEventListener("click", function () {
-      if (!this.classList.contains("disabled")) {
-        this.classList.toggle("checked")
-        saveHPStressState()
+  if (hpGrid) {
+    hpGrid.innerHTML = ""
+    for (let i = 0; i < 18; i++) {
+      const box = document.createElement("div")
+      box.className = "hp-box"
+      box.dataset.index = i
+      if (i >= 6) { // Default max
+        box.classList.add("disabled")
       }
-    })
-    hpGrid.appendChild(box)
+      box.addEventListener("click", function () {
+        if (!this.classList.contains("disabled")) {
+          this.classList.toggle("checked")
+          saveHPStressState()
+        }
+      })
+      hpGrid.appendChild(box)
+    }
   }
 
-  // 压力格子
-  stressGrid.innerHTML = ""
-  for (let i = 0; i < 18; i++) {
-    const box = document.createElement("div")
-    box.className = "stress-box"
-    box.dataset.index = i
-    if (i >= 6) {
-      box.classList.add("disabled")
-    }
-    box.addEventListener("click", function () {
-      if (!this.classList.contains("disabled")) {
-        this.classList.toggle("checked")
-        saveHPStressState()
+  if (stressGrid) {
+    stressGrid.innerHTML = ""
+    for (let i = 0; i < 18; i++) {
+      const box = document.createElement("div")
+      box.className = "stress-box"
+      box.dataset.index = i
+      if (i >= 6) { // Default max
+        box.classList.add("disabled")
       }
-    })
-    stressGrid.appendChild(box)
+      box.addEventListener("click", function () {
+        if (!this.classList.contains("disabled")) {
+          this.classList.toggle("checked")
+          saveHPStressState()
+        }
+      })
+      stressGrid.appendChild(box)
+    }
   }
 
-  // HP最大值变更事件
-  document.getElementById("hpMax").addEventListener("change", function () {
-    const max = Number.parseInt(this.value) || 6
-    updateBoxesMax(hpGrid, "hp-box", max)
-    localStorage.setItem("hpMax", max)
-  })
+  const hpMaxEl = document.getElementById("hpMax");
+  if (hpMaxEl) {
+    hpMaxEl.addEventListener("change", function () {
+      const max = Number.parseInt(this.value) || 6
+      updateBoxesMax(hpGrid, "hp-box", max)
+      localStorage.setItem("hpMax", max.toString())
+    });
+  }
 
-  // Stress最大值变更事件
-  document.getElementById("stressMax").addEventListener("change", function () {
-    const max = Number.parseInt(this.value) || 6
-    updateBoxesMax(stressGrid, "stress-box", max)
-    localStorage.setItem("stressMax", max)
-  })
+  const stressMaxEl = document.getElementById("stressMax");
+  if (stressMaxEl) {
+    stressMaxEl.addEventListener("change", function () {
+      const max = Number.parseInt(this.value) || 6
+      updateBoxesMax(stressGrid, "stress-box", max)
+      localStorage.setItem("stressMax", max.toString())
+    });
+  }
 }
 
 // 更新格子最大值
 function updateBoxesMax(grid, className, max) {
+  if (!grid) return;
   const boxes = grid.querySelectorAll(`.${className}`)
   boxes.forEach((box, index) => {
     if (index < max) {
       box.classList.remove("disabled")
     } else {
-      box.classList.remove("checked")
+      box.classList.remove("checked") // Uncheck boxes beyond the new max
       box.classList.add("disabled")
     }
   })
-  saveHPStressState()
+  // saveHPStressState or saveArmorState will be called by the max change handler indirectly or directly
 }
 
 // 保存HP和Stress状态
 function saveHPStressState() {
   const hpState = []
-  document.querySelectorAll(".hp-box").forEach((box, index) => {
+  document.querySelectorAll("#hp-grid .hp-box").forEach((box, index) => {
     hpState[index] = box.classList.contains("checked")
   })
 
   const stressState = []
-  document.querySelectorAll(".stress-box").forEach((box, index) => {
+  document.querySelectorAll("#stress-grid .stress-box").forEach((box, index) => {
     stressState[index] = box.classList.contains("checked")
   })
 
@@ -307,13 +383,14 @@ function saveHPStressState() {
 // 初始化护甲格子
 function initArmorGrid() {
   const armorGrid = document.getElementById("armor-grid")
+  if (!armorGrid) return;
 
   armorGrid.innerHTML = ""
   for (let i = 0; i < 12; i++) {
     const box = document.createElement("div")
     box.className = "armor-box"
     box.dataset.index = i
-    if (i >= 6) {
+    if (i >= 6) { // Default max
       box.classList.add("disabled")
     }
     box.addEventListener("click", function () {
@@ -325,27 +402,30 @@ function initArmorGrid() {
     armorGrid.appendChild(box)
   }
 
-  // 护甲最大值变更事件
-  document.getElementById("armorMax").addEventListener("change", function () {
-    const max = Number.parseInt(this.value) || 6
-    updateBoxesMax(armorGrid, "armor-box", max)
-    localStorage.setItem("armorMax", max)
-  })
+  const armorMaxEl = document.getElementById("armorMax");
+  if (armorMaxEl) {
+    armorMaxEl.addEventListener("change", function () {
+      const max = Number.parseInt(this.value) || 6
+      updateBoxesMax(armorGrid, "armor-box", max)
+      localStorage.setItem("armorMax", max.toString())
+      saveArmorState(); // Also save state when max changes
+    });
+  }
 }
 
 // 保存护甲状态
 function saveArmorState() {
   const armorState = []
-  document.querySelectorAll(".armor-box").forEach((box, index) => {
+  document.querySelectorAll("#armor-grid .armor-box").forEach((box, index) => {
     armorState[index] = box.classList.contains("checked")
   })
-
   localStorage.setItem("armorState", JSON.stringify(armorState))
 }
 
 // 初始化希望钻石
 function initHopeDiamonds() {
   const hopeGrid = document.getElementById("hope-grid")
+  if (!hopeGrid) return;
 
   hopeGrid.innerHTML = ""
   for (let i = 0; i < 6; i++) {
@@ -363,16 +443,16 @@ function initHopeDiamonds() {
 // 保存希望状态
 function saveHopeState() {
   const hopeState = []
-  document.querySelectorAll(".hope-diamond").forEach((diamond, index) => {
+  document.querySelectorAll("#hope-grid .hope-diamond").forEach((diamond, index) => {
     hopeState[index] = diamond.classList.contains("checked")
   })
-
   localStorage.setItem("hopeState", JSON.stringify(hopeState))
 }
 
 // 初始化经验列表
 function initExperienceList() {
   const experienceList = document.getElementById("experience-list")
+  if (!experienceList) return;
 
   experienceList.innerHTML = ""
   for (let i = 0; i < 5; i++) {
@@ -384,17 +464,15 @@ function initExperienceList() {
         `
     experienceList.appendChild(item)
 
-    // 添加经验描述变更事件
-    const expDesc = item.querySelector(`.experience-desc`)
+    const expDesc = item.querySelector(`.experience-desc`);
     expDesc.addEventListener("change", function () {
-      localStorage.setItem(`experience-${i}`, this.value)
-    })
+      localStorage.setItem(`experience-${i}`, this.value);
+    });
 
-    // 添加经验值变更事件
-    const expValue = item.querySelector(`.experience-value`)
+    const expValue = item.querySelector(`.experience-value`);
     expValue.addEventListener("change", function () {
-      localStorage.setItem(`experience-value-${i}`, this.value)
-    })
+      localStorage.setItem(`experience-value-${i}`, this.value);
+    });
   }
 }
 
@@ -404,58 +482,67 @@ function initGoldCoins() {
   const bagsGrid = document.getElementById("gold-bags")
   const chestGrid = document.getElementById("gold-chest")
 
-  // 一把金币
-  handfulGrid.innerHTML = ""
-  for (let i = 0; i < 10; i++) {
-    const coin = document.createElement("div")
-    coin.className = "gold-coin"
-    coin.dataset.index = i
-    coin.addEventListener("click", function () {
-      this.classList.toggle("checked")
-      saveGoldState()
-    })
-    handfulGrid.appendChild(coin)
+  if (handfulGrid) {
+    handfulGrid.innerHTML = ""
+    for (let i = 0; i < 10; i++) {
+      const coin = document.createElement("div")
+      coin.className = "gold-coin"
+      coin.dataset.index = i // For handfuls
+      coin.addEventListener("click", function () {
+        this.classList.toggle("checked")
+        saveGoldState()
+      })
+      handfulGrid.appendChild(coin)
+    }
   }
 
-  // 一袋金币
-  bagsGrid.innerHTML = ""
-  for (let i = 0; i < 10; i++) {
-    const coin = document.createElement("div")
-    coin.className = "gold-coin-bag"
-    coin.dataset.index = i + 10
-    coin.addEventListener("click", function () {
-      this.classList.toggle("checked")
-      saveGoldState()
-    })
-    bagsGrid.appendChild(coin)
+  if (bagsGrid) {
+    bagsGrid.innerHTML = ""
+    for (let i = 0; i < 10; i++) {
+      const coin = document.createElement("div")
+      coin.className = "gold-coin-bag" // Differentiate class for potential styling
+      coin.dataset.index = i + 10 // For bags, continue index
+      coin.addEventListener("click", function () {
+        this.classList.toggle("checked")
+        saveGoldState()
+      })
+      bagsGrid.appendChild(coin)
+    }
   }
 
-  // 一箱金币
-  chestGrid.innerHTML = ""
-  for (let i = 0; i < 1; i++) {
-    const coin = document.createElement("div")
-    coin.className = "gold-coin-chest"
-    coin.dataset.index = i + 20
-    coin.addEventListener("click", function () {
-      this.classList.toggle("checked")
-      saveGoldState()
-    })
-    chestGrid.appendChild(coin)
+  if (chestGrid) {
+    chestGrid.innerHTML = ""
+    for (let i = 0; i < 1; i++) { // Only 1 chest
+      const coin = document.createElement("div")
+      coin.className = "gold-coin-chest" // Differentiate class
+      coin.dataset.index = i + 20 // For chest
+      coin.addEventListener("click", function () {
+        this.classList.toggle("checked")
+        saveGoldState()
+      })
+      chestGrid.appendChild(coin)
+    }
   }
 }
 
-// 保存金币状态
+// 保存金币状态 (Updated to cover all types)
 function saveGoldState() {
-  const goldState = []
-  document.querySelectorAll(".gold-coin").forEach((coin, index) => {
-    goldState[index] = coin.classList.contains("checked")
-  })
-  localStorage.setItem("goldState", JSON.stringify(goldState))
+  const goldState = [] // Single array for all gold items based on their data-index
+  document.querySelectorAll("#gold-handfuls .gold-coin, #gold-bags .gold-coin-bag, #gold-chest .gold-coin-chest").forEach((coin) => {
+    // Ensure data-index is a number and use it for the array
+    const index = parseInt(coin.dataset.index, 10);
+    if (!isNaN(index)) {
+      goldState[index] = coin.classList.contains("checked");
+    }
+  });
+  localStorage.setItem("goldState", JSON.stringify(goldState));
 }
+
 
 // 初始化熟练度点
 function initProficiencyDots() {
   const proficiencyDots = document.getElementById("proficiency-dots")
+  if (!proficiencyDots) return;
 
   proficiencyDots.innerHTML = ""
   for (let i = 0; i < 6; i++) {
@@ -468,28 +555,28 @@ function initProficiencyDots() {
     })
     proficiencyDots.appendChild(dot)
   }
-
-  // 加载熟练度点状态
-  loadProficiencyDotsState()
+  // No need to call loadProficiencyDotsState here, main loadFromLocalStorage will handle it
 }
 
 // 保存熟练度点状态
 function saveProficiencyDotsState() {
   const proficiencyState = []
-  document.querySelectorAll(".proficiency-dot").forEach((dot, index) => {
+  document.querySelectorAll("#proficiency-dots .proficiency-dot").forEach((dot, index) => {
     proficiencyState[index] = dot.classList.contains("checked")
   })
   localStorage.setItem("proficiencyState", JSON.stringify(proficiencyState))
 }
 
-// 加载熟练度点状态
+// 加载熟练度点状态 (This function is kept for potential direct use, but loadFromLocalStorage handles initial load)
 function loadProficiencyDotsState() {
   try {
     const proficiencyState = JSON.parse(localStorage.getItem("proficiencyState"))
     if (proficiencyState) {
-      document.querySelectorAll(".proficiency-dot").forEach((dot, index) => {
+      document.querySelectorAll("#proficiency-dots .proficiency-dot").forEach((dot, index) => {
         if (proficiencyState[index]) {
           dot.classList.add("checked")
+        } else {
+          dot.classList.remove("checked")
         }
       })
     }
@@ -501,6 +588,7 @@ function loadProficiencyDotsState() {
 // 初始化物品栏
 function initInventoryList() {
   const inventoryList = document.getElementById("inventory-list")
+  if (!inventoryList) return;
 
   inventoryList.innerHTML = ""
   for (let i = 0; i < 5; i++) {
@@ -508,6 +596,7 @@ function initInventoryList() {
     item.type = "text"
     item.className = "inventory-item"
     item.id = `inventory-${i}`
+    item.placeholder = `Item ${i + 1}` // Placeholder text
     item.addEventListener("change", function () {
       localStorage.setItem(`inventory-${i}`, this.value)
     })
@@ -517,148 +606,137 @@ function initInventoryList() {
 
 // 初始化武器下拉框
 function initWeaponSelects() {
-  const weaponSelects = ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"]
+  const weaponSelectIds = ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"];
 
-  // 武器数据
-  const weaponData = [
-    { id: "sword", name: "Sword", trait: "Sharp", damage: "1d6", feature: "Versatile" },
-    { id: "axe", name: "Axe", trait: "Heavy", damage: "1d8", feature: "Two-Handed" },
-    { id: "dagger", name: "Dagger", trait: "Light", damage: "1d4", feature: "Finesse" },
-  ]
+  // weaponData is now global, from data.js
+  if (typeof weaponData === 'undefined') {
+    console.error("weaponData is not defined. Make sure data.js is loaded before script.js");
+    return;
+  }
 
-  weaponSelects.forEach((selectId) => {
-    const select = document.getElementById(selectId)
-    select.innerHTML = '<option value=""></option>'
+  weaponSelectIds.forEach((selectId) => {
+    const select = document.getElementById(selectId);
+    if (!select) return;
 
-    // 添加"无"选项
-    const noneOption = document.createElement("option")
-    noneOption.value = "none"
-    noneOption.textContent = "None"
-    select.appendChild(noneOption)
+    select.innerHTML = '<option value=""></option>'; // Default empty
 
-    // 添加武器选项
+    const noneOption = document.createElement("option");
+    noneOption.value = "none";
+    noneOption.textContent = "None"; // Or "无" if translated in JS
+    select.appendChild(noneOption);
+
     weaponData.forEach((weapon) => {
-      const option = document.createElement("option")
-      option.value = weapon.id
-      option.textContent = weapon.name
-      select.appendChild(option)
-    })
+      const option = document.createElement("option");
+      option.value = weapon.id;
+      option.textContent = weapon.name; // Assumes name is translated in data.js
+      select.appendChild(option);
+    });
 
-    // 添加武器选择事件
     select.addEventListener("change", function () {
-      const weaponId = this.value
-      const weapon = weaponData.find((w) => w.id === weaponId)
+      const weaponId = this.value;
+      // Find weapon in global weaponData
+      const selectedWeapon = weaponData.find((w) => w.id === weaponId);
+      const baseId = this.id.replace("Name", ""); // e.g., "primaryWeapon"
 
-      if (weapon) {
-        const baseId = this.id.replace("Name", "")
-        document.getElementById(`${baseId}Trait`).value = weapon.trait
-        document.getElementById(`${baseId}Damage`).value = weapon.damage
-        document.getElementById(`${baseId}Feature`).value = weapon.feature
+      if (selectedWeapon && weaponId !== "none") {
+        document.getElementById(`${baseId}Trait`).value = selectedWeapon.trait || "";
+        document.getElementById(`${baseId}Damage`).value = selectedWeapon.damage || "";
+        document.getElementById(`${baseId}Feature`).value = selectedWeapon.feature || "";
 
-        // 保存武器数据
-        localStorage.setItem(this.id, weaponId)
-        localStorage.setItem(`${baseId}Trait`, weapon.trait)
-        localStorage.setItem(`${baseId}Damage`, weapon.damage)
-        localStorage.setItem(`${baseId}Feature`, weapon.feature)
+        localStorage.setItem(this.id, weaponId);
+        localStorage.setItem(`${baseId}Trait`, selectedWeapon.trait || "");
+        localStorage.setItem(`${baseId}Damage`, selectedWeapon.damage || "");
+        localStorage.setItem(`${baseId}Feature`, selectedWeapon.feature || "");
       } else {
-        // 清空武器数据
-        const baseId = this.id.replace("Name", "")
-        document.getElementById(`${baseId}Trait`).value = ""
-        document.getElementById(`${baseId}Damage`).value = ""
-        document.getElementById(`${baseId}Feature`).value = ""
+        // Clear fields if "None" or empty is selected
+        document.getElementById(`${baseId}Trait`).value = "";
+        document.getElementById(`${baseId}Damage`).value = "";
+        document.getElementById(`${baseId}Feature`).value = "";
 
-        // 保存空武器数据
-        localStorage.setItem(this.id, "")
-        localStorage.setItem(`${baseId}Trait`, "")
-        localStorage.setItem(`${baseId}Damage`, "")
-        localStorage.setItem(`${baseId}Feature`, "")
+        localStorage.setItem(this.id, weaponId); // Store "none" or ""
+        localStorage.setItem(`${baseId}Trait`, "");
+        localStorage.setItem(`${baseId}Damage`, "");
+        localStorage.setItem(`${baseId}Feature`, "");
       }
-    })
-  })
+    });
+  });
 
-  // 添加物品栏武器复选框事件
-  document.getElementById("inventoryWeapon1Primary").addEventListener("change", function () {
-    localStorage.setItem("inventoryWeapon1Primary", this.checked)
-  })
+  // Event listeners for inventory weapon checkboxes
+  const invWpn1Primary = document.getElementById("inventoryWeapon1Primary");
+  if (invWpn1Primary) invWpn1Primary.addEventListener("change", function () { localStorage.setItem("inventoryWeapon1Primary", this.checked); });
 
-  document.getElementById("inventoryWeapon1Secondary").addEventListener("change", function () {
-    localStorage.setItem("inventoryWeapon1Secondary", this.checked)
-  })
+  const invWpn1Secondary = document.getElementById("inventoryWeapon1Secondary");
+  if (invWpn1Secondary) invWpn1Secondary.addEventListener("change", function () { localStorage.setItem("inventoryWeapon1Secondary", this.checked); });
 
-  document.getElementById("inventoryWeapon2Primary").addEventListener("change", function () {
-    localStorage.setItem("inventoryWeapon2Primary", this.checked)
-  })
+  const invWpn2Primary = document.getElementById("inventoryWeapon2Primary");
+  if (invWpn2Primary) invWpn2Primary.addEventListener("change", function () { localStorage.setItem("inventoryWeapon2Primary", this.checked); });
 
-  document.getElementById("inventoryWeapon2Secondary").addEventListener("change", function () {
-    localStorage.setItem("inventoryWeapon2Secondary", this.checked)
-  })
+  const invWpn2Secondary = document.getElementById("inventoryWeapon2Secondary");
+  if (invWpn2Secondary) invWpn2Secondary.addEventListener("change", function () { localStorage.setItem("inventoryWeapon2Secondary", this.checked); });
 }
 
 // 初始化护甲下拉框
 function initArmorSelect() {
-  const armorSelect = document.getElementById("armorName")
-  armorSelect.innerHTML = '<option value=""></option>'
+  const armorSelect = document.getElementById("armorName");
+  if (!armorSelect) return;
 
-  // 添加"无"选项
-  const noneOption = document.createElement("option")
-  noneOption.value = "none"
-  noneOption.textContent = "None"
-  armorSelect.appendChild(noneOption)
+  // armorData is now global, from data.js
+  if (typeof armorData === 'undefined') {
+    console.error("armorData is not defined. Make sure data.js is loaded before script.js");
+    return;
+  }
 
-  // 护甲数据
-  const armorData = [
-    { id: "leather", name: "Leather Armor", baseScore: "2", feature: "Flexible" },
-    { id: "chainmail", name: "Chainmail", baseScore: "4", feature: "Durable" },
-    { id: "plate", name: "Plate Armor", baseScore: "6", feature: "Heavy" },
-  ]
+  armorSelect.innerHTML = '<option value=""></option>'; // Default empty
 
-  // 添加护甲选项
+  const noneOption = document.createElement("option");
+  noneOption.value = "none";
+  noneOption.textContent = "None"; // Or "无"
+  armorSelect.appendChild(noneOption);
+
   armorData.forEach((armor) => {
-    const option = document.createElement("option")
-    option.value = armor.id
-    option.textContent = armor.name
-    armorSelect.appendChild(option)
-  })
+    const option = document.createElement("option");
+    option.value = armor.id;
+    option.textContent = armor.name; // Assumes name is translated in data.js
+    armorSelect.appendChild(option);
+  });
 
-  // 添加护甲选择事件
   armorSelect.addEventListener("change", function () {
-    const armorId = this.value
-    const armor = armorData.find((a) => a.id === armorId)
+    const armorId = this.value;
+    // Find armor in global armorData
+    const selectedArmor = armorData.find((a) => a.id === armorId);
 
-    if (armor) {
-      document.getElementById("armorBaseScore").value = armor.baseScore
-      document.getElementById("armorFeature").value = armor.feature
+    if (selectedArmor && armorId !== "none") {
+      document.getElementById("armorBaseScore").value = selectedArmor.baseScore || "";
+      document.getElementById("armorFeature").value = selectedArmor.feature || "";
 
-      // 保存护甲数据
-      localStorage.setItem("armorName", armorId)
-      localStorage.setItem("armorBaseScore", armor.baseScore)
-      localStorage.setItem("armorFeature", armor.feature)
+      localStorage.setItem("armorName", armorId);
+      localStorage.setItem("armorBaseScore", selectedArmor.baseScore || "");
+      localStorage.setItem("armorFeature", selectedArmor.feature || "");
     } else {
-      // 清空护甲数据
-      document.getElementById("armorBaseScore").value = ""
-      document.getElementById("armorFeature").value = ""
+      document.getElementById("armorBaseScore").value = "";
+      document.getElementById("armorFeature").value = "";
 
-      // 保存空护甲数据
-      localStorage.setItem("armorName", "")
-      localStorage.setItem("armorBaseScore", "")
-      localStorage.setItem("armorFeature", "")
+      localStorage.setItem("armorName", armorId); // Store "none" or ""
+      localStorage.setItem("armorBaseScore", "");
+      localStorage.setItem("armorFeature", "");
     }
-  })
+  });
 }
 
 // 初始化卡组
 function initCardDeck() {
-  const cardGrid = document.getElementById("card-grid")
+  const cardGrid = document.getElementById("card-grid");
+  if (!cardGrid) return;
 
-  cardGrid.innerHTML = ""
+  cardGrid.innerHTML = "";
   for (let i = 0; i < 20; i++) {
-    const item = document.createElement("div")
-    item.className = "card-item"
+    const item = document.createElement("div");
+    item.className = "card-item";
     item.innerHTML = `
       <div class="card-box">
         <div class="card-row">
           <span class="card-number">${i + 1}.</span>
-          <input type="text" class="card-name" id="card-${i}" placeholder="Card name...">
+          <input type="text" class="card-name" id="card-name-${i}" placeholder="Card name...">
         </div>
         <div class="card-details">
           <input type="text" class="card-type" id="card-type-${i}" placeholder="Type...">
@@ -666,50 +744,67 @@ function initCardDeck() {
           <input type="text" class="card-recall" id="card-recall-${i}" placeholder="Recall...">
         </div>
       </div>
-    `
-    cardGrid.appendChild(item)
+    `; // Changed card-name id to card-name-${i} for consistency
+    cardGrid.appendChild(item);
 
-    // 添加事件监听器以保存所有字段
-    const fields = ['card', 'card-type', 'card-level', 'card-recall'];
+    const fields = ['card-name', 'card-type', 'card-level', 'card-recall'];
     fields.forEach(field => {
       const input = item.querySelector(`#${field}-${i}`);
-      input.addEventListener("change", function () {
-        localStorage.setItem(`${field}-${i}`, this.value);
-      });
+      if (input) {
+        input.addEventListener("change", function () {
+          localStorage.setItem(`${field}-${i}`, this.value);
+        });
+      }
     });
   }
 }
 
+// Helper function to get combined upgrade options for a profession and tier
+function getUpgradeOptions(professionId, tier) {
+  const options = [];
+  // Ensure upgradeOptionsData and professions are available
+  if (typeof upgradeOptionsData === 'undefined' || typeof professions === 'undefined') {
+    console.error("Data objects (upgradeOptionsData or professions) not defined.");
+    return options;
+  }
+
+  const baseUpgrades = upgradeOptionsData.baseUpgrades || [];
+  const tierSpecific = upgradeOptionsData.tierSpecificUpgrades?.[`tier${tier}`] || [];
+
+  // Get profession-specific upgrades from the new 'professions' structure
+  const professionSpecificUpgrades = professions[professionId]?.upgrades?.[`tier${tier}`] || [];
+
+  options.push(...baseUpgrades);
+  // Tier-specific upgrades (like multiclass) are typically added from tier 2 onwards based on Daggerheart structure.
+  // Adjust this logic if Daggerheart rules differ.
+  if (tierSpecific.length > 0) { // Check if tierSpecific exists for this tier
+    options.push(...tierSpecific);
+  }
+  options.push(...professionSpecificUpgrades);
+
+  return options;
+}
+
+
 // 初始化升级选项
 function initUpgradeOptions() {
-  // 初始化三个等级的升级选项
+  const currentProfessionId = document.getElementById("profession")?.value ||
+    (localStorage.getItem("characterProfession") || Object.keys(professions)[0]); // Fallback to first profession if none selected/saved
+
+
   for (let tier = 1; tier <= 3; tier++) {
-    const upgradeList = document.getElementById(`tier${tier}-upgrades`)
-    upgradeList.innerHTML = ""
+    const upgradeList = document.getElementById(`tier${tier}-upgrades`);
+    if (!upgradeList) continue;
+    upgradeList.innerHTML = "";
 
-    // 获取当前职业
-    const profession = document.getElementById("profession").value || "warrior"
+    const options = getUpgradeOptions(currentProfessionId, tier);
 
-    // 基础升级选项
-    const baseUpgrades = upgradeOptionsData.baseUpgrades
-
-    // 获取职业特定升级选项
-    const professionUpgrades = upgradeOptionsData.professionUpgrades[profession]?.[`tier${tier}`] || []
-
-    // 获取特定等级升级选项
-    const tierUpgrades = upgradeOptionsData.tierSpecificUpgrades[`tier${tier}`] || []
-
-    // 合并所有升级选项
-    const options = [...baseUpgrades]
-    if (tier > 1) {
-      options.push(...tierUpgrades)
-    }
-    options.push(...professionUpgrades)
-
-    // 创建升级选项
     options.forEach((option, index) => {
-      const item = document.createElement("div")
-      item.className = "upgrade-item"
+      const item = document.createElement("div");
+      item.className = "upgrade-item";
+      // Ensure option.label exists
+      const labelText = option && option.label ? option.label : `Upgrade Option ${index + 1}`;
+
 
       if (option.doubleBox) {
         item.innerHTML = `
@@ -717,442 +812,376 @@ function initUpgradeOptions() {
             <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
             <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
           </div>
-          <span class="upgrade-label">${option.label}</span>
-        `
+          <span class="upgrade-label">${labelText}</span>
+        `;
       } else {
         item.innerHTML = `
           <div class="upgrade-box" data-tier="${tier}" data-index="${index}"></div>
-          <span class="upgrade-label">${option.label}</span>
-        `
+          <span class="upgrade-label">${labelText}</span>
+        `;
       }
+      upgradeList.appendChild(item);
 
-      upgradeList.appendChild(item)
-
-      // 添加升级选项勾选事件
-      const boxes = item.querySelectorAll(".upgrade-box")
+      const boxes = item.querySelectorAll(".upgrade-box");
       boxes.forEach((box) => {
         box.addEventListener("click", function () {
-          this.classList.toggle("checked")
-          saveUpgradeState(tier, index, this.classList.contains("checked"))
-        })
-      })
-    })
+          this.classList.toggle("checked");
+          // saveUpgradeState needs to be aware of the current profession if state is per profession
+          // For now, using index-based saving as per original implication.
+          saveUpgradeState(tier, index, this.classList.contains("checked"));
+        });
+      });
+    });
   }
-
-  // 监听职业变更，更新升级选项
-  document.getElementById("profession").addEventListener("change", () => {
-    initUpgradeOptions()
-  })
 }
 
-// 获取职业名称
+// Placeholder: saveUpgradeState - current method saves by index, not ideal for multi-profession
+function saveUpgradeState(tier, index, isChecked) {
+  // Key is generic: upgrade-tierX-indexY
+  // This means state for Warrior's tier 1, 1st option will use the same key as
+  // Mage's tier 1, 1st option if you switch professions.
+  // A robust solution needs unique IDs for options or profession-specific keys.
+  const key = `upgrade-tier${tier}-${index}`;
+  localStorage.setItem(key, isChecked.toString());
+}
+
+// Load upgrade states for the currently selected profession
+function loadUpgradeStatesForProfession(professionId) {
+  for (let tier = 1; tier <= 3; tier++) {
+    const options = getUpgradeOptions(professionId, tier);
+    const upgradeList = document.getElementById(`tier${tier}-upgrades`); // Get the container
+    if (!upgradeList) continue;
+
+    options.forEach((option, index) => {
+      const key = `upgrade-tier${tier}-${index}`; // Generic key
+      const checked = localStorage.getItem(key) === "true";
+
+      // Find the specific boxes in the DOM using data-tier and data-index
+      const boxes = upgradeList.querySelectorAll(`.upgrade-box[data-tier="${tier}"][data-index="${index}"]`);
+      boxes.forEach(box => {
+        if (checked) {
+          box.classList.add("checked");
+        } else {
+          box.classList.remove("checked");
+        }
+      });
+    });
+  }
+}
+
+
+// 获取职业名称 (Updated to use global 'professions' object)
 function getProfessionName(professionId) {
-  const professionData = [
-    { id: "warrior", name: "战士" },
-    { id: "mage", name: "法师" },
-    { id: "rogue", name: "游荡者" },
-  ]
-  const profession = professionData.find((p) => p.id === professionId)
-  return profession ? profession.name : "战士"
+  if (typeof professions === 'undefined') {
+    console.error("Professions data not loaded.");
+    return professionId || ""; // Fallback
+  }
+  if (professions && professionId && professions[professionId]) {
+    return professions[professionId].name; // Assumes name is translated in data.js
+  }
+  return ""; // Return empty if not found or ID is empty
 }
 
 // 保存角色数据
 function saveCharacter() {
-  // 收集所有输入字段的值
-  const formData = {}
+  const formData = {};
+  const formElements = [
+    "characterName", "profession", "level", "community", "ancestry1", "ancestry2", "subclass",
+    "evasion", "armorValue", "armorMax", "minorThreshold", "majorThreshold", "hpMax", "stressMax",
+    "primaryWeaponName", "primaryWeaponTrait", "primaryWeaponDamage", "primaryWeaponFeature",
+    "secondaryWeaponName", "secondaryWeaponTrait", "secondaryWeaponDamage", "secondaryWeaponFeature",
+    "armorName", "armorBaseScore", "armorFeature",
+    "inventoryWeapon1Name", "inventoryWeapon1Trait", "inventoryWeapon1Damage", "inventoryWeapon1Feature",
+    "inventoryWeapon2Name", "inventoryWeapon2Trait", "inventoryWeapon2Damage", "inventoryWeapon2Feature",
+    "characterBackground", "characterAppearance", "characterMotivation"
+  ];
 
-  // 基本信息
-  formData.characterName = document.getElementById("characterName").value
-  formData.profession = document.getElementById("profession").value
-  formData.level = document.getElementById("level").value
-  formData.community = document.getElementById("community").value
-  formData.ancestry1 = document.getElementById("ancestry1").value
-  formData.ancestry2 = document.getElementById("ancestry2").value
-  formData.subclass = document.getElementById("subclass").value
+  formElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) formData[id] = element.value;
+  });
 
-  // 属性值
-  const attributes = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"]
+  const attributes = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"];
   attributes.forEach((attr) => {
-    formData[`${attr}-value`] = document.getElementById(`${attr}-value`).value
-    formData[`${attr}-checked`] = document
-      .querySelector(`.attribute-check[data-attribute="${attr}"]`)
-      .classList.contains("checked")
-  })
+    const valueEl = document.getElementById(`${attr}-value`);
+    if (valueEl) formData[`${attr}-value`] = valueEl.value;
+    const checkEl = document.querySelector(`.attribute-check[data-attribute="${attr}"]`);
+    if (checkEl) formData[`${attr}-checked`] = checkEl.classList.contains("checked");
+  });
 
-  // 闪避和护甲
-  formData.evasion = document.getElementById("evasion").value
-  formData.armorValue = document.getElementById("armorValue").value
-  formData.armorMax = document.getElementById("armorMax").value
+  const invWpn1Primary = document.getElementById("inventoryWeapon1Primary");
+  if (invWpn1Primary) formData.inventoryWeapon1Primary = invWpn1Primary.checked;
+  const invWpn1Secondary = document.getElementById("inventoryWeapon1Secondary");
+  if (invWpn1Secondary) formData.inventoryWeapon1Secondary = invWpn1Secondary.checked;
+  const invWpn2Primary = document.getElementById("inventoryWeapon2Primary");
+  if (invWpn2Primary) formData.inventoryWeapon2Primary = invWpn2Primary.checked;
+  const invWpn2Secondary = document.getElementById("inventoryWeapon2Secondary");
+  if (invWpn2Secondary) formData.inventoryWeapon2Secondary = invWpn2Secondary.checked;
 
-  // 阈值
-  formData.minorThreshold = document.getElementById("minorThreshold").value
-  formData.majorThreshold = document.getElementById("majorThreshold").value
+  // Note: States for HP, Stress, Armor boxes, Hope, Gold, Proficiency, Upgrades are saved directly to localStorage by their respective functions.
+  // If you want them in the JSON file, they need to be collected here too.
+  // For simplicity, this saveCharacter function matches the original scope of saved data.
 
-  // HP和Stress
-  formData.hpMax = document.getElementById("hpMax").value
-  formData.stressMax = document.getElementById("stressMax").value
+  const jsonData = JSON.stringify(formData);
+  const blob = new Blob([jsonData], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${formData.characterName || "character"}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-  // 武器和护甲
-  formData.primaryWeaponName = document.getElementById("primaryWeaponName").value
-  formData.primaryWeaponTrait = document.getElementById("primaryWeaponTrait").value
-  formData.primaryWeaponDamage = document.getElementById("primaryWeaponDamage").value
-  formData.primaryWeaponFeature = document.getElementById("primaryWeaponFeature").value
-
-  formData.secondaryWeaponName = document.getElementById("secondaryWeaponName").value
-  formData.secondaryWeaponTrait = document.getElementById("secondaryWeaponTrait").value
-  formData.secondaryWeaponDamage = document.getElementById("secondaryWeaponDamage").value
-  formData.secondaryWeaponFeature = document.getElementById("secondaryWeaponFeature").value
-
-  formData.armorName = document.getElementById("armorName").value
-  formData.armorBaseScore = document.getElementById("armorBaseScore").value
-  formData.armorFeature = document.getElementById("armorFeature").value
-
-  // 物品栏武器
-  formData.inventoryWeapon1Name = document.getElementById("inventoryWeapon1Name").value
-  formData.inventoryWeapon1Trait = document.getElementById("inventoryWeapon1Trait").value
-  formData.inventoryWeapon1Damage = document.getElementById("inventoryWeapon1Damage").value
-  formData.inventoryWeapon1Feature = document.getElementById("inventoryWeapon1Feature").value
-  formData.inventoryWeapon1Primary = document.getElementById("inventoryWeapon1Primary").checked
-  formData.inventoryWeapon1Secondary = document.getElementById("inventoryWeapon1Secondary").checked
-
-  formData.inventoryWeapon2Name = document.getElementById("inventoryWeapon2Name").value
-  formData.inventoryWeapon2Trait = document.getElementById("inventoryWeapon2Trait").value
-  formData.inventoryWeapon2Damage = document.getElementById("inventoryWeapon2Damage").value
-  formData.inventoryWeapon2Feature = document.getElementById("inventoryWeapon2Feature").value
-  formData.inventoryWeapon2Primary = document.getElementById("inventoryWeapon2Primary").checked
-  formData.inventoryWeapon2Secondary = document.getElementById("inventoryWeapon2Secondary").checked
-
-  // 角色描述
-  formData.characterBackground = document.getElementById("characterBackground").value
-  formData.characterAppearance = document.getElementById("characterAppearance").value
-  formData.characterMotivation = document.getElementById("characterMotivation").value
-
-  // 将数据转换为JSON字符串
-  const jsonData = JSON.stringify(formData)
-
-  // 创建下载链接
-  const blob = new Blob([jsonData], { type: "application/json" })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = `${formData.characterName || "character"}.json`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-
-  alert("角色数据已保存！")
+  alert("角色数据已保存到文件！(部分状态如勾选框等仍保存在浏览器本地存储)");
 }
 
-// 加载角色数据
+// 加载角色数据 (from JSON file)
 function loadCharacter() {
-  // 创建文件输入元素
-  const fileInput = document.createElement("input")
-  fileInput.type = "file"
-  fileInput.accept = ".json"
-  fileInput.style.display = "none"
-  document.body.appendChild(fileInput)
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".json";
+  fileInput.style.display = "none";
+  document.body.appendChild(fileInput);
 
   fileInput.addEventListener("change", (e) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (event) => {
         try {
-          const formData = JSON.parse(event.target.result)
+          const formData = JSON.parse(event.target.result);
+          fillFormData(formData); // Fills form inputs
 
-          // 填充表单数据
-          fillFormData(formData)
+          // After filling form (which sets profession), load relevant dynamic states
+          // like upgrades for that profession from localStorage (if not in JSON)
+          const loadedProfession = formData.profession || document.getElementById("profession").value;
+          initUpgradeOptions(); // Rebuild upgrade DOM for the loaded profession
+          loadUpgradeStatesForProfession(loadedProfession); // Load their states from localStorage
 
-          alert("角色数据已加载！")
+          // Other dynamic states (HP, stress, etc.) are typically loaded by loadFromLocalStorage on page init.
+          // If the JSON file should be the single source of truth, fillFormData would need to handle them.
+          // For now, assume JSON loads primary fields, and localStorage handles checkbox states.
+
+          alert("角色数据已从文件加载！请注意检查所有勾选框和动态状态。");
         } catch (error) {
-          console.error("加载角色数据失败:", error)
-          alert("加载角色数据失败，请确保文件格式正确。")
+          console.error("加载角色数据失败:", error);
+          alert("加载角色数据失败，请确保文件格式正确。");
         }
-      }
-      reader.readAsText(e.target.files[0])
+      };
+      reader.readAsText(e.target.files[0]);
     }
-    document.body.removeChild(fileInput)
-  })
+    document.body.removeChild(fileInput);
+  });
 
-  fileInput.click()
+  fileInput.click();
 }
 
-// 填充表单数据
-function fillFormData(formData) {
-  // 基本信息
-  document.getElementById("characterName").value = formData.characterName || ""
-  document.getElementById("profession").value = formData.profession || ""
-  document.getElementById("profession-page2").value = formData.profession || ""
-  const profNameElement = document.getElementById("profession-name")
+
+// 填充表单数据 (from JSON object or localStorage object)
+function fillFormData(sourceData) {
+  // Basic Info
+  document.getElementById("characterName").value = sourceData.characterName || "";
+  const professionValue = sourceData.profession || sourceData.characterProfession || ""; // characterProfession from LS
+  document.getElementById("profession").value = professionValue;
+  document.getElementById("profession-page2").value = professionValue;
+  const profNameElement = document.getElementById("profession-name");
   if (profNameElement) {
-    profNameElement.textContent = getProfessionName(formData.profession)
+    profNameElement.textContent = getProfessionName(professionValue);
   }
-  document.getElementById("level").value = formData.level || ""
-  document.getElementById("community").value = formData.community || ""
-  document.getElementById("ancestry1").value = formData.ancestry1 || ""
-  document.getElementById("ancestry2").value = formData.ancestry2 || ""
-  document.getElementById("subclass").value = formData.subclass || ""
+  document.getElementById("level").value = sourceData.level || "";
+  document.getElementById("community").value = sourceData.community || "";
+  document.getElementById("ancestry1").value = sourceData.ancestry1 || "none";
+  document.getElementById("ancestry2").value = sourceData.ancestry2 || "none";
+  document.getElementById("subclass").value = sourceData.subclass || "";
 
-  // 属性值
-  const attributes = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"]
+  // Attributes
+  const attributes = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"];
   attributes.forEach((attr) => {
-    document.getElementById(`${attr}-value`).value = formData[`${attr}-value`] || ""
-    const attributeCheck = document.querySelector(`.attribute-check[data-attribute="${attr}"]`)
-    if (formData[`${attr}-checked`]) {
-      attributeCheck.classList.add("checked")
-    } else {
-      attributeCheck.classList.remove("checked")
+    document.getElementById(`${attr}-value`).value = sourceData[`${attr}-value`] || "";
+    const attributeCheck = document.querySelector(`.attribute-check[data-attribute="${attr}"]`);
+    if (attributeCheck) {
+      if (sourceData[`${attr}-checked`] === true || sourceData[`${attr}-checked`] === "true") {
+        attributeCheck.classList.add("checked");
+      } else {
+        attributeCheck.classList.remove("checked");
+      }
     }
-  })
+  });
 
-  // 闪避和护甲
-  document.getElementById("evasion").value = formData.evasion || ""
-  document.getElementById("armorValue").value = formData.armorValue || ""
-  document.getElementById("armorMax").value = formData.armorMax || "6"
-  updateBoxesMax(document.getElementById("armor-grid"), "armor-box", Number.parseInt(formData.armorMax) || 6)
+  // Evasion & Armor Value (inputs)
+  document.getElementById("evasion").value = sourceData.evasion || "10";
+  document.getElementById("armorValue").value = sourceData.armorValue || "";
 
-  // 阈值
-  document.getElementById("minorThreshold").value = formData.minorThreshold || "7"
-  document.getElementById("majorThreshold").value = formData.majorThreshold || "14"
+  // Max values & update grids
+  const armorMax = Number.parseInt(sourceData.armorMax) || 6;
+  document.getElementById("armorMax").value = armorMax.toString();
+  updateBoxesMax(document.getElementById("armor-grid"), "armor-box", armorMax);
 
-  // HP和Stress
-  document.getElementById("hpMax").value = formData.hpMax || "6"
-  document.getElementById("stressMax").value = formData.stressMax || "6"
-  updateBoxesMax(document.getElementById("hp-grid"), "hp-box", Number.parseInt(formData.hpMax) || 6)
-  updateBoxesMax(document.getElementById("stress-grid"), "stress-box", Number.parseInt(formData.stressMax) || 6)
+  const hpMax = Number.parseInt(sourceData.hpMax) || 6;
+  document.getElementById("hpMax").value = hpMax.toString();
+  updateBoxesMax(document.getElementById("hp-grid"), "hp-box", hpMax);
 
-  // 武器和护甲
-  document.getElementById("primaryWeaponName").value = formData.primaryWeaponName || ""
-  document.getElementById("primaryWeaponTrait").value = formData.primaryWeaponTrait || ""
-  document.getElementById("primaryWeaponDamage").value = formData.primaryWeaponDamage || ""
-  document.getElementById("primaryWeaponFeature").value = formData.primaryWeaponFeature || ""
+  const stressMax = Number.parseInt(sourceData.stressMax) || 6;
+  document.getElementById("stressMax").value = stressMax.toString();
+  updateBoxesMax(document.getElementById("stress-grid"), "stress-box", stressMax);
 
-  document.getElementById("secondaryWeaponName").value = formData.secondaryWeaponName || ""
-  document.getElementById("secondaryWeaponTrait").value = formData.secondaryWeaponTrait || ""
-  document.getElementById("secondaryWeaponDamage").value = formData.secondaryWeaponDamage || ""
-  document.getElementById("secondaryWeaponFeature").value = formData.secondaryWeaponFeature || ""
+  // Thresholds
+  document.getElementById("minorThreshold").value = sourceData.minorThreshold || "7";
+  document.getElementById("majorThreshold").value = sourceData.majorThreshold || "14";
 
-  document.getElementById("armorName").value = formData.armorName || ""
-  document.getElementById("armorBaseScore").value = formData.armorBaseScore || ""
-  document.getElementById("armorFeature").value = formData.armorFeature || ""
+  // Weapons & Armor (selected items) - trigger change to update dependent fields
+  function setSelectAndTriggerChange(selectId, value) {
+    const selectElement = document.getElementById(selectId);
+    if (selectElement) {
+      selectElement.value = value || "";
+      selectElement.dispatchEvent(new Event('change')); // Trigger change to populate related fields
+    }
+  }
 
-  // 物品栏武器
-  document.getElementById("inventoryWeapon1Name").value = formData.inventoryWeapon1Name || ""
-  document.getElementById("inventoryWeapon1Trait").value = formData.inventoryWeapon1Trait || ""
-  document.getElementById("inventoryWeapon1Damage").value = formData.inventoryWeapon1Damage || ""
-  document.getElementById("inventoryWeapon1Feature").value = formData.inventoryWeapon1Feature || ""
-  document.getElementById("inventoryWeapon1Primary").checked = formData.inventoryWeapon1Primary || false
-  document.getElementById("inventoryWeapon1Secondary").checked = formData.inventoryWeapon1Secondary || false
+  setSelectAndTriggerChange("primaryWeaponName", sourceData.primaryWeaponName);
+  setSelectAndTriggerChange("secondaryWeaponName", sourceData.secondaryWeaponName);
+  setSelectAndTriggerChange("armorName", sourceData.armorName);
+  setSelectAndTriggerChange("inventoryWeapon1Name", sourceData.inventoryWeapon1Name);
+  setSelectAndTriggerChange("inventoryWeapon2Name", sourceData.inventoryWeapon2Name);
 
-  document.getElementById("inventoryWeapon2Name").value = formData.inventoryWeapon2Name || ""
-  document.getElementById("inventoryWeapon2Trait").value = formData.inventoryWeapon2Trait || ""
-  document.getElementById("inventoryWeapon2Damage").value = formData.inventoryWeapon2Damage || ""
-  document.getElementById("inventoryWeapon2Feature").value = formData.inventoryWeapon2Feature || ""
-  document.getElementById("inventoryWeapon2Primary").checked = formData.inventoryWeapon2Primary || false
-  document.getElementById("inventoryWeapon2Secondary").checked = formData.inventoryWeapon2Secondary || false
+  // Inventory Weapon Checkboxes
+  const invWpn1Primary = document.getElementById("inventoryWeapon1Primary");
+  if (invWpn1Primary) invWpn1Primary.checked = sourceData.inventoryWeapon1Primary === true || sourceData.inventoryWeapon1Primary === "true";
+  const invWpn1Secondary = document.getElementById("inventoryWeapon1Secondary");
+  if (invWpn1Secondary) invWpn1Secondary.checked = sourceData.inventoryWeapon1Secondary === true || sourceData.inventoryWeapon1Secondary === "true";
+  const invWpn2Primary = document.getElementById("inventoryWeapon2Primary");
+  if (invWpn2Primary) invWpn2Primary.checked = sourceData.inventoryWeapon2Primary === true || sourceData.inventoryWeapon2Primary === "true";
+  const invWpn2Secondary = document.getElementById("inventoryWeapon2Secondary");
+  if (invWpn2Secondary) invWpn2Secondary.checked = sourceData.inventoryWeapon2Secondary === true || sourceData.inventoryWeapon2Secondary === "true";
 
-  // 角色描述
-  document.getElementById("characterBackground").value = formData.characterBackground || ""
-  document.getElementById("characterAppearance").value = formData.characterAppearance || ""
-  document.getElementById("characterMotivation").value = formData.characterMotivation || ""
 
-  // 保存到本地存储
-  for (const key in formData) {
-    localStorage.setItem(key, typeof formData[key] === "boolean" ? formData[key] : formData[key] || "")
+  // Character Description
+  document.getElementById("characterBackground").value = sourceData.characterBackground || "";
+  document.getElementById("characterAppearance").value = sourceData.characterAppearance || "";
+  document.getElementById("characterMotivation").value = sourceData.characterMotivation || "";
+
+  // If sourceData is from a full character file (not just localStorage),
+  // you might want to save all these values to localStorage as well.
+  // For now, this function just populates the form.
+  // The original `loadCharacter` saved all `formData` to localStorage.
+  if (sourceData !== localStorage) { // Avoid re-saving if source is already localStorage
+    for (const key in sourceData) {
+      if (Object.hasOwnProperty.call(sourceData, key)) {
+        const value = sourceData[key];
+        localStorage.setItem(key, typeof value === "boolean" ? value.toString() : value || "");
+      }
+    }
   }
 }
+
 
 // 导出为PDF
 function exportToPDF() {
-  alert("PDF导出功能正在开发中，请暂时使用浏览器的打印功能（Ctrl+P）保存为PDF。")
+  alert("PDF导出功能正在开发中，请暂时使用浏览器的打印功能（Ctrl+P或Cmd+P）保存为PDF。");
 }
 
 // 重置角色数据
 function resetCharacter() {
-  if (confirm("确定要重置所有数据吗？这将清除所有已填写的信息。")) {
-    localStorage.clear()
-    location.reload()
+  if (confirm("确定要重置所有数据吗？这将清除所有已填写的信息和浏览器本地存储。")) {
+    localStorage.clear();
+    location.reload();
   }
 }
 
 // 从本地存储加载数据
 function loadFromLocalStorage() {
-  // 基本信息
-  document.getElementById("characterName").value = localStorage.getItem("characterName") || ""
-
-  const profession = localStorage.getItem("characterProfession") || ""
-  document.getElementById("profession").value = profession
-  document.getElementById("profession-page2").value = profession
-  const profNameElement = document.getElementById("profession-name")
-  if (profNameElement) {
-    profNameElement.textContent = getProfessionName(profession)
+  const localData = {};
+  // Collect all relevant localStorage keys into an object
+  // This is a simplified way; ideally, you'd list all keys you expect.
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    localData[key] = localStorage.getItem(key);
   }
+  fillFormData(localData); // Use fillFormData to populate the sheet
 
-  document.getElementById("level").value = localStorage.getItem("level") || ""
-  document.getElementById("community").value = localStorage.getItem("community") || ""
-  document.getElementById("ancestry1").value = localStorage.getItem("ancestry1") || ""
-  document.getElementById("ancestry2").value = localStorage.getItem("ancestry2") || ""
-  document.getElementById("subclass").value = localStorage.getItem("subclass") || ""
-
-  // 属性值
-  const attributes = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"]
-  attributes.forEach((attr) => {
-    document.getElementById(`${attr}-value`).value = localStorage.getItem(`${attr}-value`) || ""
-    const attributeCheck = document.querySelector(`.attribute-check[data-attribute="${attr}"]`)
-    if (localStorage.getItem(`${attr}-checked`) === "true") {
-      attributeCheck.classList.add("checked")
-    }
-  })
-
-  // 闪避和护甲
-  document.getElementById("evasion").value = localStorage.getItem("evasion") || ""
-  document.getElementById("armorValue").value = localStorage.getItem("armorValue") || ""
-
-  const armorMax = Number.parseInt(localStorage.getItem("armorMax")) || 6
-  document.getElementById("armorMax").value = armorMax
-  updateBoxesMax(document.getElementById("armor-grid"), "armor-box", armorMax)
-
-  // 阈值
-  document.getElementById("minorThreshold").value = localStorage.getItem("minorThreshold") || "7"
-  document.getElementById("majorThreshold").value = localStorage.getItem("majorThreshold") || "14"
-
-  // HP和Stress
-  const hpMax = Number.parseInt(localStorage.getItem("hpMax")) || 6
-  const stressMax = Number.parseInt(localStorage.getItem("stressMax")) || 6
-  document.getElementById("hpMax").value = hpMax
-  document.getElementById("stressMax").value = stressMax
-  updateBoxesMax(document.getElementById("hp-grid"), "hp-box", hpMax)
-  updateBoxesMax(document.getElementById("stress-grid"), "stress-box", stressMax)
-
-  // 加载HP和Stress状态
+  // Load checkbox/grid states that are stored as JSON strings
   try {
-    const hpState = JSON.parse(localStorage.getItem("hpState"))
+    const hpState = JSON.parse(localStorage.getItem("hpState"));
+    const hpMax = parseInt(document.getElementById("hpMax").value, 10) || 6;
     if (hpState) {
-      document.querySelectorAll(".hp-box").forEach((box, index) => {
-        if (hpState[index] && index < hpMax) {
-          box.classList.add("checked")
-        }
-      })
+      document.querySelectorAll("#hp-grid .hp-box").forEach((box, index) => {
+        if (hpState[index] && index < hpMax) box.classList.add("checked");
+        else box.classList.remove("checked");
+      });
     }
 
-    const stressState = JSON.parse(localStorage.getItem("stressState"))
+    const stressState = JSON.parse(localStorage.getItem("stressState"));
+    const stressMax = parseInt(document.getElementById("stressMax").value, 10) || 6;
     if (stressState) {
-      document.querySelectorAll(".stress-box").forEach((box, index) => {
-        if (stressState[index] && index < stressMax) {
-          box.classList.add("checked")
-        }
-      })
+      document.querySelectorAll("#stress-grid .stress-box").forEach((box, index) => {
+        if (stressState[index] && index < stressMax) box.classList.add("checked");
+        else box.classList.remove("checked");
+      });
     }
 
-    const armorState = JSON.parse(localStorage.getItem("armorState"))
+    const armorState = JSON.parse(localStorage.getItem("armorState"));
+    const armorMaxVal = parseInt(document.getElementById("armorMax").value, 10) || 6;
     if (armorState) {
-      document.querySelectorAll(".armor-box").forEach((box, index) => {
-        if (armorState[index] && index < armorMax) {
-          box.classList.add("checked")
-        }
-      })
+      document.querySelectorAll("#armor-grid .armor-box").forEach((box, index) => {
+        if (armorState[index] && index < armorMaxVal) box.classList.add("checked");
+        else box.classList.remove("checked");
+      });
     }
 
-    const hopeState = JSON.parse(localStorage.getItem("hopeState"))
+    const hopeState = JSON.parse(localStorage.getItem("hopeState"));
     if (hopeState) {
-      document.querySelectorAll(".hope-diamond").forEach((diamond, index) => {
-        if (hopeState[index]) {
-          diamond.classList.add("checked")
-        }
-      })
+      document.querySelectorAll("#hope-grid .hope-diamond").forEach((diamond, index) => {
+        if (hopeState[index]) diamond.classList.add("checked");
+        else diamond.classList.remove("checked");
+      });
     }
 
-    const goldState = JSON.parse(localStorage.getItem("goldState"))
+    const goldState = JSON.parse(localStorage.getItem("goldState"));
     if (goldState) {
-      document.querySelectorAll(".gold-coin").forEach((coin, index) => {
-        if (goldState[index]) {
-          coin.classList.add("checked")
+      document.querySelectorAll("#gold-handfuls .gold-coin, #gold-bags .gold-coin-bag, #gold-chest .gold-coin-chest").forEach((coin) => {
+        const index = parseInt(coin.dataset.index, 10);
+        if (!isNaN(index) && goldState[index]) {
+          coin.classList.add("checked");
+        } else {
+          coin.classList.remove("checked");
         }
-      })
+      });
     }
 
-    const proficiencyState = JSON.parse(localStorage.getItem("proficiencyState"))
-    if (proficiencyState) {
-      document.querySelectorAll(".proficiency-dot").forEach((dot, index) => {
-        if (proficiencyState[index]) {
-          dot.classList.add("checked")
-        }
-      })
-    }
+    loadProficiencyDotsState(); // Handles proficiency dots specifically
+
   } catch (error) {
-    console.error("加载状态数据失败:", error)
+    console.error("加载状态数据 (HP/Stress/etc.) 失败:", error);
   }
 
-  // 武器和护甲
-  document.getElementById("primaryWeaponName").value = localStorage.getItem("primaryWeaponName") || ""
-  document.getElementById("primaryWeaponTrait").value = localStorage.getItem("primaryWeaponTrait") || ""
-  document.getElementById("primaryWeaponDamage").value = localStorage.getItem("primaryWeaponDamage") || ""
-  document.getElementById("primaryWeaponFeature").value = localStorage.getItem("primaryWeaponFeature") || ""
-
-  document.getElementById("secondaryWeaponName").value = localStorage.getItem("secondaryWeaponName") || ""
-  document.getElementById("secondaryWeaponTrait").value = localStorage.getItem("secondaryWeaponTrait") || ""
-  document.getElementById("secondaryWeaponDamage").value = localStorage.getItem("secondaryWeaponDamage") || ""
-  document.getElementById("secondaryWeaponFeature").value = localStorage.getItem("secondaryWeaponFeature") || ""
-
-  document.getElementById("armorName").value = localStorage.getItem("armorName") || ""
-  document.getElementById("armorBaseScore").value = localStorage.getItem("armorBaseScore") || ""
-  document.getElementById("armorFeature").value = localStorage.getItem("armorFeature") || ""
-
-  // 物品栏
+  // Inventory items
   for (let i = 0; i < 5; i++) {
-    document.getElementById(`inventory-${i}`).value = localStorage.getItem(`inventory-${i}`) || ""
+    const invItem = document.getElementById(`inventory-${i}`);
+    if (invItem) invItem.value = localStorage.getItem(`inventory-${i}`) || "";
   }
 
-  // 物品栏武器
-  document.getElementById("inventoryWeapon1Name").value = localStorage.getItem("inventoryWeapon1Name") || ""
-  document.getElementById("inventoryWeapon1Trait").value = localStorage.getItem("inventoryWeapon1Trait") || ""
-  document.getElementById("inventoryWeapon1Damage").value = localStorage.getItem("inventoryWeapon1Damage") || ""
-  document.getElementById("inventoryWeapon1Feature").value = localStorage.getItem("inventoryWeapon1Feature") || ""
-  document.getElementById("inventoryWeapon1Primary").checked =
-    localStorage.getItem("inventoryWeapon1Primary") === "true"
-  document.getElementById("inventoryWeapon1Secondary").checked =
-    localStorage.getItem("inventoryWeapon1Secondary") === "true"
-
-  document.getElementById("inventoryWeapon2Name").value = localStorage.getItem("inventoryWeapon2Name") || ""
-  document.getElementById("inventoryWeapon2Trait").value = localStorage.getItem("inventoryWeapon2Trait") || ""
-  document.getElementById("inventoryWeapon2Damage").value = localStorage.getItem("inventoryWeapon2Damage") || ""
-  document.getElementById("inventoryWeapon2Feature").value = localStorage.getItem("inventoryWeapon2Feature") || ""
-  document.getElementById("inventoryWeapon2Primary").checked =
-    localStorage.getItem("inventoryWeapon2Primary") === "true"
-  document.getElementById("inventoryWeapon2Secondary").checked =
-    localStorage.getItem("inventoryWeapon2Secondary") === "true"
-
-  // 经验
+  // Experience
   for (let i = 0; i < 5; i++) {
-    const expDesc = document.getElementById(`experience-${i}`)
-    const expValue = document.getElementById(`experience-value-${i}`)
-    if (expDesc) expDesc.value = localStorage.getItem(`experience-${i}`) || ""
-    if (expValue) expValue.value = localStorage.getItem(`experience-value-${i}`) || ""
+    const expDesc = document.getElementById(`experience-${i}`);
+    if (expDesc) expDesc.value = localStorage.getItem(`experience-${i}`) || "";
+    const expValue = document.getElementById(`experience-value-${i}`);
+    if (expValue) expValue.value = localStorage.getItem(`experience-value-${i}`) || "";
   }
 
-  // 卡组
+  // Card Deck
   for (let i = 0; i < 20; i++) {
-    const cardInput = document.getElementById(`card-${i}`)
-    if (cardInput) cardInput.value = localStorage.getItem(`card-${i}`) || ""
+    const fields = ['card-name', 'card-type', 'card-level', 'card-recall'];
+    fields.forEach(field => {
+      const input = document.getElementById(`${field}-${i}`);
+      if (input) input.value = localStorage.getItem(`${field}-${i}`) || "";
+    });
   }
 
-  // 角色描述
-  document.getElementById("characterBackground").value = localStorage.getItem("characterBackground") || ""
-  document.getElementById("characterAppearance").value = localStorage.getItem("characterAppearance") || ""
-  document.getElementById("characterMotivation").value = localStorage.getItem("characterMotivation") || ""
+  // Load upgrade states for the current profession
+  const currentProfession = document.getElementById("profession").value;
+  // initUpgradeOptions should have already run via initCharacterSheet.
+  // Now load the states for whatever DOM it built.
+  loadUpgradeStatesForProfession(currentProfession);
 
-  // 加载升级选项状态
-  for (let tier = 1; tier <= 3; tier++) {
-    const options = getUpgradeOptions(profession, tier, upgradeOptionsData)
-    options.forEach((option, index) => {
-      const key = `upgrade-tier${tier}-${index}`
-      const checked = localStorage.getItem(key) === "true"
-      if (checked) {
-        const boxes = document.querySelectorAll(`.upgrade-box[data-tier="${tier}"][data-index="${index}"]`)
-        boxes.forEach((box) => box.classList.add("checked"))
-      }
-    })
-  }
-
-  markDefaultElements()
+  markDefaultElements(); // Re-apply default markings if needed, though mostly for print
 }
