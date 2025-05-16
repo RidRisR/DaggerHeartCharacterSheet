@@ -269,10 +269,9 @@ body {
 
 /* 部分标题样式 */
 .section {
-  border-top: 2px solid #333;
   border-bottom: 2px solid #333;
   padding: 5px 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .section-header {
@@ -315,7 +314,7 @@ body {
 }
 
 .attribute-name {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -335,7 +334,6 @@ body {
 }
 
 .attribute-check.checked::after {
-  content: "";
   width: 6px;
   height: 6px;
   background-color: white;
@@ -361,15 +359,16 @@ body {
   border: none;
   border-bottom: 1px solid #999;
   color: white;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   outline: none;
+  margin: 2px;
 }
 
 .attribute-skills {
-  font-size: 6px;
+  font-size: 8px;
   text-align: center;
-  margin-top: 2px;
+  margin-top: 0px;
 }
 
 /* 生命值和压力样式 */
@@ -653,6 +652,7 @@ body {
 
 .weapon-input,
 .armor-input {
+  margin-top: 4px;
   width: 100%;
   border: none;
   border-bottom: 1px solid #999;
@@ -729,11 +729,60 @@ body {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   margin-top: 5px;
 }
 
+.card-item {
+  margin-bottom: 8px;
+}
+
+.card-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #fff;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.card-number {
+  font-size: 9px;
+  width: 16px;
+  color: #666;
+}
+
+.card-name {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #999;
+  padding: 2px 4px;
+  font-size: 12px;
+  outline: none;
+}
+
+.card-details {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.card-type,
+.card-level,
+.card-recall {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #999;
+  padding: 2px 4px;
+  font-size: 10px;
+  outline: none;
+}
 .card-item {
   display: flex;
   align-items: center;

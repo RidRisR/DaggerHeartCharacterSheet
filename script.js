@@ -29,9 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 初始化重置按钮
   document.getElementById("reset-button").addEventListener("click", () => {
-    if (confirm("确定要重置所有数据吗？这将清除所有已填写的信息。")) {
-      resetCharacter()
-    }
+    resetCharacter()
   })
 
   // 同步两个页面的职业选择
@@ -173,12 +171,12 @@ function handlePrint() {
 // 初始化属性
 function initAttributes() {
   const attributes = [
-    { name: "AGILITY", key: "agility", skills: ["Sprint", "Leap", "Maneuver"] },
-    { name: "STRENGTH", key: "strength", skills: ["Lift", "Smash", "Grapple"] },
-    { name: "FINESSE", key: "finesse", skills: ["Control", "Hide", "Tinker"] },
-    { name: "INSTINCT", key: "instinct", skills: ["Perceive", "Sense", "Navigate"] },
-    { name: "PRESENCE", key: "presence", skills: ["Charm", "Perform", "Deceive"] },
-    { name: "KNOWLEDGE", key: "knowledge", skills: ["Recall", "Analyze", "Comprehend"] },
+    { name: "敏捷", key: "agility", skills: ["奔跑", "跳跃", "机动"] },
+    { name: "力量", key: "strength", skills: ["举起", "破坏", "擒拿"] },
+    { name: "灵巧", key: "finesse", skills: ["操控", "隐藏", "修理"] },
+    { name: "直觉", key: "instinct", skills: ["感知", "感应", "导航"] },
+    { name: "魅力", key: "presence", skills: ["魅惑", "表演", "欺骗"] },
+    { name: "知识", key: "knowledge", skills: ["回忆", "分析", "理解"] },
   ]
 
   const attributesGrid = document.querySelector(".attributes-grid")
@@ -193,8 +191,8 @@ function initAttributes() {
                 <div class="attribute-check" data-attribute="${attr.key}"></div>
             </div>
             <div class="attribute-shield">
-                <input type="text" class="attribute-value" id="${attr.key}-value" placeholder="#">
                 <div class="attribute-skills">${attr.skills.join(", ")}</div>
+                <input type="text" class="attribute-value" id="${attr.key}-value" placeholder="#">
             </div>
         `
     attributesGrid.appendChild(attributeDiv)
@@ -638,16 +636,28 @@ function initCardDeck() {
     const item = document.createElement("div")
     item.className = "card-item"
     item.innerHTML = `
-            <span class="card-number">${i + 1}.</span>
-            <input type="text" class="card-input" id="card-${i}" placeholder="Card ${i + 1}">
-        `
+      <div class="card-box">
+        <div class="card-row">
+          <span class="card-number">${i + 1}.</span>
+          <input type="text" class="card-name" id="card-${i}" placeholder="Card name...">
+        </div>
+        <div class="card-details">
+          <input type="text" class="card-type" id="card-type-${i}" placeholder="Type...">
+          <input type="text" class="card-level" id="card-level-${i}" placeholder="Level...">
+          <input type="text" class="card-recall" id="card-recall-${i}" placeholder="Recall...">
+        </div>
+      </div>
+    `
     cardGrid.appendChild(item)
 
-    // 添加卡片变更事件
-    const cardInput = item.querySelector(".card-input")
-    cardInput.addEventListener("change", function () {
-      localStorage.setItem(`card-${i}`, this.value)
-    })
+    // 添加事件监听器以保存所有字段
+    const fields = ['card', 'card-type', 'card-level', 'card-recall'];
+    fields.forEach(field => {
+      const input = item.querySelector(`#${field}-${i}`);
+      input.addEventListener("change", function () {
+        localStorage.setItem(`${field}-${i}`, this.value);
+      });
+    });
   }
 }
 
@@ -719,12 +729,12 @@ function initUpgradeOptions() {
 // 获取职业名称
 function getProfessionName(professionId) {
   const professionData = [
-    { id: "warrior", name: "Warrior" },
-    { id: "mage", name: "Mage" },
-    { id: "rogue", name: "Rogue" },
+    { id: "warrior", name: "战士" },
+    { id: "mage", name: "法师" },
+    { id: "rogue", name: "游荡者" },
   ]
   const profession = professionData.find((p) => p.id === professionId)
-  return profession ? profession.name : "Warrior"
+  return profession ? profession.name : "战士"
 }
 
 // 保存角色数据
@@ -874,7 +884,7 @@ function fillFormData(formData) {
   })
 
   // 闪避和护甲
-  document.getElementById("evasion").value = formData.evasion || "10"
+  document.getElementById("evasion").value = formData.evasion || ""
   document.getElementById("armorValue").value = formData.armorValue || ""
   document.getElementById("armorMax").value = formData.armorMax || "6"
   updateBoxesMax(document.getElementById("armor-grid"), "armor-box", Number.parseInt(formData.armorMax) || 6)
@@ -937,11 +947,10 @@ function exportToPDF() {
 
 // 重置角色数据
 function resetCharacter() {
-  // 清除本地存储
-  localStorage.clear()
-
-  // 重新加载页面
-  location.reload()
+  if (confirm("确定要重置所有数据吗？这将清除所有已填写的信息。")) {
+    localStorage.clear()
+    location.reload()
+  }
 }
 
 // 从本地存储加载数据
@@ -971,7 +980,7 @@ function loadFromLocalStorage() {
   })
 
   // 闪避和护甲
-  document.getElementById("evasion").value = localStorage.getItem("evasion") || "10"
+  document.getElementById("evasion").value = localStorage.getItem("evasion") || ""
   document.getElementById("armorValue").value = localStorage.getItem("armorValue") || ""
 
   const armorMax = Number.parseInt(localStorage.getItem("armorMax")) || 6

@@ -22,74 +22,74 @@
                             <div class="select-wrapper">
                                 <select id="profession" class="profession-select">
                                     <option value=""></option>
-                                    <option value="warrior">WARRIOR</option>
-                                    <option value="rogue">ROGUE</option>
-                                    <option value="mage">MAGE</option>
-                                    <option value="cleric">CLERIC</option>
-                                    <option value="ranger">RANGER</option>
+                                    <option value="warrior">战士</option>
+                                    <option value="rogue">游荡者</option>
+                                    <option value="mage">法师</option>
+                                    <option value="cleric">牧师</option>
+                                    <option value="ranger">游侠</option>
                                 </select>
                             </div>
-                            <div class="version-text">DAGGERHEART OPEN BETA V1.5</div>
+                            <div class="version-text">匕心开放测试版 V1.5</div>
                         </div>
                         <div class="header-center">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="small-label">NAME</label>
+                                    <label class="small-label">姓名</label>
                                     <input type="text" id="characterName" class="form-input">
                                 </div>
                                 <div class="form-group">
-                                    <label class="small-label">COMMUNITY</label>
+                                    <label class="small-label">社区</label>
                                     <select id="community" class="form-select">
                                         <option value=""></option>
-                                        <option value="city">City</option>
-                                        <option value="village">Village</option>
-                                        <option value="nomadic">Nomadic Tribe</option>
-                                        <option value="forest">Forest Enclave</option>
-                                        <option value="mountain">Mountain Hold</option>
-                                        <option value="coastal">Coastal Haven</option>
-                                        <option value="desert">Desert Oasis</option>
-                                        <option value="academic">Academic Institution</option>
+                                        <option value="city">城市</option>
+                                        <option value="village">村庄</option>
+                                        <option value="nomadic">游牧部落</option>
+                                        <option value="forest">森林飞地</option>
+                                        <option value="mountain">山地要塞</option>
+                                        <option value="coastal">海岸庇护所</option>
+                                        <option value="desert">沙漠绿洲</option>
+                                        <option value="academic">学术机构</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="small-label">ANCESTRY</label>
+                                    <label class="small-label">血统</label>
                                     <div class="ancestry-selects">
                                         <select id="ancestry1" class="form-select small">
-                                            <option value="none">None</option>
-                                            <option value="human">Human</option>
-                                            <option value="elf">Elf</option>
-                                            <option value="dwarf">Dwarf</option>
-                                            <option value="halfling">Halfling</option>
-                                            <option value="orc">Orc</option>
-                                            <option value="gnome">Gnome</option>
-                                            <option value="tiefling">Tiefling</option>
-                                            <option value="dragonborn">Dragonborn</option>
+                                            <option value="none">无</option>
+                                            <option value="human">人类</option>
+                                            <option value="elf">精灵</option>
+                                            <option value="dwarf">矮人</option>
+                                            <option value="halfling">半身人</option>
+                                            <option value="orc">兽人</option>
+                                            <option value="gnome">侏儒</option>
+                                            <option value="tiefling">提夫林</option>
+                                            <option value="dragonborn">龙裔</option>
                                         </select>
                                         <span class="plus-sign">+</span>
                                         <select id="ancestry2" class="form-select small">
-                                            <option value="none">None</option>
-                                            <option value="human">Human</option>
-                                            <option value="elf">Elf</option>
-                                            <option value="dwarf">Dwarf</option>
-                                            <option value="halfling">Halfling</option>
-                                            <option value="orc">Orc</option>
-                                            <option value="gnome">Gnome</option>
-                                            <option value="tiefling">Tiefling</option>
-                                            <option value="dragonborn">Dragonborn</option>
+                                            <option value="none">无</option>
+                                            <option value="human">人类</option>
+                                            <option value="elf">精灵</option>
+                                            <option value="dwarf">矮人</option>
+                                            <option value="halfling">半身人</option>
+                                            <option value="orc">兽人</option>
+                                            <option value="gnome">侏儒</option>
+                                            <option value="tiefling">提夫林</option>
+                                            <option value="dragonborn">龙裔</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="small-label">SUBCLASS</label>
+                                    <label class="small-label">子职业</label>
                                     <input type="text" id="subclass" class="form-input">
                                 </div>
                             </div>
                         </div>
                         <div class="header-right">
                             <div class="level-box">
-                                <div class="level-label">LEVEL</div>
+                                <div class="level-label">等级</div>
                                 <input type="text" id="level" class="level-input">
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             <div class="top-row">
                                 <div class="stat-box evasion-box">
                                     <div class="stat-label">闪避</div>
-                                    <input type="text" id="evasion" class="stat-value" value="10" data-has-default="true" data-default-value="10">
+                                    <input type="text" id="evasion" class="stat-value" value="" data-has-default="true" data-default-value="">
                                 </div>
                                 
                                 <div class="armor-container">
@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="armor-grid-container">
                                         <div class="armor-max">
-                                            <span class="max-label">Max:</span>
+                                            <span class="max-label">最大值:</span>
                                             <input type="number" id="armorMax" class="max-input" value="6" min="1" max="12" data-has-default="true" data-default-value="6">
                                         </div>
                                         <div class="armor-grid" id="armor-grid"></div>
@@ -121,7 +121,7 @@
 
                             <!-- 属性部分 -->
                             <div class="section">
-                                <div class="section-header">ATTRIBUTES</div>
+                                <div class="section-header">属性</div>
                                 <div class="attributes-grid">
                                     <!-- 属性会通过JavaScript动态生成 -->
                                 </div>
@@ -129,39 +129,39 @@
 
                             <!-- 生命值和压力 -->
                             <div class="section">
-                                <div class="section-header">HIT POINTS & STRESS</div>
+                                <div class="section-header">生命值 & 压力</div>
                                 <div class="thresholds">
                                     <div class="threshold-label">阈值</div>
                                     <div class="threshold-value">
-                                        <span>Major: </span>
+                                        <span>轻微: </span>
                                         <input type="text" id="minorThreshold" class="threshold-input" value="7" data-has-default="true" data-default-value="7">
                                     </div>
                                     <div class="threshold-value">
-                                        <span>Severe: </span>
+                                        <span>严重: </span>
                                         <input type="text" id="majorThreshold" class="threshold-input" value="14" data-has-default="true" data-default-value="14">
                                     </div>
                                 </div>
 
                                 <div class="damage-types">
                                     <div class="damage-type">
-                                        <div class="damage-header">MINOR DAMAGE</div>
-                                        <div class="damage-desc">Mark 1 HP</div>
+                                        <div class="damage-header">轻微伤害</div>
+                                        <div class="damage-desc">标记 1 生命值</div>
                                     </div>
                                     <div class="damage-type">
-                                        <div class="damage-header">MAJOR DAMAGE</div>
-                                        <div class="damage-desc">Mark 2 HP</div>
+                                        <div class="damage-header">重大伤害</div>
+                                        <div class="damage-desc">标记 2 生命值</div>
                                     </div>
                                     <div class="damage-type">
-                                        <div class="damage-header">SEVERE DAMAGE</div>
-                                        <div class="damage-desc">Mark 3 HP</div>
+                                        <div class="damage-header">严重伤害</div>
+                                        <div class="damage-desc">标记 3 生命值</div>
                                     </div>
                                 </div>
 
                                 <div class="hp-section">
                                     <div class="hp-header">
-                                        <span class="hp-label">HP</span>
+                                        <span class="hp-label">生命值</span>
                                         <div class="hp-max">
-                                            <span class="max-label">Max:</span>
+                                            <span class="max-label">最大值:</span>
                                             <input type="number" id="hpMax" class="max-input" value="6" min="1" max="18" data-has-default="true" data-default-value="6">
                                         </div>
                                     </div>
@@ -170,9 +170,9 @@
 
                                 <div class="stress-section">
                                     <div class="stress-header">
-                                        <span class="stress-label">STRESS</span>
+                                        <span class="stress-label">压力</span>
                                         <div class="stress-max">
-                                            <span class="max-label">Max:</span>
+                                            <span class="max-label">最大值:</span>
                                             <input type="number" id="stressMax" class="max-input" value="6" min="1" max="18" data-has-default="true" data-default-value="6">
                                         </div>
                                     </div>
@@ -182,34 +182,34 @@
 
                             <!-- 希望 -->
                             <div class="section">
-                                <div class="section-header">HOPE</div>
-                                <div class="hope-desc">Spend a Hope to use an experience or help an ally.</div>
+                                <div class="section-header">希望</div>
+                                <div class="hope-desc">花费一个希望来使用经验或帮助盟友。</div>
                                 <div class="hope-grid" id="hope-grid"></div>
                                 <div class="hope-special">
-                                    <p class="hope-profession"><span id="profession-name">Warrior</span>'s Hope:</p>
+                                    <p class="hope-profession"><span id="profession-name">战士</span>的希望:</p>
                                 </div>
                             </div>
 
                             <!-- 经验 -->
                             <div class="section">
-                                <div class="section-header">EXPERIENCE</div>
+                                <div class="section-header">经验</div>
                                 <div class="experience-list" id="experience-list"></div>
                             </div>
 
                             <!-- 金币 -->
                             <div class="section">
-                                <div class="section-header">GOLD</div>
+                                <div class="section-header">金币</div>
                                 <div class="gold-container">
                                     <div class="gold-section">
-                                        <div class="gold-label">HANDFULS</div>
+                                        <div class="gold-label">一把</div>
                                         <div class="gold-grid handfuls" id="gold-handfuls"></div>
                                     </div>
                                     <div class="gold-section">
-                                        <div class="gold-label">BAGS</div>
+                                        <div class="gold-label">一袋</div>
                                         <div class="gold-grid bags" id="gold-bags"></div>
                                     </div>
                                     <div class="gold-section">
-                                        <div class="gold-label">CHEST</div>
+                                        <div class="gold-label">一箱</div>
                                         <div class="gold-chest"></div>
                                     </div>
                                 </div>
@@ -219,54 +219,54 @@
                         <div class="right-column">
                             <!-- 武器部分 -->
                             <div class="section">
-                                <div class="section-header">ACTIVE WEAPONS</div>
+                                <div class="section-header">主动武器</div>
                                 <div class="proficiency-row">
-                                    <span class="proficiency-label">PROFICIENCY</span>
+                                    <span class="proficiency-label">熟练度</span>
                                     <div class="proficiency-dots" id="proficiency-dots"></div>
                                 </div>
 
                                 <!-- 主武器 -->
                                 <div class="weapon-section">
-                                    <h4 class="weapon-header">PRIMARY</h4>
+                                    <h4 class="weapon-header">主武器</h4>
                                     <div class="weapon-grid">
                                         <div class="weapon-field">
-                                            <label class="field-label">NAME</label>
+                                            <label class="field-label">名称</label>
                                             <select id="primaryWeaponName" class="weapon-select"></select>
                                         </div>
                                         <div class="weapon-field">
-                                            <label class="field-label">TRAIT & RANGE</label>
+                                            <label class="field-label">特性 & 范围</label>
                                             <input type="text" id="primaryWeaponTrait" class="weapon-input">
                                         </div>
                                         <div class="weapon-field">
-                                            <label class="field-label">DAMAGE DICE</label>
+                                            <label class="field-label">伤害骰</label>
                                             <input type="text" id="primaryWeaponDamage" class="weapon-input">
                                         </div>
                                     </div>
                                     <div class="weapon-feature">
-                                        <label class="field-label">FEATURE</label>
+                                        <label class="field-label">特性</label>
                                         <input type="text" id="primaryWeaponFeature" class="weapon-input">
                                     </div>
                                 </div>
 
                                 <!-- 副武器 -->
                                 <div class="weapon-section">
-                                    <h4 class="weapon-header">SECONDARY</h4>
+                                    <h4 class="weapon-header">副武器</h4>
                                     <div class="weapon-grid">
                                         <div class="weapon-field">
-                                            <label class="field-label">NAME</label>
+                                            <label class="field-label">名称</label>
                                             <select id="secondaryWeaponName" class="weapon-select"></select>
                                         </div>
                                         <div class="weapon-field">
-                                            <label class="field-label">TRAIT & RANGE</label>
+                                            <label class="field-label">特性 & 范围</label>
                                             <input type="text" id="secondaryWeaponTrait" class="weapon-input">
                                         </div>
                                         <div class="weapon-field">
-                                            <label class="field-label">DAMAGE DICE</label>
+                                            <label class="field-label">伤害骰</label>
                                             <input type="text" id="secondaryWeaponDamage" class="weapon-input">
                                         </div>
                                     </div>
                                     <div class="weapon-feature">
-                                        <label class="field-label">FEATURE</label>
+                                        <label class="field-label">特性</label>
                                         <input type="text" id="secondaryWeaponFeature" class="weapon-input">
                                     </div>
                                 </div>
@@ -274,97 +274,97 @@
 
                             <!-- 护甲部分 -->
                             <div class="section">
-                                <div class="section-header">ACTIVE ARMOR</div>
+                                <div class="section-header">主动护甲</div>
                                 <div class="armor-grid">
                                     <div class="armor-field">
-                                        <label class="field-label">NAME</label>
+                                        <label class="field-label">名称</label>
                                         <select id="armorName" class="armor-select"></select>
                                     </div>
                                     <div class="armor-field">
-                                        <label class="field-label">BASE SCORE</label>
+                                        <label class="field-label">基础分数</label>
                                         <input type="text" id="armorBaseScore" class="armor-input">
                                     </div>
                                 </div>
                                 <div class="armor-feature">
-                                    <label class="field-label">FEATURE</label>
+                                    <label class="field-label">特性</label>
                                     <input type="text" id="armorFeature" class="armor-input">
                                 </div>
                             </div>
 
                             <!-- 物品栏 -->
                             <div class="section">
-                                <div class="section-header">INVENTORY</div>
+                                <div class="section-header">物品栏</div>
                                 <div class="inventory-list" id="inventory-list"></div>
                             </div>
 
                             <!-- 物品栏武器 -->
                             <div class="section">
-                                <div class="section-header">INVENTORY WEAPON</div>
+                                <div class="section-header">物品栏武器</div>
                                 <div class="inventory-weapon-options">
                                     <div class="weapon-option">
                                         <input type="checkbox" id="inventoryWeapon1Primary">
-                                        <label for="inventoryWeapon1Primary">PRIMARY</label>
+                                        <label for="inventoryWeapon1Primary">主武器</label>
                                     </div>
                                     <div class="weapon-option">
                                         <input type="checkbox" id="inventoryWeapon1Secondary">
-                                        <label for="inventoryWeapon1Secondary">SECONDARY</label>
+                                        <label for="inventoryWeapon1Secondary">副武器</label>
                                     </div>
                                 </div>
                                 <div class="weapon-grid">
                                     <div class="weapon-field">
-                                        <label class="field-label">NAME</label>
+                                        <label class="field-label">名称</label>
                                         <select id="inventoryWeapon1Name" class="weapon-select"></select>
                                     </div>
                                     <div class="weapon-field">
-                                        <label class="field-label">TRAIT & RANGE</label>
+                                        <label class="field-label">特性 & 范围</label>
                                         <input type="text" id="inventoryWeapon1Trait" class="weapon-input">
                                     </div>
                                     <div class="weapon-field">
-                                        <label class="field-label">DAMAGE DICE</label>
+                                        <label class="field-label">伤害骰</label>
                                         <input type="text" id="inventoryWeapon1Damage" class="weapon-input">
                                     </div>
                                 </div>
                                 <div class="weapon-feature">
-                                    <label class="field-label">FEATURE</label>
+                                    <label class="field-label">特性</label>
                                     <input type="text" id="inventoryWeapon1Feature" class="weapon-input">
                                 </div>
                             </div>
 
                             <div class="section">
-                                <div class="section-header">INVENTORY WEAPON</div>
+                                <div class="section-header">物品栏武器</div>
                                 <div class="inventory-weapon-options">
                                     <div class="weapon-option">
                                         <input type="checkbox" id="inventoryWeapon2Primary">
-                                        <label for="inventoryWeapon2Primary">PRIMARY</label>
+                                        <label for="inventoryWeapon2Primary">主武器</label>
                                     </div>
                                     <div class="weapon-option">
                                         <input type="checkbox" id="inventoryWeapon2Secondary">
-                                        <label for="inventoryWeapon2Secondary">SECONDARY</label>
+                                        <label for="inventoryWeapon2Secondary">副武器</label>
                                     </div>
                                 </div>
                                 <div class="weapon-grid">
                                     <div class="weapon-field">
-                                        <label class="field-label">NAME</label>
+                                        <label class="field-label">名称</label>
                                         <select id="inventoryWeapon2Name" class="weapon-select"></select>
                                     </div>
                                     <div class="weapon-field">
-                                        <label class="field-label">TRAIT & RANGE</label>
+                                        <label class="field-label">特性 & 范围</label>
                                         <input type="text" id="inventoryWeapon2Trait" class="weapon-input">
                                     </div>
                                     <div class="weapon-field">
-                                        <label class="field-label">DAMAGE DICE</label>
+                                        <label class="field-label">伤害骰</label>
                                         <input type="text" id="inventoryWeapon2Damage" class="weapon-input">
                                     </div>
                                 </div>
                                 <div class="weapon-feature">
-                                    <label class="field-label">FEATURE</label>
+                                    <label class="field-label">特性</label>
                                     <input type="text" id="inventoryWeapon2Feature" class="weapon-input">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="footer">© 2024 Daggerheart v1.5 Open Beta</div>
+                    <div class="footer">© 2024 匕心 v1.5 开放测试版</div>
                 </div>
             </div>
             <div class="tab-content" id="page2">
@@ -376,39 +376,39 @@
                             <div class="select-wrapper">
                                 <select id="profession-page2" class="profession-select">
                                     <option value="">选择职业</option>
-                                    <option value="warrior">WARRIOR</option>
-                                    <option value="rogue">ROGUE</option>
-                                    <option value="mage">MAGE</option>
-                                    <option value="cleric">CLERIC</option>
-                                    <option value="ranger">RANGER</option>
+                                    <option value="warrior">战士</option>
+                                    <option value="rogue">游荡者</option>
+                                    <option value="mage">法师</option>
+                                    <option value="cleric">牧师</option>
+                                    <option value="ranger">游侠</option>
                                 </select>
                             </div>
-                            <div class="version-text">DAGGERHEART OPEN BETA V1.5</div>
+                            <div class="version-text">匕心开放测试版 V1.5</div>
                         </div>
                     </div>
 
                     <!-- 角色描述部分 -->
                     <div class="character-description">
                         <div class="description-column">
-                            <div class="section-header">CHARACTER BACKGROUND</div>
+                            <div class="section-header">角色背景</div>
                             <p class="description-hint">在这里写下角色的简介和背景故事</p>
-                            <textarea id="characterBackground" class="description-textarea" placeholder="Write your character's background story here..."></textarea>
+                            <textarea id="characterBackground" class="description-textarea" placeholder="在这里写下角色的简介和背景故事..."></textarea>
                         </div>
                         <div class="description-column">
-                            <div class="section-header">CHARACTER APPEARANCE</div>
+                            <div class="section-header">角色外貌</div>
                             <p class="description-hint">在这里写下角色的性别，年龄，外貌衣着</p>
-                            <textarea id="characterAppearance" class="description-textarea" placeholder="Describe your character's gender, age, appearance, and clothing..."></textarea>
+                            <textarea id="characterAppearance" class="description-textarea" placeholder="描述角色的性别，年龄，外貌和衣着..."></textarea>
                         </div>
                         <div class="description-column">
-                            <div class="section-header">CHARACTER MOTIVATION</div>
+                            <div class="section-header">角色动机</div>
                             <p class="description-hint">在这里写下角色加入这场冒险的原因，与队友的联系</p>
-                            <textarea id="characterMotivation" class="description-textarea" placeholder="Explain why your character joined this adventure and their connections to other party members..."></textarea>
+                            <textarea id="characterMotivation" class="description-textarea" placeholder="解释角色加入这场冒险的原因以及与其他队员的联系..."></textarea>
                         </div>
                     </div>
 
                     <!-- 卡组部分 -->
                     <div class="card-deck-section">
-                        <div class="section-header">CARD DECK</div>
+                        <div class="section-header">卡组</div>
                         <div class="card-grid" id="card-grid"></div>
                     </div>
 
@@ -416,39 +416,39 @@
                     <div class="upgrade-section">
                         <!-- 第一阶段升级 -->
                         <div class="tier-column">
-                            <div class="tier-header">LEVELS 2-4</div>
-                            <div class="tier-subheader">At Level 2, take an additional Experience and increase your Proficiency by +1.</div>
+                            <div class="tier-header">等级 2-4</div>
+                            <div class="tier-subheader">在等级 2 时，获得一个额外的经验。熟练度+1。</div>
                             <div class="tier-content">
-                                <p class="tier-instruction">Choose two available options from the list below and mark them.</p>
+                                <p class="tier-instruction">选择两项并标记</p>
                                 <div class="upgrade-list" id="tier1-upgrades"></div>
-                                <div class="tier-footer">Then increase your Severe Damage Threshold by +2 and choose a new Domain Deck card at your Level or lower.</div>
+                                <div class="tier-footer">然后将严重伤害阈值提高 +2，并选择一张新的领域卡，等级不高于当前等级。</div>
                             </div>
                         </div>
 
                         <!-- 第二阶段升级 -->
                         <div class="tier-column">
-                            <div class="tier-header">LEVELS 5-7</div>
-                            <div class="tier-subheader">At Level 5, take an additional Experience and clear all marks on Character Traits. Then increase your Proficiency by +1.</div>
+                            <div class="tier-header">等级 5-7</div>
+                            <div class="tier-subheader">在等级 5 时，获得一个额外的经验并清除所有角色属性上的标记。熟练度+1。</div>
                             <div class="tier-content">
-                                <p class="tier-instruction">Choose two from the list below or any unmarked from the previous tier and mark them.</p>
+                                <p class="tier-instruction">从以下列表中选择两项或从上一阶段中未标记的选项中选择并标记。</p>
                                 <div class="upgrade-list" id="tier2-upgrades"></div>
-                                <div class="tier-footer">Increase your Damage Thresholds: Major by +1 and Severe by +3. Then choose a new Domain Deck card at your Level or lower.</div>
+                                <div class="tier-footer">提高伤害阈值：重大伤害 +1，严重伤害 +3。然后选择一张新的领域卡，等级不高于当前等级。</div>
                             </div>
                         </div>
 
                         <!-- 第三阶段升级 -->
                         <div class="tier-column">
-                            <div class="tier-header">LEVELS 8-10</div>
-                            <div class="tier-subheader">At Level 8, take an additional Experience and clear all marks on Character Traits. Then increase your Proficiency by +1.</div>
+                            <div class="tier-header">等级 8-10</div>
+                            <div class="tier-subheader">在等级 8 时，获得一个额外的经验并清除所有角色属性上的标记。熟练度+1。</div>
                             <div class="tier-content">
-                                <p class="tier-instruction">Choose two from the list below or any unmarked from the previous tiers and mark them.</p>
+                                <p class="tier-instruction">从以下列表中选择两项或从之前阶段中未标记的选项中选择并标记。</p>
                                 <div class="upgrade-list" id="tier3-upgrades"></div>
-                                <div class="tier-footer">Increase your Damage Thresholds: Major by +2 and Severe by +4. Then choose a new Domain Deck card at your Level or lower.</div>
+                                <div class="tier-footer">提高伤害阈值：重大伤害 +2，严重伤害 +4。然后选择一张新的领域卡，等级不高于当前等级。</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="footer">© 2024 Daggerheart v1.5 Open Beta</div>
+                    <div class="footer">© 2024 匕心 v1.5 开放测试版</div>
                 </div>
             </div>
         </div>
