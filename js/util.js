@@ -43,32 +43,6 @@ function initTabs() {
     })
 }
 
-// 处理打印
-function handlePrint() {
-    const savedValues = {}
-    const defaultElements = document.querySelectorAll("[data-has-default='true']")
-
-    defaultElements.forEach((element) => {
-        savedValues[element.id] = element.value
-        if (
-            element.value === element.getAttribute("data-default-value") ||
-            (element.tagName === "SELECT" && (element.value === "" || element.value === "none"))
-        ) {
-            element.value = ""
-        }
-    })
-
-    window.print()
-
-    setTimeout(() => {
-        defaultElements.forEach((element) => {
-            if (element.id in savedValues) {
-                element.value = savedValues[element.id]
-            }
-        })
-    }, 500)
-}
-
 // 标记默认值元素
 function markDefaultElements() {
     const defaultElements = [
@@ -115,7 +89,7 @@ document.addEventListener('DOMContentLoaded', initGlobalCards);
 // Add to window object
 window.removeEnglishText = removeEnglishText;
 
-// Placeholder for exportToPDF
+// Placeholder for exportToPDF function only
 function exportToPDF() {
-    alert("请点击打印按钮，然后选择A4大小纸张，即可保存到PDF");
+    alert("PDF导出功能正在准备中");
 }
