@@ -2,7 +2,7 @@
 const 贤者_CARDS = [
   {
     "ID": "Vicious_Entangle",
-    "名称": "恶性纠缠Vicious Entangle",
+    "名称": "恶性纠缠",
     "领域": "贤者",
     "等级": 1,
     "属性": "法术",
@@ -12,7 +12,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Gifted_Tracker",
-    "名称": "天赋追踪者Gifted Tracker",
+    "名称": "天赋追踪者",
     "领域": "贤者",
     "等级": 1,
     "属性": "能力",
@@ -22,7 +22,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "s_Tongue",
-    "名称": "自然之语Nature's Tongue",
+    "名称": "自然之语",
     "领域": "贤者",
     "等级": 1,
     "属性": "法术",
@@ -32,7 +32,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Natural_Familiar",
-    "名称": "自然伙伴Natural Familiar",
+    "名称": "自然伙伴",
     "领域": "贤者",
     "等级": 2,
     "属性": "法术",
@@ -42,7 +42,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Conjure_Swarm",
-    "名称": "召唤虫群Conjure Swarm",
+    "名称": "召唤虫群",
     "领域": "贤者",
     "等级": 2,
     "属性": "法术",
@@ -52,7 +52,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Towering_Stalk",
-    "名称": "茁壮枝茎Towering Stalk",
+    "名称": "茁壮枝茎",
     "领域": "贤者",
     "等级": 3,
     "属性": "法术",
@@ -62,7 +62,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Corrosive_Projectile",
-    "名称": "腐蚀弹射Corrosive Projectile",
+    "名称": "腐蚀弹射",
     "领域": "贤者",
     "等级": 3,
     "属性": "法术",
@@ -72,7 +72,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Healing_Field",
-    "名称": "治疗之域Healing Field",
+    "名称": "治疗之域",
     "领域": "贤者",
     "等级": 4,
     "属性": "法术",
@@ -82,7 +82,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Death_Grip",
-    "名称": "死亡之握Death Grip",
+    "名称": "死亡之握",
     "领域": "贤者",
     "等级": 4,
     "属性": "法术",
@@ -92,7 +92,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Wild_Fortress",
-    "名称": "荒野要塞Wild Fortress",
+    "名称": "荒野要塞",
     "领域": "贤者",
     "等级": 5,
     "属性": "法术",
@@ -102,7 +102,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Thorn_Skin",
-    "名称": "荆棘皮肤Thorn Skin",
+    "名称": "荆棘皮肤",
     "领域": "贤者",
     "等级": 5,
     "属性": "法术",
@@ -112,7 +112,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Conjured_Steeds",
-    "名称": "召唤坐骑Conjured Steeds",
+    "名称": "召唤坐骑",
     "领域": "贤者",
     "等级": 6,
     "属性": "咒语",
@@ -122,7 +122,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Forager",
-    "名称": "拾荒者Forager",
+    "名称": "拾荒者",
     "领域": "贤者",
     "等级": 6,
     "属性": "能力",
@@ -132,7 +132,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Sage_Touched",
-    "名称": "贤者恩泽Sage Touched",
+    "名称": "贤者恩泽",
     "领域": "贤者",
     "等级": 7,
     "属性": "能力",
@@ -142,7 +142,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Wild_Surge",
-    "名称": "狂野浪涌Wild Surge",
+    "名称": "狂野浪涌",
     "领域": "贤者",
     "等级": 7,
     "属性": "咒语",
@@ -152,7 +152,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Rejuvenation_Barrier",
-    "名称": "回春屏障Rejuvenation Barrier",
+    "名称": "回春屏障",
     "领域": "贤者",
     "等级": 8,
     "属性": "咒语",
@@ -162,7 +162,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Forest_Sprites",
-    "名称": "森林精魂Forest Sprites",
+    "名称": "森林精魂",
     "领域": "贤者",
     "等级": 8,
     "属性": "咒语",
@@ -172,7 +172,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Plant_Dominion",
-    "名称": "植物支配Plant Dominion",
+    "名称": "植物支配",
     "领域": "贤者",
     "等级": 9,
     "属性": "咒语",
@@ -182,7 +182,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Fane_of_the_Wilds",
-    "名称": "荒野神殿Fane of the Wilds",
+    "名称": "荒野神殿",
     "领域": "贤者",
     "等级": 9,
     "属性": "能力",
@@ -192,7 +192,7 @@ const 贤者_CARDS = [
   },
   {
     "ID": "Tempest",
-    "名称": "风暴Tempest",
+    "名称": "风暴",
     "领域": "贤者",
     "等级": 10,
     "属性": "法术",

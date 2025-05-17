@@ -2,7 +2,7 @@
 const 午夜_CARDS = [
   {
     "ID": "Uncanny_Disguise",
-    "名称": "奇异伪装Uncanny Disguise",
+    "名称": "奇异伪装",
     "领域": "午夜",
     "等级": 1,
     "属性": "法术",
@@ -12,7 +12,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Rain_of_Blades",
-    "名称": "滂沱剑雨Rain of Blades",
+    "名称": "滂沱剑雨",
     "领域": "午夜",
     "等级": 1,
     "属性": "法术",
@@ -22,7 +22,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Pick_and_Pull",
-    "名称": "妙手空空Pick and Pull",
+    "名称": "妙手空空",
     "领域": "午夜",
     "等级": 1,
     "属性": "能力",
@@ -32,7 +32,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Shadowbind",
-    "名称": "影缚Shadowbind",
+    "名称": "影缚",
     "领域": "午夜",
     "等级": 2,
     "属性": "咒语",
@@ -42,7 +42,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Midnight_Spirit",
-    "名称": "午夜精魂Midnight Spirit",
+    "名称": "午夜精魂",
     "领域": "午夜",
     "等级": 2,
     "属性": "咒语",
@@ -52,7 +52,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Chokehold",
-    "名称": "锁喉Chokehold",
+    "名称": "锁喉",
     "领域": "午夜",
     "等级": 3,
     "属性": "能力",
@@ -62,7 +62,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Veil_of_Shadows",
-    "名称": "暗影面纱Veil of Shadows",
+    "名称": "暗影面纱",
     "领域": "午夜",
     "等级": 3,
     "属性": "咒语",
@@ -72,7 +72,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Stealth_Expertise",
-    "名称": "潜行专家Stealth Expertise",
+    "名称": "潜行专家",
     "领域": "午夜",
     "等级": 4,
     "属性": "能力",
@@ -82,7 +82,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Midnight_Mark",
-    "名称": "午夜印记Midnight Mark",
+    "名称": "午夜印记",
     "领域": "午夜",
     "等级": 4,
     "属性": "咒语",
@@ -92,7 +92,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Hush",
-    "名称": "沉默Hush",
+    "名称": "沉默",
     "领域": "午夜",
     "等级": 5,
     "属性": "咒语",
@@ -102,7 +102,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Phantom_Retreat",
-    "名称": "移形换影Phantom Retreat",
+    "名称": "移形换影",
     "领域": "午夜",
     "等级": 5,
     "属性": "咒语",
@@ -112,7 +112,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Mass_Disguise",
-    "名称": "群体伪装Mass Disguise",
+    "名称": "群体伪装",
     "领域": "午夜",
     "等级": 6,
     "属性": "咒语",
@@ -122,7 +122,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Dark_Whispers",
-    "名称": "黑暗低语Dark Whispers",
+    "名称": "黑暗低语",
     "领域": "午夜",
     "等级": 6,
     "属性": "咒语",
@@ -132,7 +132,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Midnight_Touched",
-    "名称": "午夜恩泽Midnight Touched",
+    "名称": "午夜恩泽",
     "领域": "午夜",
     "等级": 7,
     "属性": "能力",
@@ -142,7 +142,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Phantom_Dodge",
-    "名称": "幻影闪避Phantom Dodge",
+    "名称": "幻影闪避",
     "领域": "午夜",
     "等级": 7,
     "属性": "咒语",
@@ -152,7 +152,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Spellcharge",
-    "名称": "法术充能Spellcharge",
+    "名称": "法术充能",
     "领域": "午夜",
     "等级": 8,
     "属性": "咒语",
@@ -162,7 +162,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Shadowhunter",
-    "名称": "暗影猎人Shadowhunter",
+    "名称": "暗影猎人",
     "领域": "午夜",
     "等级": 8,
     "属性": "能力",
@@ -172,7 +172,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Night_Terror",
-    "名称": "夜之恐惧Night Terror",
+    "名称": "夜之恐惧",
     "领域": "午夜",
     "等级": 9,
     "属性": "咒语",
@@ -182,7 +182,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Twilight_Toll",
-    "名称": "暮光丧钟Twilight Toll",
+    "名称": "暮光丧钟",
     "领域": "午夜",
     "等级": 9,
     "属性": "能力",
@@ -192,7 +192,7 @@ const 午夜_CARDS = [
   },
   {
     "ID": "Specter_of_the_Dark",
-    "名称": "黑暗幽灵Specter of the Dark",
+    "名称": "黑暗幽灵",
     "领域": "午夜",
     "等级": 10,
     "属性": "咒语",

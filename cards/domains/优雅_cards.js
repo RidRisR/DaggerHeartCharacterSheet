@@ -2,7 +2,7 @@
 const 优雅_CARDS = [
   {
     "ID": "Enrapture",
-    "名称": "心醉神迷 Enrapture",
+    "名称": "心醉神迷",
     "领域": "优雅",
     "等级": 1,
     "属性": "法术",
@@ -12,7 +12,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Inspirational_Words",
-    "名称": "豪言壮语 Inspirational Words",
+    "名称": "豪言壮语",
     "领域": "优雅",
     "等级": 1,
     "属性": "能力",
@@ -22,7 +22,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Deft_Deceiver",
-    "名称": "调虎离山 Deft Deceiver",
+    "名称": "调虎离山",
     "领域": "优雅",
     "等级": 1,
     "属性": "能力",
@@ -32,7 +32,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Tell_No_Lies",
-    "名称": "无可讳言 Tell No Lies",
+    "名称": "无可讳言",
     "领域": "优雅",
     "等级": 2,
     "属性": "法术",
@@ -42,7 +42,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Troublemaker",
-    "名称": "惹是生非 Troublemaker",
+    "名称": "惹是生非",
     "领域": "优雅",
     "等级": 2,
     "属性": "能力",
@@ -52,7 +52,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Invisibility",
-    "名称": "无影无踪 Invisibility",
+    "名称": "无影无踪",
     "领域": "优雅",
     "等级": 3,
     "属性": "法术",
@@ -62,7 +62,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Hypnotic_Shimmer",
-    "名称": "催眠闪光 Hypnotic Shimmer",
+    "名称": "催眠闪光",
     "领域": "优雅",
     "等级": 3,
     "属性": "法术",
@@ -72,7 +72,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Soothing_Speech",
-    "名称": "温言慰心 Soothing Speech",
+    "名称": "温言慰心",
     "领域": "优雅",
     "等级": 4,
     "属性": "能力",
@@ -82,7 +82,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Through_Your_Eyes",
-    "名称": "见你所见 Through Your Eyes",
+    "名称": "见你所见",
     "领域": "优雅",
     "等级": 4,
     "属性": "法术",
@@ -92,7 +92,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Words_of_Discord",
-    "名称": "挑拨离间 Words of Discord",
+    "名称": "挑拨离间",
     "领域": "优雅",
     "等级": 5,
     "属性": "法术",
@@ -102,7 +102,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Thought_Delver",
-    "名称": "思想挖掘 Thought Delver",
+    "名称": "思想挖掘",
     "领域": "优雅",
     "等级": 5,
     "属性": "法术",
@@ -112,7 +112,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Share_the_Burden",
-    "名称": "排忧解难 Share the Burden",
+    "名称": "排忧解难",
     "领域": "优雅",
     "等级": 6,
     "属性": "法术",
@@ -122,7 +122,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Never_Upstaged",
-    "名称": "始终夺目 Never Upstaged",
+    "名称": "始终夺目",
     "领域": "优雅",
     "等级": 6,
     "属性": "能力",
@@ -132,7 +132,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Grace_Touched",
-    "名称": "优雅恩泽 Grace Touched",
+    "名称": "优雅恩泽",
     "领域": "优雅",
     "等级": 7,
     "属性": "能力",
@@ -142,7 +142,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Endless_Charisma",
-    "名称": "无穷魅力 Endless Charisma",
+    "名称": "无穷魅力",
     "领域": "优雅",
     "等级": 7,
     "属性": "能力",
@@ -152,7 +152,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Astral_Projection",
-    "名称": "星界投影 Astral Projection",
+    "名称": "星界投影",
     "领域": "优雅",
     "等级": 8,
     "属性": "法术",
@@ -162,7 +162,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Mass_Enrapture",
-    "名称": "群体心醉神迷 Mass Enrapture",
+    "名称": "群体心醉神迷",
     "领域": "优雅",
     "等级": 8,
     "属性": "法术",
@@ -172,7 +172,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Master_of_the_Craft",
-    "名称": "技艺大师 Master of the Craft",
+    "名称": "技艺大师",
     "领域": "优雅",
     "等级": 9,
     "属性": "能力",
@@ -182,7 +182,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Copycat",
-    "名称": "惟妙惟肖 Copycat",
+    "名称": "惟妙惟肖",
     "领域": "优雅",
     "等级": 9,
     "属性": "法术",
@@ -192,7 +192,7 @@ const 优雅_CARDS = [
   },
   {
     "ID": "Notorius",
-    "名称": "恶名昭著Notorius",
+    "名称": "恶名昭著",
     "领域": "优雅",
     "等级": 10,
     "属性": "能力",

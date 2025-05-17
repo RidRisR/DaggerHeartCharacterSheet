@@ -2,7 +2,7 @@
 const 辉耀_CARDS = [
   {
     "ID": "Bolt_Beacon",
-    "名称": "闪光信标 Bolt Beacon",
+    "名称": "闪光信标",
     "领域": "辉耀",
     "等级": 1,
     "属性": "法术",
@@ -12,7 +12,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Mending_Touch",
-    "名称": "修复之触 Mending Touch",
+    "名称": "修复之触",
     "领域": "辉耀",
     "等级": 1,
     "属性": "法术",
@@ -22,7 +22,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Reassurance",
-    "名称": "宽慰言语 Reassurance",
+    "名称": "宽慰言语",
     "领域": "辉耀",
     "等级": 1,
     "属性": "能力",
@@ -32,7 +32,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Healing_Hands",
-    "名称": "治愈之手 Healing Hands",
+    "名称": "治愈之手",
     "领域": "辉耀",
     "等级": 2,
     "属性": "法术",
@@ -42,7 +42,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Final_Words",
-    "名称": "临终遗言 Final Words",
+    "名称": "临终遗言",
     "领域": "辉耀",
     "等级": 2,
     "属性": "法术",
@@ -52,7 +52,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Second_Wind",
-    "名称": "复苏之风 Second Wind",
+    "名称": "复苏之风",
     "领域": "辉耀",
     "等级": 3,
     "属性": "能力",
@@ -62,7 +62,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Conviction",
-    "名称": "坚定信念 Conviction",
+    "名称": "坚定信念",
     "领域": "辉耀",
     "等级": 3,
     "属性": "能力",
@@ -72,7 +72,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Life_Ward",
-    "名称": "生命守卫 Life Ward",
+    "名称": "生命守卫",
     "领域": "辉耀",
     "等级": 4,
     "属性": "法术",
@@ -82,7 +82,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Divination",
-    "名称": "占卜 Divination",
+    "名称": "占卜",
     "领域": "辉耀",
     "等级": 4,
     "属性": "法术",
@@ -92,7 +92,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Shape_Material",
-    "名称": "物质塑形 Shape Material",
+    "名称": "物质塑形",
     "领域": "辉耀",
     "等级": 5,
     "属性": "法术",
@@ -102,7 +102,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Smite",
-    "名称": "惩击 Smite",
+    "名称": "惩击",
     "领域": "辉耀",
     "等级": 5,
     "属性": "法术",
@@ -112,7 +112,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Zone_of_Protection",
-    "名称": "保护之域 Zone of Protection",
+    "名称": "保护之域",
     "领域": "辉耀",
     "等级": 6,
     "属性": "法术",
@@ -122,7 +122,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Restoration",
-    "名称": "复原术 Restoration",
+    "名称": "复原术",
     "领域": "辉耀",
     "等级": 6,
     "属性": "法术",
@@ -132,7 +132,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Splendor_Touched",
-    "名称": "辉耀恩泽 Splendor Touched",
+    "名称": "辉耀恩泽",
     "领域": "辉耀",
     "等级": 7,
     "属性": "能力",
@@ -142,7 +142,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Healing_Strike",
-    "名称": "治愈打击 Healing Strike",
+    "名称": "治愈打击",
     "领域": "辉耀",
     "等级": 7,
     "属性": "法术",
@@ -152,7 +152,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Stunning_Sunlight",
-    "名称": "炫目日光 Stunning Sunlight",
+    "名称": "炫目日光",
     "领域": "辉耀",
     "等级": 8,
     "属性": "法术",
@@ -162,7 +162,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Shield_Aura",
-    "名称": "护盾灵气 Shield Aura",
+    "名称": "护盾灵气",
     "领域": "辉耀",
     "等级": 8,
     "属性": "法术",
@@ -172,7 +172,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Overwhelming_Aura",
-    "名称": "威压灵气 Overwhelming Aura",
+    "名称": "威压灵气",
     "领域": "辉耀",
     "等级": 9,
     "属性": "法术",
@@ -182,7 +182,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Salvation_Beam",
-    "名称": "救赎光束 Salvation Beam",
+    "名称": "救赎光束",
     "领域": "辉耀",
     "等级": 9,
     "属性": "法术",
@@ -192,7 +192,7 @@ const 辉耀_CARDS = [
   },
   {
     "ID": "Invigoration",
-    "名称": "壮举再现 Invigoration",
+    "名称": "壮举再现",
     "领域": "辉耀",
     "等级": 10,
     "属性": "法术",
