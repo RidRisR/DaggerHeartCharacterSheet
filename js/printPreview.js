@@ -167,20 +167,35 @@ class PrintPreview {
     }
 
     static restoreBasicInfo(info) {
+        // 首先恢复名称
         const nameElement = document.getElementById('characterName');
         if (nameElement && info.name) {
             nameElement.value = info.name;
             document.querySelectorAll('.character-name').forEach(el => {
                 el.textContent = info.name;
             });
-            console.log('恢复角色名称:', info.name);
         }
 
+        // 恢复其他基本信息
         Object.entries(info).forEach(([key, value]) => {
             const element = document.getElementById(key);
-            if (element && key !== 'name') {
+            if (element && value) {
                 element.value = value;
                 console.log(`恢复${key}:`, value);
+                // 特别处理文本区域
+                if (element.tagName.toLowerCase() === 'textarea') {
+                    element.style.height = 'auto';
+                    element.style.height = `${element.scrollHeight}px`;
+                }
+            }
+        });
+
+        // 特别处理背景相关文本框
+        ['background', 'appearance', 'motivation'].forEach(field => {
+            const element = document.getElementById(`character${field.charAt(0).toUpperCase() + field.slice(1)}`);
+            if (element && info[field]) {
+                element.value = info[field];
+                console.log(`恢复${field}:`, info[field]);
             }
         });
     }

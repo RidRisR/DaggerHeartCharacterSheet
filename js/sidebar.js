@@ -1,12 +1,12 @@
 class CharacterCreationGuide {
     constructor() {
         this.steps = [
-            { text: "首先选择你的职业。每个职业都有其独特的能力和玩法风格。" },
-            { text: "选择你的血统组合。血统决定了你的角色背景和部分基础属性。" },
-            { text: "填写角色的基本信息，包括姓名和社区归属。" },
-            { text: "设置你的属性值。注意将点数分配在对你的职业重要的属性上。" },
-            { text: "选择你的起始武器和护甲。记得查看装备的特性说明。" },
-            { text: "完善角色背景故事。思考你的角色为什么要开始冒险。" }
+            { text: "首先选择你的职业。TEST" },
+            { text: "TEST" },
+            { text: "TEST" },
+            { text: "TEST" },
+            { text: "TEST" },
+            { text: "TEST" }
         ];
 
         this.currentStep = parseInt(localStorage.getItem('currentGuideStep')) || 0;
