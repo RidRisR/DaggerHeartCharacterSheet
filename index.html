@@ -7,7 +7,8 @@
     <title>Daggerheart 角色表</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/print.css" media="print">
-    <link rel="stylesheet" href="css/sidebar.css"> -->
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/card_browser.css">
 </head>
 
 <body>
@@ -431,42 +432,56 @@
             <button id="load-button" class="action-button">加载角色</button>
             <button id="export-button" class="action-button">导出PDF</button>
             <button id="reset-button" class="action-button danger">重置</button>
+            <button id="test-card-browser" class="action-button">打开卡牌浏览器</button>
         </div>
+<!-- 组件和数据加载 -->
+<link rel="stylesheet" href="css/card_browser.css">
+<script src="js/data_loader.js"></script>
+<script src="js/components/CardBrowser.js"></script>
+
+<!-- 初始化卡牌浏览器 -->
+<script>
+    document.getElementById('test-card-browser').addEventListener('click', () => {
+        const cardData = CardDataLoader.loadAllCards();
+        const browser = new CardBrowser(cardData);
+        browser.show();
+    });
+</script>
+
+        <!-- 数据文件 - 最先加载 -->
+        <script src="data/class_data.js"></script>
+        <script src="data/all_card.js"></script>
+        <script src="data/races_data.js"></script>
+        <script src="data/groups_data.js"></script>
+        <script src="data/equipment_data.js"></script>
+        <script src="data/data.js"></script>
+
+        <!-- 添加导航相关文件 -->
+        <link rel="stylesheet" href="css/sidebar.css">
+        <script src="js/sidebar.js"></script>
+        <!-- 工具函数 -->
+        <script src="js/util.js"></script>
+        <script src="js/data_collectors.js"></script>
+
+        <!-- 核心功能模块 -->
+        <script src="js/card_selector.js"></script>
+        <script src="js/upgrades.js"></script>
+        <script src="js/inventory.js"></script>
+        <script src="js/combat.js"></script>
+        <script src="js/hope.js"></script>
+        <script src="js/progress.js"></script>
+
+        <!-- 界面组件 -->
+        <script src="js/select.js"></script>
+        <script src="js/attributes.js"></script>
+        <script src="js/cards.js"></script>
+        <script src="js/state.js"></script>
+
+        <!-- 主脚本 -->
+        <script src="js/main.js"></script>
+        <script src="js/weapon_selector.js"></script>
+        <script src="js/armor_selector.js"></script>
     </div>
-
-    <!-- 数据文件 - 最先加载 -->
-    <script src="data/class_data.js"></script>
-    <script src="data/all_card.js"></script>
-    <script src="data/races_data.js"></script>
-    <script src="data/groups_data.js"></script>
-    <script src="data/equipment_data.js"></script>
-    <script src="data/data.js"></script>
-
-    <!-- 添加导航相关文件 -->
-    <link rel="stylesheet" href="css/sidebar.css">
-    <script src="js/sidebar.js"></script>
-    <!-- 工具函数 -->
-    <script src="js/util.js"></script>
-    <script src="js/data_collectors.js"></script>
-
-    <!-- 核心功能模块 -->
-    <script src="js/card_selector.js"></script>
-    <script src="js/upgrades.js"></script>
-    <script src="js/inventory.js"></script>
-    <script src="js/combat.js"></script>
-    <script src="js/hope.js"></script>
-    <script src="js/progress.js"></script>
-
-    <!-- 界面组件 -->
-    <script src="js/select.js"></script>
-    <script src="js/attributes.js"></script>
-    <script src="js/cards.js"></script>
-    <script src="js/state.js"></script>
-
-    <!-- 主脚本 -->
-    <script src="js/main.js"></script>
-    <script src="js/weapon_selector.js"></script>
-    <script src="js/armor_selector.js"></script>
 </body>
 
 </html>

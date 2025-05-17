@@ -808,6 +808,15 @@ body {
   background: transparent;
 }
 
+/* 卡牌浏览器测试按钮样式 */
+#test-card-browser {
+  background-color: #2c3e50;
+  color: white;
+}
+
+#test-card-browser:hover {
+  background-color: #34495e;
+}
 /* 第二页样式 */
 .character-description {
   display: grid;
