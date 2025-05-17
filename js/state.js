@@ -108,7 +108,7 @@ function saveCharacter() {
 
     // 获取角色名称、职业、血统和社区信息
     const charName = formData.characterName || "character";
-    const profName = currentProfessionId ? professions[currentProfessionId]?.name.replace(/\s+/g, '_') || "prof" : "prof";
+    const profName = currentProfessionId ? window.getProfessionName(currentProfessionId).replace(/\s+/g, '_') || "prof" : "prof";
     const ancestry1 = formData.ancestry1?.replace(/\s+/g, '_') || "";
     const ancestry2 = formData.ancestry2?.replace(/\s+/g, '_') || "";
     const community = formData.community?.replace(/\s+/g, '_') || "";

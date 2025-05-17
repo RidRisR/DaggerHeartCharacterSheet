@@ -9,6 +9,8 @@ window.initProfessionSelect = function () {
             const option = document.createElement('option');
             option.value = prof.id;  // 使用id作为value
             option.textContent = prof.职业;
+            // 将完整的职业数据保存到option中
+            option.dataset.profData = JSON.stringify(prof);
             select.appendChild(option);
         });
     });
@@ -16,6 +18,20 @@ window.initProfessionSelect = function () {
     // 将两个职业选择器联动
     const profession1 = document.getElementById('profession');
     const profession2 = document.getElementById('profession-page2');
+
+    window.getProfessionName = function (professionId) {
+        const select = document.getElementById('profession');
+        if (!select) return "";
+        const option = select.querySelector(`option[value="${professionId}"]`);
+        if (!option) return "";
+        try {
+            const profData = JSON.parse(option.dataset.profData);
+            return profData.职业 || "";
+        } catch (e) {
+            console.error('Error parsing profession data:', e);
+            return "";
+        }
+    };
 
     if (profession1 && profession2) {
         profession1.addEventListener('change', function () {
