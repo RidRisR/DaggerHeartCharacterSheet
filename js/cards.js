@@ -50,13 +50,27 @@ function initCardDeck() {
         // 添加悬停事件以显示描述
         cardBox.addEventListener('mouseenter', function () {
             const tooltip = document.getElementById(`card-tooltip-${i}`);
+            let description = "";
+
+            // 首先尝试从 dataset 获取描述
             const cardData = this.dataset.cardData;
             if (cardData && cardData !== 'undefined') {
-                const card = JSON.parse(cardData);
-                if (card.名称) {  // Only show tooltip if card name exists
-                    tooltip.textContent = card.描述;
-                    tooltip.style.display = 'block';
+                try {
+                    const card = JSON.parse(cardData);
+                    description = card.描述;
+                } catch (e) {
+                    console.error('Error parsing card data:', e);
                 }
+            }
+
+            // 如果 dataset 中没有描述，从 localStorage 获取
+            if (!description) {
+                description = localStorage.getItem(`card-描述-${i}`);
+            }
+
+            if (description) {
+                tooltip.textContent = description;
+                tooltip.style.display = 'block';
             }
         });
 
@@ -77,7 +91,7 @@ function loadSavedCard(slot) {
         领域: localStorage.getItem(`card-领域-${slot}`),
         等级: localStorage.getItem(`card-等级-${slot}`),
         回想: localStorage.getItem(`card-回想-${slot}`),
-        描述: localStorage.getItem(`card-描述-${slot}`)
+        描述: localStorage.getItem(`card-描述-${slot}`) || "" // 确保加载描述
     };
 
     const cardBox = document.querySelector(`.card-box[data-slot="${slot}"]`);

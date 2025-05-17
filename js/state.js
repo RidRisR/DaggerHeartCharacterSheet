@@ -541,6 +541,8 @@ function fillFormData(sourceData) {
                     localStorage.setItem(`card-${key}-${i}`, val);
                 }
             });
+            // 保存描述到 localStorage
+            localStorage.setItem(`card-描述-${i}`, card.description || "");
         });
     }
 
