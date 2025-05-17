@@ -51,10 +51,12 @@ function initCardDeck() {
         cardBox.addEventListener('mouseenter', function () {
             const tooltip = document.getElementById(`card-tooltip-${i}`);
             const cardData = this.dataset.cardData;
-            if (cardData) {
+            if (cardData && cardData !== 'undefined') {
                 const card = JSON.parse(cardData);
-                tooltip.textContent = card.描述;
-                tooltip.style.display = 'block';
+                if (card.名称) {  // Only show tooltip if card name exists
+                    tooltip.textContent = card.描述;
+                    tooltip.style.display = 'block';
+                }
             }
         });
 
