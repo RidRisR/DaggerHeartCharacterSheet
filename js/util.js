@@ -14,8 +14,8 @@ function updateBoxesMax(grid, className, max) {
 
 // 获取职业名称
 function getProfessionName(professionId) {
-    if (typeof professions === 'undefined') return professionId || "";
-    return (professions && professionId && professions[professionId]) ? professions[professionId].name : "";
+    // 使用select.js中定义的全局函数
+    return window.getProfessionName ? window.getProfessionName(professionId) : (professionId || "");
 }
 
 // 初始化标签页

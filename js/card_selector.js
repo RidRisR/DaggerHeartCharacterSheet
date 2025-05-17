@@ -226,30 +226,40 @@ class CardSelector {
         const closeButton = overlay.querySelector('.close-button');
         const cardList = document.getElementById('cardListContainer');
 
-        overlay.onclick = (e) => {
+        overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 this.hide();
             }
-        };
+        });
 
-        closeButton.onclick = () => {
+        closeButton.addEventListener('click', () => {
             this.hide();
-        };
+        });
 
-        cardList.onclick = (e) => {
+        // Improve card selection handling
+        cardList.addEventListener('click', (e) => {
             const cardItem = e.target.closest('.card-list-item');
             if (!cardItem) return;
 
+            console.log('Card clicked:', cardItem);
+
             try {
-                const card = JSON.parse(cardItem.dataset.cardData);
-                if (window.currentCardSlot && typeof handleCardSelection === 'function') {
-                    handleCardSelection(card);
+                const cardData = cardItem.dataset.cardData;
+                console.log('Card data:', cardData);
+
+                const card = JSON.parse(cardData);
+                console.log('Parsed card:', card);
+
+                if (typeof window.handleCardSelection === 'function') {
+                    window.handleCardSelection(card);
                     this.hide();
+                } else {
+                    console.error('handleCardSelection function not found');
                 }
             } catch (error) {
-                console.error('Error processing card selection:', error);
+                console.error('Error in card selection:', error);
             }
-        };
+        });
     }
 }
 

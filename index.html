@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daggerheart 角色表</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
 </head>
+
 <body>
     <div class="container">
         <div class="tabs">
@@ -68,9 +71,10 @@
                             <div class="top-row">
                                 <div class="stat-box evasion-box">
                                     <div class="stat-label">闪避</div>
-                                    <input type="text" id="evasion" class="stat-value" value="" data-has-default="true" data-default-value="">
+                                    <input type="text" id="evasion" class="stat-value" value="" data-has-default="true"
+                                        data-default-value="">
                                 </div>
-                                
+
                                 <div class="armor-container">
                                     <div class="stat-box">
                                         <div class="stat-label">护甲</div>
@@ -79,7 +83,8 @@
                                     <div class="armor-grid-container">
                                         <div class="armor-max">
                                             <span class="max-label">最大值:</span>
-                                            <input type="number" id="armorMax" class="max-input" value="6" min="1" max="12" data-has-default="true" data-default-value="6">
+                                            <input type="number" id="armorMax" class="max-input" value="6" min="1"
+                                                max="12" data-has-default="true" data-default-value="6">
                                         </div>
                                         <div class="armor-grid" id="armor-grid"></div>
                                     </div>
@@ -101,11 +106,13 @@
                                     <div class="threshold-label">阈值</div>
                                     <div class="threshold-value">
                                         <span>轻微: </span>
-                                        <input type="text" id="minorThreshold" class="threshold-input" data-has-default="true">
+                                        <input type="text" id="minorThreshold" class="threshold-input"
+                                            data-has-default="true">
                                     </div>
                                     <div class="threshold-value">
                                         <span>严重: </span>
-                                        <input type="text" id="majorThreshold" class="threshold-input" data-has-default="true">
+                                        <input type="text" id="majorThreshold" class="threshold-input"
+                                            data-has-default="true">
                                     </div>
                                 </div>
 
@@ -129,7 +136,8 @@
                                         <span class="hp-label">生命值</span>
                                         <div class="hp-max">
                                             <span class="max-label">最大值:</span>
-                                            <input type="number" id="hpMax" class="max-input" value="6" min="1" max="18" data-has-default="true" data-default-value="6">
+                                            <input type="number" id="hpMax" class="max-input" value="6" min="1" max="18"
+                                                data-has-default="true" data-default-value="6">
                                         </div>
                                     </div>
                                     <div class="hp-grid" id="hp-grid"></div>
@@ -140,7 +148,8 @@
                                         <span class="stress-label">压力</span>
                                         <div class="stress-max">
                                             <span class="max-label">最大值:</span>
-                                            <input type="number" id="stressMax" class="max-input" value="6" min="1" max="18" data-has-default="true" data-default-value="6">
+                                            <input type="number" id="stressMax" class="max-input" value="6" min="1"
+                                                max="18" data-has-default="true" data-default-value="6">
                                         </div>
                                     </div>
                                     <div class="stress-grid" id="stress-grid"></div>
@@ -150,8 +159,10 @@
                             <!-- 希望 -->
                             <div class="section">
                                 <div class="section-header">希望</div>
-                                <div class="hope-desc">花费一个希望来使用经验或帮助盟友。</div>
+                                <div class="hope-desc">花费1点希望来使用经验或帮助盟友</div>
+                                <div class="hope-special" id="hope-special"></div>
                                 <div class="hope-grid" id="hope-grid"></div>
+
                             </div>
 
                             <!-- 经验 -->
@@ -350,17 +361,20 @@
                         <div class="description-column">
                             <div class="section-header">角色背景</div>
                             <p class="description-hint">在这里写下角色的简介和背景故事</p>
-                            <textarea id="characterBackground" class="description-textarea" placeholder="在这里写下角色的简介和背景故事..."></textarea>
+                            <textarea id="characterBackground" class="description-textarea"
+                                placeholder="在这里写下角色的简介和背景故事..."></textarea>
                         </div>
                         <div class="description-column">
                             <div class="section-header">角色外貌</div>
                             <p class="description-hint">在这里写下角色的性别，年龄，外貌衣着</p>
-                            <textarea id="characterAppearance" class="description-textarea" placeholder="描述角色的性别，年龄，外貌和衣着..."></textarea>
+                            <textarea id="characterAppearance" class="description-textarea"
+                                placeholder="描述角色的性别，年龄，外貌和衣着..."></textarea>
                         </div>
                         <div class="description-column">
                             <div class="section-header">角色动机</div>
                             <p class="description-hint">在这里写下角色加入这场冒险的原因，与队友的联系</p>
-                            <textarea id="characterMotivation" class="description-textarea" placeholder="解释角色加入这场冒险的原因以及与其他队员的联系..."></textarea>
+                            <textarea id="characterMotivation" class="description-textarea"
+                                placeholder="解释角色加入这场冒险的原因以及与其他队员的联系..."></textarea>
                         </div>
                     </div>
 
@@ -410,7 +424,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="actions">
             <button id="print-button" class="action-button">打印角色表</button>
             <button id="save-button" class="action-button">保存角色</button>
@@ -421,15 +435,19 @@
     </div>
 
     <!-- 数据文件 - 最先加载 -->
-    <script src="data/all_card.js"></script> <!-- Move this first -->
+    <script src="data/class_data.js"></script>
+    <script src="data/all_card.js"></script>
     <script src="data/races_data.js"></script>
     <script src="data/groups_data.js"></script>
     <script src="data/equipment_data.js"></script>
     <script src="data/data.js"></script>
-    
+
+    <!-- 添加导航相关文件 -->
+    <link rel="stylesheet" href="css/sidebar.css">
+    <script src="js/sidebar.js"></script>
     <!-- 工具函数 -->
     <script src="js/util.js"></script>
-    
+
     <!-- 核心功能模块 -->
     <script src="js/card_selector.js"></script>
     <script src="js/upgrades.js"></script>
@@ -437,16 +455,17 @@
     <script src="js/combat.js"></script>
     <script src="js/hope.js"></script>
     <script src="js/progress.js"></script>
-    
+
     <!-- 界面组件 -->
     <script src="js/select.js"></script>
     <script src="js/attributes.js"></script>
     <script src="js/cards.js"></script>
     <script src="js/state.js"></script>
-    
+
     <!-- 主脚本 -->
     <script src="js/main.js"></script>
     <script src="js/weapon_selector.js"></script>
     <script src="js/armor_selector.js"></script>
 </body>
+
 </html>

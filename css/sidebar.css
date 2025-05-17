@@ -1,0 +1,181 @@
+.floating-sidebar {
+    position: fixed;
+    width: 200px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 90vh;
+    overflow-y: auto;
+    /* 移除left和transform属性，将由JavaScript控制 */
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-content h3 {
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.sidebar-button:hover {
+    background-color: #eee;
+}
+
+.sidebar-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-notes h4 {
+    margin: 0;
+}
+
+#sidebarNotes {
+    width: 100%;
+    height: 150px;
+    resize: vertical;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 添加滚动条样式 */
+.floating-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.floating-sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.floating-sidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+/* 添加紧贴主界面的计算 */
+@media screen and (min-width: 1200px) {
+    .floating-sidebar {
+        left: calc(50% - 600px - 220px);
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    .floating-sidebar {
+        left: 10px;
+    }
+}
+/* 建卡导航样式 */
+.nav-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.nav-content {
+    min-height: 200px;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.nav-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.nav-button {
+    padding: 8px 15px;
+    border: 1px solid #333;
+    background: #333;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-button:disabled {
+    background: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+.guide-sidebar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.guide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.guide-header h3 {
+    margin: 0;
+}
+
+.guide-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+#close-nav {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#nav-content {
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+@media print {
+    .guide-sidebar {
+        display: none !important;
+    }
+}

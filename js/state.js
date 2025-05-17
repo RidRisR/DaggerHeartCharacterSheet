@@ -1,3 +1,47 @@
+// 添加字段自动保存功能
+function initAutoSave() {
+    const fieldsToWatch = [
+        "characterName", "level", "community", "ancestry1", "ancestry2", "subclass",
+        "evasion", "armorValue", "armorMax", "minorThreshold", "majorThreshold",
+        "hpMax", "stressMax", "characterBackground", "characterNotes",
+        "characterAppearance", "characterMotivation"
+    ];
+
+    fieldsToWatch.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('change', () => {
+                localStorage.setItem(id, element.value);
+            });
+            // 对于文本输入，也监听input事件以实时保存
+            if (element.type === 'text' || element.type === 'textarea') {
+                element.addEventListener('input', () => {
+                    localStorage.setItem(id, element.value);
+                });
+            }
+        }
+    });
+
+    // 属性值的自动保存
+    const attributeKeys = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"];
+    attributeKeys.forEach(attrKey => {
+        const valueEl = document.getElementById(`${attrKey}-value`);
+        if (valueEl) {
+            valueEl.addEventListener('change', () => {
+                localStorage.setItem(`${attrKey}-value`, valueEl.value);
+            });
+            valueEl.addEventListener('input', () => {
+                localStorage.setItem(`${attrKey}-value`, valueEl.value);
+            });
+        }
+    });
+}
+
+// 在页面加载完成后初始化自动保存
+document.addEventListener('DOMContentLoaded', () => {
+    initAutoSave();
+});
+
 // 保存角色数据
 function saveCharacter() {
     const formData = {};
@@ -58,11 +102,24 @@ function saveCharacter() {
     // 7. 收集卡组数据
     formData.cardData = [];
     for (let i = 0; i < 20; i++) {
+        const cardBox = document.querySelector(`.card-box[data-slot="${i}"]`);
+        const cardDataStr = cardBox?.dataset.cardData;
+        let description = "";
+        if (cardDataStr) {
+            try {
+                const cardData = JSON.parse(cardDataStr);
+                description = cardData.描述 || "";
+            } catch (e) {
+                console.error(`Error parsing card data for slot ${i}:`, e);
+            }
+        }
+
         formData.cardData.push({
             name: document.getElementById(`card-name-${i}`)?.value || "",
             type: document.getElementById(`card-type-${i}`)?.value || "",
             level: document.getElementById(`card-level-${i}`)?.value || "",
-            recall: document.getElementById(`card-recall-${i}`)?.value || ""
+            recall: document.getElementById(`card-recall-${i}`)?.value || "",
+            description: description
         });
     }
 
@@ -92,9 +149,17 @@ function saveCharacter() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
+
+    // 获取角色名称、职业、血统和社区信息
     const charName = formData.characterName || "character";
-    const profName = currentProfessionId ? professions[currentProfessionId]?.name.replace(/\s+/g, '_') || "prof" : "prof";
-    a.download = `${charName}_${profName}.json`;
+    const profName = currentProfessionId ? window.getProfessionName(currentProfessionId).replace(/\s+/g, '_') || "prof" : "prof";
+    const ancestry1 = formData.ancestry1?.replace(/\s+/g, '_') || "";
+    const ancestry2 = formData.ancestry2?.replace(/\s+/g, '_') || "";
+    const community = formData.community?.replace(/\s+/g, '_') || "";
+
+    // 构建文件名
+    a.download = `${charName}_${profName}_${ancestry1}_${ancestry2}_${community}.json`;
+
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -132,7 +197,6 @@ function loadCharacter() {
                     }
                     fillFormData(jsonData);
                     console.log("Character data filled successfully");
-                    alert("角色数据已从文件加载！");
                 } catch (error) {
                     console.error("加载角色数据失败:", error);
                     alert("加载角色数据失败。文件可能已损坏或格式不正确。");
@@ -337,6 +401,51 @@ function setBoxStates(selector, states, isDataIndexBased = true) {
 function fillFormData(sourceData) {
     console.log("Starting to fill form data...");
 
+    // 1. 职业数据处理
+    const loadedProfessionId = sourceData.profession;
+    console.log("Setting profession:", loadedProfessionId);
+
+    // 查找匹配的职业数据
+    const profData = CLASS_DATA.find(p =>
+        p.id === loadedProfessionId ||
+        p.id.toLowerCase() === loadedProfessionId.toLowerCase()
+    );
+
+    if (profData) {
+        const profession1 = document.getElementById("profession");
+        const profession2 = document.getElementById("profession-page2");
+        const profNameElement = document.getElementById("profession-name");
+
+        // 设置值并触发事件
+        if (profession1) {
+            console.log("Setting profession1 to:", profData.id);
+            profession1.value = profData.id;
+            // 触发原生change事件
+            profession1.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        if (profession2) {
+            console.log("Setting profession2 to:", profData.id);
+            profession2.value = profData.id;
+            // 确保第二页也触发change事件
+            profession2.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        if (profNameElement) {
+            profNameElement.textContent = profData.职业;
+        }
+
+        // 保存到localStorage
+        localStorage.setItem("characterProfession", profData.id);
+
+        // 手动触发相关更新
+        updateHopeSpecial(profData.id);
+        initUpgradeOptions(profData.id);
+        loadUpgradeStatesForProfession(profData.id);
+    } else {
+        console.error("No matching profession found for:", loadedProfessionId);
+    }
+
     // 导入武器和护甲数据
     if (sourceData.weapons) {
         window.importWeaponsData(sourceData.weapons);
@@ -365,12 +474,10 @@ function fillFormData(sourceData) {
     if (sourceData.attributes) {
         console.log("Loading attributes:", sourceData.attributes);
         Object.entries(sourceData.attributes).forEach(([attrKey, attrData]) => {
-            console.log(`Setting attribute ${attrKey}:`, attrData);
             const valueEl = document.getElementById(`${attrKey}-value`);
             const checkEl = document.querySelector(`.attribute-check[data-attribute="${attrKey}"]`);
 
             if (valueEl) {
-                console.log(`Setting ${attrKey} value to:`, attrData.value);
                 valueEl.value = attrData.value;
                 localStorage.setItem(`${attrKey}-value`, attrData.value);
             } else {
@@ -378,7 +485,7 @@ function fillFormData(sourceData) {
             }
 
             if (checkEl) {
-                console.log(`Setting ${attrKey} checked state to:`, attrData.checked);
+                console.log(` ${attrKey} checked state to:`, attrData.checked);
                 if (attrData.checked) {
                     checkEl.classList.add('checked');
                 } else {
@@ -458,21 +565,32 @@ function fillFormData(sourceData) {
     // 7. 卡组数据
     if (sourceData.cardData) {
         sourceData.cardData.forEach((card, i) => {
+            const cardBox = document.querySelector(`.card-box[data-slot="${i}"]`);
+            if (cardBox) {
+                const cardData = {
+                    名称: card.name,
+                    领域: card.type,
+                    等级: card.level?.replace("LV.", "") || "",
+                    回想: card.recall?.replace("RC.", "") || "",
+                    描述: card.description || ""
+                };
+                cardBox.dataset.cardData = JSON.stringify(cardData);
+            }
+
             ["name", "type", "level", "recall"].forEach(key => {
                 const el = document.getElementById(`card-${key}-${i}`);
                 const val = card[key] || "";
                 if (el) {
                     el.value = val;
-                    localStorage.setItem(`card-${key}-${i}`, el.value);
+                    localStorage.setItem(`card-${key}-${i}`, val);
                 }
             });
+            // 保存描述到 localStorage
+            localStorage.setItem(`card-描述-${i}`, card.description || "");
         });
     }
 
     // 8. 职业和升级状态
-    const loadedProfessionId = sourceData.profession || "";
-    localStorage.setItem("characterProfession", loadedProfessionId);
-
     if (loadedProfessionId && sourceData.upgradeStates && sourceData.upgradeStates[loadedProfessionId]) {
         const profUpgradeStates = sourceData.upgradeStates[loadedProfessionId];
         for (let tier = 1; tier <= 3; tier++) {

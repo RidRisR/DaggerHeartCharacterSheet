@@ -1,22 +1,78 @@
-// 初始化职业选择框
-function initProfessionSelects() {
-    const professionSelects = ['profession', 'profession-page2'];
-    professionSelects.forEach(selectId => {
-        const select = document.getElementById(selectId);
-        if (!select) return;
-        select.innerHTML = '<option value=""></option>';
+// 确保函数在全局范围内可用
+window.initProfessionSelect = function () {
+    const professionSelects = document.querySelectorAll('.profession-select');
 
-        if (typeof professions === 'undefined' || Object.keys(professions).length === 0) {
-            console.warn("Professions data not available for initProfessionSelects");
-            return;
-        }
-        Object.values(professions).forEach(prof => {
+    // 清空并填充职业选项
+    professionSelects.forEach(select => {
+        select.innerHTML = '<option value=""></option>';
+        CLASS_DATA.forEach(prof => {
             const option = document.createElement('option');
-            option.value = prof.id;
-            option.textContent = prof.name;
+            option.value = prof.id;  // 使用id作为value
+            option.textContent = prof.职业;
+            // 将完整的职业数据保存到option中
+            option.dataset.profData = JSON.stringify(prof);
             select.appendChild(option);
         });
     });
+
+    // 将两个职业选择器联动
+    const profession1 = document.getElementById('profession');
+    const profession2 = document.getElementById('profession-page2');
+
+    window.getProfessionName = function (professionId) {
+        const select = document.getElementById('profession');
+        if (!select) return "";
+        const option = select.querySelector(`option[value="${professionId}"]`);
+        if (!option) return "";
+        try {
+            const profData = JSON.parse(option.dataset.profData);
+            return profData.职业 || "";
+        } catch (e) {
+            console.error('Error parsing profession data:', e);
+            return "";
+        }
+    };
+
+    if (profession1 && profession2) {
+        const handleProfessionChange = function (selectedValue, sourceElement) {
+            console.log(`Profession change triggered from ${sourceElement.id}:`, selectedValue);
+
+            // 更新两个选择器的值
+            if (sourceElement !== profession1) profession1.value = selectedValue;
+            if (sourceElement !== profession2) profession2.value = selectedValue;
+
+            // 更新职业名称显示
+            const profNameElement = document.getElementById("profession-name");
+            if (profNameElement) {
+                const profData = CLASS_DATA.find(p => p.id === selectedValue);
+                profNameElement.textContent = profData ? profData.职业 : selectedValue;
+            }
+
+            // 更新相关组件
+            updateHopeSpecial(selectedValue);
+            initUpgradeOptions(selectedValue);
+            loadUpgradeStatesForProfession(selectedValue);
+
+            // 保存到localStorage
+            localStorage.setItem("characterProfession", selectedValue);
+        };
+
+        profession1.addEventListener("change", function () {
+            handleProfessionChange(this.value, this);
+        });
+
+        profession2.addEventListener("change", function () {
+            handleProfessionChange(this.value, this);
+        });
+
+        // 从localStorage加载保存的职业
+        const savedProfession = localStorage.getItem('characterProfession');
+        if (savedProfession) {
+            profession1.value = savedProfession;
+            profession2.value = savedProfession;
+            updateHopeSpecial(savedProfession);  // 初始加载时更新希望特性
+        }
+    }
 }
 
 // 初始化血统选择框

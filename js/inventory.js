@@ -212,7 +212,6 @@ function importWeaponsData(weaponData) {
         const buttonEl = document.querySelector(`button[data-original-id="${baseId}"]`);
 
         if (buttonEl) {
-            console.log('Setting button text to:', data.weaponName);
             buttonEl.textContent = data.weaponName || '';
             buttonEl.dataset.printPlaceholder = !data.weaponName;
         }
@@ -315,7 +314,7 @@ function importArmorData(armorData) {
     const featureEl = document.getElementById('armorFeature');
 
     if (buttonEl) {
-        console.log('Setting armor name to:', armorData.armorName);
+        console.log(' armor name to:', armorData.armorName);
         buttonEl.textContent = armorData.armorName || '';
         buttonEl.dataset.printPlaceholder = !armorData.armorName;
     }
