@@ -86,7 +86,7 @@ function initAncestrySelects() {
     ancestry1Select.innerHTML = ''
     ancestry2Select.innerHTML = ''
 
-    // Add empty option without 'none' text
+    // Add empty option
     const emptyOption1 = document.createElement("option")
     emptyOption1.value = ""
     ancestry1Select.appendChild(emptyOption1)
@@ -95,20 +95,20 @@ function initAncestrySelects() {
     emptyOption2.value = ""
     ancestry2Select.appendChild(emptyOption2)
 
-    // Add ancestry options
-    Object.keys(window.races || {}).forEach(raceKey => {
-        const race = window.races[raceKey]
+    // Add ancestry options from RACES_DATA
+    if (Array.isArray(RACES_DATA)) {
+        RACES_DATA.forEach(race => {
+            const option1 = document.createElement("option")
+            option1.value = race.race
+            option1.textContent = race.race
+            ancestry1Select.appendChild(option1)
 
-        const option1 = document.createElement("option")
-        option1.value = raceKey
-        option1.textContent = race.name
-        ancestry1Select.appendChild(option1)
-
-        const option2 = document.createElement("option")
-        option2.value = raceKey
-        option2.textContent = race.name
-        ancestry2Select.appendChild(option2)
-    })
+            const option2 = document.createElement("option")
+            option2.value = race.race
+            option2.textContent = race.race
+            ancestry2Select.appendChild(option2)
+        })
+    }
 }
 
 // 初始化社群选择框

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.weaponData = window.weaponData || [];
     window.armorData = window.armorData || [];
     window.upgradeOptionsData = window.upgradeOptionsData || {};
-    window.races = window.races || defaultRaces;
+    window.races = window.RACES_DATA || []; 
     window.groups = window.groups || defaultGroups;
 
     // 初始化角色表单元素
@@ -23,14 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 尝试从本地存储加载数据
     loadFromLocalStorage()
-})
-
-// Add default data constants
-const defaultRaces = {
-    "human": { name: "人类", features: [] },
-    "elf": { name: "精灵", features: [] }
-    // Add more races as needed
-};
+});
 
 const defaultGroups = {
     "wanderer": { name: "漂泊之民", features: [] },
