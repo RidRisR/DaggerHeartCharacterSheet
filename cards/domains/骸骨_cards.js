@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 骸骨_CARDS = [
+window.骸骨_CARDS = [
   {
     "ID": "Deft_Maneuvers",
     "名称": "灵巧动作",
@@ -201,7 +201,3 @@ const 骸骨_CARDS = [
     "卡图": "resource/领域/骸骨/10心如止水.png"
   }
 ];
-
-module.exports = {
-    骸骨_CARDS
-};

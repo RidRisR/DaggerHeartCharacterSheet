@@ -1,30 +1,21 @@
 const races = require('./races');
 
-// 按种族分类索引
-const RACE_INDEX = {};
-races.forEach(card => {
-    RACE_INDEX[card.名称] = card;
+// Use window object for browser environment
+window.RACE_INDEX = {};
+window.races.forEach(card => {
+    window.RACE_INDEX[card.名称] = card;
 });
 
 // 按种族类型分组索引
-const RACE_TYPE_INDEX = {};
-races.forEach(card => {
-    if (!RACE_TYPE_INDEX[card.种族]) {
-        RACE_TYPE_INDEX[card.种族] = [];
+window.RACE_TYPE_INDEX = {};
+window.races.forEach(card => {
+    if (!window.RACE_TYPE_INDEX[card.种族]) {
+        window.RACE_TYPE_INDEX[card.种族] = [];
     }
-    RACE_TYPE_INDEX[card.种族].push(card);
+    window.RACE_TYPE_INDEX[card.种族].push(card);
 });
 
 // 工具方法
-const getRaceById = (id) => races.find(card => card.id === id);
-const getRaceByName = (name) => RACE_INDEX[name];
-const getRacesByType = (type) => RACE_TYPE_INDEX[type] || [];
-
-module.exports = {
-    races,
-    RACE_INDEX,
-    RACE_TYPE_INDEX,
-    getRaceById,
-    getRaceByName,
-    getRacesByType
-};
+window.getRaceById = (id) => window.races.find(card => card.id === id);
+window.getRaceByName = (name) => window.RACE_INDEX[name];
+window.getRacesByType = (type) => window.RACE_TYPE_INDEX[type] || [];

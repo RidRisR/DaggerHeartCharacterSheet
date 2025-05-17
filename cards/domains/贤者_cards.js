@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 贤者_CARDS = [
+window.贤者_CARDS = [
   {
     "ID": "Vicious_Entangle",
     "名称": "恶性纠缠",

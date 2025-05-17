@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 优雅_CARDS = [
+window.优雅_CARDS = [
   {
     "ID": "Enrapture",
     "名称": "心醉神迷",

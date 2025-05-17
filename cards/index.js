@@ -1,46 +1,35 @@
-const { classes, CLASS_INDEX } = require('./classes');
-const { subClasses, SUBCLASS_INDEX } = require('./subclasses');
-const { races, RACE_INDEX } = require('./races');
-const { communities, COMMUNITY_INDEX } = require('./communities');
-const {
-    奥术_CARDS, 利刃_CARDS, 骸骨_CARDS, 典籍_CARDS,
-    优雅_CARDS, 午夜_CARDS, 贤者_CARDS, 辉耀_CARDS,
-    勇气_CARDS
-} = require('./domains');
-
-// 合并所有领域卡牌
-const DOMAIN_CARDS = {
-    "奥术": 奥术_CARDS,
-    "利刃": 利刃_CARDS,
-    "骸骨": 骸骨_CARDS,
-    "典籍": 典籍_CARDS,
-    "优雅": 优雅_CARDS,
-    "午夜": 午夜_CARDS,
-    "贤者": 贤者_CARDS,
-    "辉耀": 辉耀_CARDS,
-    "勇气": 勇气_CARDS
+// Use global window object for browser environment
+const DOMAINS_CARDS = {
+    "奥术": window.奥术_CARDS,
+    "利刃": window.利刃_CARDS,
+    "骸骨": window.骸骨_CARDS,
+    "典籍": window.典籍_CARDS,
+    "优雅": window.优雅_CARDS,
+    "午夜": window.午夜_CARDS,
+    "贤者": window.贤者_CARDS,
+    "辉耀": window.辉耀_CARDS,
+    "勇气": window.勇气_CARDS
 };
 
-// 卡牌类型枚举
 const CARD_TYPES = {
     CLASS: 'class',
     SUBCLASS: 'subclass',
     RACE: 'race',
     DOMAIN: 'domain',
-    COMMUNITY: 'community'  // 新增社群类型
+    COMMUNITY: 'community'
 };
 
 // 获取卡牌列表
 const getCardsByType = (type) => {
     switch (type) {
         case CARD_TYPES.CLASS:
-            return classes;
+            return window.classes;
         case CARD_TYPES.SUBCLASS:
-            return subClasses;
+            return window.subClasses;
         case CARD_TYPES.RACE:
-            return races;
+            return window.races;
         case CARD_TYPES.COMMUNITY:
-            return communities;
+            return window.communities;
         default:
             return [];
     }
@@ -48,7 +37,7 @@ const getCardsByType = (type) => {
 
 // 获取领域卡牌
 const getDomainCards = (domainName) => {
-    return DOMAIN_CARDS[domainName] || [];
+    return DOMAINS_CARDS[domainName] || [];
 };
 
 // 通用获取卡图方法
@@ -61,15 +50,15 @@ const getCardImage = (card) => {
 const findCardByName = (name, type) => {
     switch (type) {
         case CARD_TYPES.CLASS:
-            return CLASS_INDEX[name];
+            return window.CLASS_INDEX[name];
         case CARD_TYPES.SUBCLASS:
-            return subClasses.find(c => c.名称 === name);
+            return window.subClasses.find(c => c.名称 === name);
         case CARD_TYPES.RACE:
-            return RACE_INDEX[name];
+            return window.RACE_INDEX[name];
         case CARD_TYPES.COMMUNITY:
-            return COMMUNITY_INDEX[name];
+            return window.COMMUNITY_INDEX[name];
         case CARD_TYPES.DOMAIN:
-            for (const domain of Object.values(DOMAIN_CARDS)) {
+            for (const domain of Object.values(DOMAINS_CARDS)) {
                 const card = domain.find(c => c.名称 === name);
                 if (card) return card;
             }
@@ -79,10 +68,10 @@ const findCardByName = (name, type) => {
     }
 };
 
-module.exports = {
-    CARD_TYPES,
-    getCardsByType,
-    getDomainCards,
-    getCardImage,
-    findCardByName,
-};
+// Expose to global scope instead of using module.exports
+window.CARD_TYPES = CARD_TYPES;
+window.DOMAINS_CARDS = DOMAINS_CARDS;
+window.getCardsByType = getCardsByType;
+window.getDomainCards = getDomainCards;
+window.getCardImage = getCardImage;
+window.findCardByName = findCardByName;

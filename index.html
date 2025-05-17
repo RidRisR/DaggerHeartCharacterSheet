@@ -434,20 +434,6 @@
             <button id="reset-button" class="action-button danger">重置</button>
             <button id="test-card-browser" class="action-button">打开卡牌浏览器</button>
         </div>
-<!-- 组件和数据加载 -->
-<link rel="stylesheet" href="css/card_browser.css">
-<script src="js/data_loader.js"></script>
-<script src="js/components/CardBrowser.js"></script>
-
-<!-- 初始化卡牌浏览器 -->
-<script>
-    document.getElementById('test-card-browser').addEventListener('click', () => {
-        const cardData = CardDataLoader.loadAllCards();
-        const browser = new CardBrowser(cardData);
-        browser.show();
-    });
-</script>
-
         <!-- 数据文件 - 最先加载 -->
         <script src="data/class_data.js"></script>
         <script src="data/all_card.js"></script>
@@ -455,6 +441,32 @@
         <script src="data/groups_data.js"></script>
         <script src="data/equipment_data.js"></script>
         <script src="data/data.js"></script>
+        
+        <!-- 卡牌系统 -->
+        <script src="cards/index.js"></script>
+        <script>
+            // 初始化全局卡牌系统
+            window.Cards = {
+                CARD_TYPES: window.CARD_TYPES,
+                getCardsByType: window.getCardsByType,
+                getDomainCards: window.getDomainCards,
+                getCardImage: window.getCardImage,
+                findCardByName: window.findCardByName
+            };
+        </script>
+
+        <!-- 组件和数据加载 -->
+        <link rel="stylesheet" href="css/card_browser.css">
+        <script src="js/components/CardBrowserManager.js"></script>
+        <script src="js/components/CardBrowser.js"></script>
+
+        <!-- 初始化卡牌浏览器 -->
+        <script>
+                document.getElementById('test-card-browser').addEventListener('click', () => {
+                const browser = new CardBrowser();
+                browser.show();
+            });
+</script>
 
         <!-- 添加导航相关文件 -->
         <link rel="stylesheet" href="css/sidebar.css">

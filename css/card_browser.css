@@ -146,3 +146,30 @@
     .close-button:hover {
         background: #c0392b;
 }
+.card-level {
+    font-size: 12px;
+    color: #ffd700;
+    margin-left: 8px;
+}
+
+.filter-section {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+}
+
+.filter-select,
+.filter-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filter-select {
+    min-width: 120px;
+}
+
+.filter-input {
+    flex-grow: 1;
+    max-width: 200px;
+}

@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 奥术_CARDS = [
+window.奥术_CARDS = [
   {
     "ID": "Unleash_Chaos",
     "名称": "施放混乱",

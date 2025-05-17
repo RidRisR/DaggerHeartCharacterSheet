@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 典籍_CARDS = [
+window.典籍_CARDS = [
   {
     "ID": "Book_of_Illiat",
     "名称": "伊利亚特之书",

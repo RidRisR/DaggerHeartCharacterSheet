@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 勇气_CARDS = [
+window.勇气_CARDS = [
   {
     "ID": "Forceful_Push",
     "名称": "强力推撞",

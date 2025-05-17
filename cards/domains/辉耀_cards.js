@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 辉耀_CARDS = [
+window.辉耀_CARDS = [
   {
     "ID": "Bolt_Beacon",
     "名称": "闪光信标",

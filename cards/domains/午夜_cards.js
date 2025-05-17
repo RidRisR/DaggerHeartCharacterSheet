@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 午夜_CARDS = [
+window.午夜_CARDS = [
   {
     "ID": "Uncanny_Disguise",
     "名称": "奇异伪装",

@@ -1,5 +1,5 @@
 // 自动生成的领域卡牌文件
-const 利刃_CARDS = [
+window.利刃_CARDS = [
   {
     "ID": "Not_Good_Enough",
     "名称": "未至完美",
