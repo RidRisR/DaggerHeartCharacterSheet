@@ -1,3 +1,47 @@
+// 添加字段自动保存功能
+function initAutoSave() {
+    const fieldsToWatch = [
+        "characterName", "level", "community", "ancestry1", "ancestry2", "subclass",
+        "evasion", "armorValue", "armorMax", "minorThreshold", "majorThreshold",
+        "hpMax", "stressMax", "characterBackground", "characterNotes",
+        "characterAppearance", "characterMotivation"
+    ];
+
+    fieldsToWatch.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('change', () => {
+                localStorage.setItem(id, element.value);
+            });
+            // 对于文本输入，也监听input事件以实时保存
+            if (element.type === 'text' || element.type === 'textarea') {
+                element.addEventListener('input', () => {
+                    localStorage.setItem(id, element.value);
+                });
+            }
+        }
+    });
+
+    // 属性值的自动保存
+    const attributeKeys = ["agility", "strength", "finesse", "instinct", "presence", "knowledge"];
+    attributeKeys.forEach(attrKey => {
+        const valueEl = document.getElementById(`${attrKey}-value`);
+        if (valueEl) {
+            valueEl.addEventListener('change', () => {
+                localStorage.setItem(`${attrKey}-value`, valueEl.value);
+            });
+            valueEl.addEventListener('input', () => {
+                localStorage.setItem(`${attrKey}-value`, valueEl.value);
+            });
+        }
+    });
+}
+
+// 在页面加载完成后初始化自动保存
+document.addEventListener('DOMContentLoaded', () => {
+    initAutoSave();
+});
+
 // 保存角色数据
 function saveCharacter() {
     const formData = {};
