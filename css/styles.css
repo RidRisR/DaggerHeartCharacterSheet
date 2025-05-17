@@ -274,12 +274,6 @@ body {
   /* Spacing between boxes */
 }
 
-/* 部分标题样式 */
-.section {
-  padding: 5px 0;
-  margin-bottom: 5px;
-}
-
 .section-header {
   display: flex;
   align-items: center;
