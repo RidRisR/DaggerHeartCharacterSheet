@@ -14,8 +14,13 @@ function updateBoxesMax(grid, className, max) {
 
 // 获取职业名称
 function getProfessionName(professionId) {
-    // 使用select.js中定义的全局函数
-    return window.getProfessionName ? window.getProfessionName(professionId) : (professionId || "");
+    if (!professionId || !window.professions || !window.professions[professionId]) {
+        return '';
+    }
+    // 优先使用中文职业名称
+    return window.professions[professionId].职业 ||
+        window.professions[professionId].name ||
+        professionId;
 }
 
 // 初始化标签页

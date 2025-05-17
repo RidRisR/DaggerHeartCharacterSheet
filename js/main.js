@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     window.weaponData = window.weaponData || [];
     window.armorData = window.armorData || [];
     window.upgradeOptionsData = window.upgradeOptionsData || {};
+    window.races = window.races || defaultRaces;
+    window.groups = window.groups || defaultGroups;
 
     // 初始化角色表单元素
     initCharacterSheet()
@@ -22,6 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // 尝试从本地存储加载数据
     loadFromLocalStorage()
 })
+
+// Add default data constants
+const defaultRaces = {
+    "human": { name: "人类", features: [] },
+    "elf": { name: "精灵", features: [] }
+    // Add more races as needed
+};
+
+const defaultGroups = {
+    "wanderer": { name: "漂泊之民", features: [] },
+    "highlander": { name: "高城之民", features: [] }
+    // Add more groups as needed
+};
 
 // 初始化角色表单元素
 function initCharacterSheet() {
@@ -67,6 +82,71 @@ function initButtonListeners() {
     document.getElementById("load-button").addEventListener("click", loadCharacter)
     document.getElementById("export-button").addEventListener("click", exportToPDF)
     document.getElementById("reset-button").addEventListener("click", resetCharacter)
+}
+
+async function exportToPDF() {
+    console.log('开始导出PDF...');
+
+    try {
+        const transferData = {
+            type: 'content',
+            currentProfession: document.getElementById('profession')?.value,
+            professionInfo: window.dataCollectors.collectProfessionInfo(),
+            pages: {
+                page1: document.querySelector('#page1')?.outerHTML,
+                page2: document.querySelector('#page2')?.outerHTML
+            },
+            weaponData: window.dataCollectors.collectWeaponData(),
+            characterData: {
+                attributes: window.dataCollectors.collectAttributeData(),
+                state: window.dataCollectors.collectCharacterState(),
+                info: window.dataCollectors.collectCharacterInfo(),
+                experience: window.dataCollectors.collectExperienceData(),
+                inventory: window.dataCollectors.collectInventoryData(),
+                cards: window.dataCollectors.collectCardData()
+            },
+            globalData: window.dataCollectors.collectGlobalData()
+        };
+
+        // 数据完整性验证
+        if (!validateTransferData(transferData)) {
+            alert('数据收集不完整，请检查必填项。');
+            return;
+        }
+
+        sessionStorage.setItem('printData', JSON.stringify(transferData));
+        window.open('./components/print.html?print=' + Date.now(), '_blank');
+    } catch (e) {
+        console.error('数据收集失败:', e);
+        alert('导出失败，请重试。');
+    }
+}
+
+function validateTransferData(data) {
+    const required = [
+        data.pages.page1,
+        data.pages.page2,
+        data.currentProfession,
+        data.characterData.info.name
+    ];
+    return required.every(item => !!item);
+}
+
+function collectWeaponData() {
+    const weaponData = {};
+    ["primaryWeaponName", "secondaryWeaponName", "inventoryWeapon1Name", "inventoryWeapon2Name"]
+        .forEach(baseId => {
+            const cleanedId = baseId.replace('Name', '');
+            weaponData[baseId] = {
+                weaponId: localStorage.getItem(baseId),
+                trait: document.getElementById(`${cleanedId}Trait`)?.value || '',
+                damage: document.getElementById(`${cleanedId}Damage`)?.value || '',
+                feature: document.getElementById(`${cleanedId}Feature`)?.value || '',
+                isPrimary: document.getElementById(`${cleanedId}Primary`)?.checked || false,
+                isSecondary: document.getElementById(`${cleanedId}Secondary`)?.checked || false
+            };
+        });
+    return weaponData;
 }
 
 // 初始化职业同步

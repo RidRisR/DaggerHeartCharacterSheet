@@ -272,19 +272,21 @@ body {
   /* Three boxes per row */
   gap: 4px;
   /* Spacing between boxes */
+  margin-left: 6px;
 }
 
 /* 部分标题样式 */
 .section {
-  padding: 3px 0;
-  margin-bottom: 3px;
+  padding: 5px 0;
+    margin-bottom: 5px;
 }
+
 .section-header {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   font-size: 12px;
   font-weight: bold;
 }
@@ -482,7 +484,6 @@ body {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 5px;
 }
 
 .hope-diamond {
@@ -535,7 +536,7 @@ body {
 .experience-desc {
   flex-grow: 1;
   padding: 5px;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .experience-value {
@@ -706,7 +707,7 @@ body {
   border: 1px solid #999;
   border-radius: 3px;
   padding: 2px;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .weapon-input,
@@ -715,10 +716,30 @@ body {
   width: 100%;
   border: none;
   border-bottom: 1px solid #999;
-  font-size: 15px;
+  font-size: 12px;
   outline: none;
 }
 
+.weapon-feature,
+.armor-feature {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.weapon-feature .field-label,
+.armor-feature .field-label {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.weapon-feature .weapon-input,
+.armor-feature .armor-input {
+  width: 100%;
+  border-radius: 4px;
+  font-size: 12px;
+}
 /* 物品栏样式 */
 .inventory-list {
   display: flex;
@@ -786,6 +807,7 @@ body {
   cursor: pointer;
   background: transparent;
 }
+
 /* 第二页样式 */
 .character-description {
   display: grid;
@@ -1017,68 +1039,4 @@ body {
 
 .action-button.danger:hover {
   background-color: #b71c1c;
-}
-
-/* 打印样式 */
-@media print {
-  body {
-    margin: 0;
-    padding: 0;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .container {
-    box-shadow: none;
-    margin: 0;
-  }
-
-  .tab-list,
-  .actions {
-    display: none !important;
-  }
-
-  .tab-content {
-    display: block !important;
-    padding: 0;
-  }
-
-  .tab-content:not(.active) {
-    display: none !important;
-  }
-
-  .character-sheet,
-  .character-sheet-page-two {
-    width: 210mm;
-    margin: 0;
-    padding: 5mm;
-    page-break-after: always;
-  }
-
-  /* 确保预设值在打印时保留 */
-  input::placeholder,
-  textarea::placeholder {
-    color: transparent !important;
-  }
-.weapon-select-button[data-print-placeholder="true"] {
-  color: transparent;
-  background: transparent;
-  border: 1px solid #999;
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin: 4px 0;
-  width: 100%;
-  min-height: 28px;
-}
-
-.weapon-select-button {
-  color: #333;
-  background: transparent;
-  border: 1px solid #999;
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin: 4px 0;
-  width: 100%;
-  min-height: 28px;
-}
 }
