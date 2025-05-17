@@ -129,7 +129,7 @@ class PrintPreview {
             // 恢复闪避值
             const evasionEl = document.getElementById('evasion');
             if (evasionEl) {
-                evasionEl.value = printData.characterData.state.evasion || '0';
+                evasionEl.value = printData.characterData.state.evasion || '';
                 console.log('恢复闪避值:', evasionEl.value);
             }
 
@@ -256,8 +256,8 @@ class PrintPreview {
         if (state.damageThreshold) {
             const minorEl = document.getElementById('minorThreshold');
             const majorEl = document.getElementById('majorThreshold');
-            if (minorEl) minorEl.value = state.damageThreshold.minor;
-            if (majorEl) majorEl.value = state.damageThreshold.major;
+            if (minorEl) minorEl.value = state.damageThreshold.minor || '';
+            if (majorEl) majorEl.value = state.damageThreshold.major || '';
         }
     }
 

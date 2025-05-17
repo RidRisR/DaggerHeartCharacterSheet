@@ -1,0 +1,95 @@
+/* 打印预览基础样式 */
+body {
+    margin: 0;
+    padding: 20px;
+    background: #f0f0f0;
+}
+
+.print-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.print-page {
+    background: white;
+    padding: 10mm;
+    width: 210mm;
+    height: 297mm;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.print-actions {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.print-button {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.close-button {
+    background: #f44336;
+}
+
+/* 打印时的样式 */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background: none;
+    }
+
+    .print-actions {
+        display: none !important;
+    }
+
+    .print-container {
+        display: block;
+        padding: 0;
+    }
+
+    .print-page {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        page-break-after: always;
+        min-height: 297mm;
+        width: 100%;
+    }
+
+    /* 确保内容不会跨页 */
+    .character-sheet,
+    .character-sheet-page-two {
+        page-break-inside: avoid;
+    }
+
+    /* 移除最后一页的分页符 */
+    .print-page:last-child {
+        page-break-after: auto;
+    }
+
+    /* 隐藏最大值框中的数字，但保留标签文字 */
+    .max-input {
+        color: transparent !important;
+    }
+
+    /* 最大值标签文字显示 */
+    .max-label {
+        color: black !important;
+        display: inline !important;
+    }
+}

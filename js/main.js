@@ -125,8 +125,6 @@ function validateTransferData(data) {
     const required = [
         data.pages.page1,
         data.pages.page2,
-        data.currentProfession,
-        data.characterData.info.name
     ];
     return required.every(item => !!item);
 }

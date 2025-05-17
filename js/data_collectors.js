@@ -20,11 +20,8 @@ window.dataCollectors = {
             stress: this.collectGridState('stress'),
             armor: this.collectArmorState(),
             hope: this.collectHopeState(),
-            evasion: evasion || '0',
-            damageThreshold: {
-                minor: document.getElementById('minorThreshold')?.value || '0',
-                major: document.getElementById('majorThreshold')?.value || '0'
-            }
+            evasion: document.getElementById('evasion')?.value || '',
+            damageThreshold: this.collectDamageThreshold()
         };
         console.log('角色状态数据收集完成:', state);
         return state;
@@ -133,8 +130,8 @@ window.dataCollectors = {
 
     collectDamageThreshold() {
         return {
-            minor: document.getElementById('minorThreshold')?.value || '0',
-            major: document.getElementById('majorThreshold')?.value || '0'
+            minor: document.getElementById('minorThreshold')?.value || '',
+            major: document.getElementById('majorThreshold')?.value || ''
         };
     },
 

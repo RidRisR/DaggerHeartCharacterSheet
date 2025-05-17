@@ -189,7 +189,7 @@ body {
 /* 顶部行样式 */
 .top-row {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   margin-bottom: 10px;
 }
 
@@ -257,7 +257,7 @@ body {
   display: flex;
   align-items: center;
   /* Align items vertically */
-  gap: 10px;
+  gap: 20px;
   /* Add spacing between the armor value and grid */
 }
 

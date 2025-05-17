@@ -77,37 +77,38 @@ window.initProfessionSelect = function () {
 
 // 初始化血统选择框
 function initAncestrySelects() {
-    const ancestrySelects = ['ancestry1', 'ancestry2'];
-    ancestrySelects.forEach(selectId => {
-        const select = document.getElementById(selectId);
-        if (!select) {
-            console.warn(`Select element with id ${selectId} not found`);
-            return;
-        }
+    const ancestry1Select = document.getElementById("ancestry1")
+    const ancestry2Select = document.getElementById("ancestry2")
 
-        select.innerHTML = '<option value="none">无</option>';
+    if (!ancestry1Select || !ancestry2Select) return
 
-        if (typeof RACES_DATA === 'undefined') {
-            console.error('RACES_DATA is not defined!');
-            return;
-        }
+    // Clear existing options
+    ancestry1Select.innerHTML = ''
+    ancestry2Select.innerHTML = ''
 
-        if (!Array.isArray(RACES_DATA)) {
-            console.error('RACES_DATA is not an array!', RACES_DATA);
-            return;
-        }
+    // Add empty option without 'none' text
+    const emptyOption1 = document.createElement("option")
+    emptyOption1.value = ""
+    ancestry1Select.appendChild(emptyOption1)
 
-        RACES_DATA.forEach((race, index) => {
-            if (!race || !race.race) {
-                console.warn(`Invalid race data at index ${index}`, race);
-                return;
-            }
-            const option = document.createElement('option');
-            option.value = race.race;
-            option.textContent = race.race;
-            select.appendChild(option);
-        });
-    });
+    const emptyOption2 = document.createElement("option")
+    emptyOption2.value = ""
+    ancestry2Select.appendChild(emptyOption2)
+
+    // Add ancestry options
+    Object.keys(window.races || {}).forEach(raceKey => {
+        const race = window.races[raceKey]
+
+        const option1 = document.createElement("option")
+        option1.value = raceKey
+        option1.textContent = race.name
+        ancestry1Select.appendChild(option1)
+
+        const option2 = document.createElement("option")
+        option2.value = raceKey
+        option2.textContent = race.name
+        ancestry2Select.appendChild(option2)
+    })
 }
 
 // 初始化社群选择框
