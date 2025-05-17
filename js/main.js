@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 初始化角色表单元素
 function initCharacterSheet() {
     // 1. 首先初始化下拉选择框，因为其他组件可能依赖这些选择
-    initProfessionSelects()
+    initProfessionSelect(); // 改为正确的函数名
     initAncestrySelects()
     initCommunitySelects()
 

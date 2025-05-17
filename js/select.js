@@ -1,22 +1,41 @@
-// 初始化职业选择框
-function initProfessionSelects() {
-    const professionSelects = ['profession', 'profession-page2'];
-    professionSelects.forEach(selectId => {
-        const select = document.getElementById(selectId);
-        if (!select) return;
-        select.innerHTML = '<option value=""></option>';
+// 确保函数在全局范围内可用
+window.initProfessionSelect = function () {
+    const professionSelects = document.querySelectorAll('.profession-select');
 
-        if (typeof professions === 'undefined' || Object.keys(professions).length === 0) {
-            console.warn("Professions data not available for initProfessionSelects");
-            return;
-        }
-        Object.values(professions).forEach(prof => {
+    // 清空并填充职业选项
+    professionSelects.forEach(select => {
+        select.innerHTML = '<option value=""></option>';
+        CLASS_DATA.forEach(prof => {
             const option = document.createElement('option');
-            option.value = prof.id;
-            option.textContent = prof.name;
+            option.value = prof.id;  // 使用id作为value
+            option.textContent = prof.职业;
             select.appendChild(option);
         });
     });
+
+    // 将两个职业选择器联动
+    const profession1 = document.getElementById('profession');
+    const profession2 = document.getElementById('profession-page2');
+
+    if (profession1 && profession2) {
+        profession1.addEventListener('change', function () {
+            profession2.value = this.value;
+            updateHopeSpecial(this.value);  // 更新希望特性
+        });
+
+        profession2.addEventListener('change', function () {
+            profession1.value = this.value;
+            updateHopeSpecial(this.value);  // 更新希望特性
+        });
+
+        // 从localStorage加载保存的职业
+        const savedProfession = localStorage.getItem('characterProfession');
+        if (savedProfession) {
+            profession1.value = savedProfession;
+            profession2.value = savedProfession;
+            updateHopeSpecial(savedProfession);  // 初始加载时更新希望特性
+        }
+    }
 }
 
 // 初始化血统选择框

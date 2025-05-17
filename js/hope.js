@@ -21,3 +21,21 @@ function saveHopeState() {
         .map(diamond => diamond.classList.contains("checked"));
     localStorage.setItem("hopeState", JSON.stringify(hopeState))
 }
+
+function updateHopeSpecial(professionId) {
+    const hopeSpecial = document.getElementById('hope-special');
+    if (!hopeSpecial) return;
+
+    const professionData = CLASS_DATA.find(p => p.id === professionId);
+    if (professionData) {
+        hopeSpecial.textContent = professionData.希望特性;
+        hopeSpecial.style.display = 'block';
+    } else {
+        hopeSpecial.style.display = 'none';
+    }
+}
+
+// 在职业选择变更时调用此函数
+document.getElementById('profession').addEventListener('change', function (e) {
+    updateHopeSpecial(e.target.value);
+});
