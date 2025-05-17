@@ -103,6 +103,22 @@ class ArmorSelector {
 
         container.innerHTML = '';
 
+        // 添加空白选项
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'armor-item';
+        emptyDiv.innerHTML = `
+            <div>--清除选择--</div>
+            <div></div>
+            <div></div>
+        `;
+        emptyDiv.dataset.armorData = JSON.stringify({
+            ID: "",
+            名称: "",
+            防御: "",
+            特性: ""
+        });
+        container.appendChild(emptyDiv);
+
         armors.forEach(armor => {
             const div = document.createElement('div');
             div.className = 'armor-item';

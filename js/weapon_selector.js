@@ -133,6 +133,30 @@ class WeaponSelector {
 
         container.innerHTML = '';
 
+        // 添加空白选项
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'weapon-item';
+        emptyDiv.innerHTML = `
+            <div>--清除选择--</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        `;
+        emptyDiv.dataset.weaponData = JSON.stringify({
+            ID: "",
+            名称: "",
+            检定: "",
+            属性: "",
+            范围: "",
+            伤害: "",
+            负荷: "",
+            特性: ""
+        });
+        container.appendChild(emptyDiv);
+
         weapons.forEach(weapon => {
             const div = document.createElement('div');
             div.className = 'weapon-item';
