@@ -153,7 +153,6 @@ function loadCharacter() {
                     }
                     fillFormData(jsonData);
                     console.log("Character data filled successfully");
-                    alert("角色数据已从文件加载！");
                 } catch (error) {
                     console.error("加载角色数据失败:", error);
                     alert("加载角色数据失败。文件可能已损坏或格式不正确。");
@@ -358,6 +357,51 @@ function setBoxStates(selector, states, isDataIndexBased = true) {
 function fillFormData(sourceData) {
     console.log("Starting to fill form data...");
 
+    // 1. 职业数据处理
+    const loadedProfessionId = sourceData.profession;
+    console.log("Setting profession:", loadedProfessionId);
+
+    // 查找匹配的职业数据
+    const profData = CLASS_DATA.find(p =>
+        p.id === loadedProfessionId ||
+        p.id.toLowerCase() === loadedProfessionId.toLowerCase()
+    );
+
+    if (profData) {
+        const profession1 = document.getElementById("profession");
+        const profession2 = document.getElementById("profession-page2");
+        const profNameElement = document.getElementById("profession-name");
+
+        // 设置值并触发事件
+        if (profession1) {
+            console.log("Setting profession1 to:", profData.id);
+            profession1.value = profData.id;
+            // 触发原生change事件
+            profession1.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        if (profession2) {
+            console.log("Setting profession2 to:", profData.id);
+            profession2.value = profData.id;
+            // 确保第二页也触发change事件
+            profession2.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        if (profNameElement) {
+            profNameElement.textContent = profData.职业;
+        }
+
+        // 保存到localStorage
+        localStorage.setItem("characterProfession", profData.id);
+
+        // 手动触发相关更新
+        updateHopeSpecial(profData.id);
+        initUpgradeOptions(profData.id);
+        loadUpgradeStatesForProfession(profData.id);
+    } else {
+        console.error("No matching profession found for:", loadedProfessionId);
+    }
+
     // 导入武器和护甲数据
     if (sourceData.weapons) {
         window.importWeaponsData(sourceData.weapons);
@@ -501,9 +545,6 @@ function fillFormData(sourceData) {
     }
 
     // 8. 职业和升级状态
-    const loadedProfessionId = sourceData.profession || "";
-    localStorage.setItem("characterProfession", loadedProfessionId);
-
     if (loadedProfessionId && sourceData.upgradeStates && sourceData.upgradeStates[loadedProfessionId]) {
         const profUpgradeStates = sourceData.upgradeStates[loadedProfessionId];
         for (let tier = 1; tier <= 3; tier++) {

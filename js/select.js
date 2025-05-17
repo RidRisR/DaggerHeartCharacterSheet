@@ -34,14 +34,35 @@ window.initProfessionSelect = function () {
     };
 
     if (profession1 && profession2) {
-        profession1.addEventListener('change', function () {
-            profession2.value = this.value;
-            updateHopeSpecial(this.value);  // 更新希望特性
+        const handleProfessionChange = function (selectedValue, sourceElement) {
+            console.log(`Profession change triggered from ${sourceElement.id}:`, selectedValue);
+
+            // 更新两个选择器的值
+            if (sourceElement !== profession1) profession1.value = selectedValue;
+            if (sourceElement !== profession2) profession2.value = selectedValue;
+
+            // 更新职业名称显示
+            const profNameElement = document.getElementById("profession-name");
+            if (profNameElement) {
+                const profData = CLASS_DATA.find(p => p.id === selectedValue);
+                profNameElement.textContent = profData ? profData.职业 : selectedValue;
+            }
+
+            // 更新相关组件
+            updateHopeSpecial(selectedValue);
+            initUpgradeOptions(selectedValue);
+            loadUpgradeStatesForProfession(selectedValue);
+
+            // 保存到localStorage
+            localStorage.setItem("characterProfession", selectedValue);
+        };
+
+        profession1.addEventListener("change", function () {
+            handleProfessionChange(this.value, this);
         });
 
-        profession2.addEventListener('change', function () {
-            profession1.value = this.value;
-            updateHopeSpecial(this.value);  // 更新希望特性
+        profession2.addEventListener("change", function () {
+            handleProfessionChange(this.value, this);
         });
 
         // 从localStorage加载保存的职业
