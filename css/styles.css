@@ -712,7 +712,7 @@ body {
 
 .weapon-input,
 .armor-input {
-  margin-top: 4px;
+  margin-top: 10px;
   width: 100%;
   border: none;
   border-bottom: 1px solid #999;
