@@ -109,7 +109,7 @@ async function exportToPDF() {
 
         // 数据完整性验证
         if (!validateTransferData(transferData)) {
-            alert('数据收集不完整，请检查必填项。');
+            alert('数据收集不完整，请至少填写职业和角色名称。');
             return;
         }
 
