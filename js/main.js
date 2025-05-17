@@ -77,7 +77,6 @@ function initCharacterSheet() {
 
 // 初始化按钮事件监听
 function initButtonListeners() {
-    document.getElementById("print-button").addEventListener("click", handlePrint)
     document.getElementById("save-button").addEventListener("click", saveCharacter)
     document.getElementById("load-button").addEventListener("click", loadCharacter)
     document.getElementById("export-button").addEventListener("click", exportToPDF)
