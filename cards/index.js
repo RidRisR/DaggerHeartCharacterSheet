@@ -40,25 +40,30 @@ const getDomainCards = (domainName) => {
     return DOMAINS_CARDS[domainName] || [];
 };
 
+// 确保加载器已经初始化
+if (!window.loadAllCards()) {
+    console.error('Failed to initialize card loader');
+}
+
 // 通用获取卡图方法
-const getCardImage = (card) => {
+window.getCardImage = (card) => {
     if (!card || !card.卡图) return null;
     return card.卡图;
 };
 
 // 根据名称和类型查找卡牌
-const findCardByName = (name, type) => {
+window.findCardByName = (name, type) => {
     switch (type) {
-        case CARD_TYPES.CLASS:
+        case window.CARD_TYPES.CLASS:
             return window.CLASS_INDEX[name];
-        case CARD_TYPES.SUBCLASS:
+        case window.CARD_TYPES.SUBCLASS:
             return window.subClasses.find(c => c.名称 === name);
-        case CARD_TYPES.RACE:
+        case window.CARD_TYPES.RACE:
             return window.RACE_INDEX[name];
-        case CARD_TYPES.COMMUNITY:
+        case window.CARD_TYPES.COMMUNITY:
             return window.COMMUNITY_INDEX[name];
-        case CARD_TYPES.DOMAIN:
-            for (const domain of Object.values(DOMAINS_CARDS)) {
+        case window.CARD_TYPES.DOMAIN:
+            for (const domain of Object.values(window.DOMAINS_CARDS)) {
                 const card = domain.find(c => c.名称 === name);
                 if (card) return card;
             }
@@ -67,11 +72,3 @@ const findCardByName = (name, type) => {
             return null;
     }
 };
-
-// Expose to global scope instead of using module.exports
-window.CARD_TYPES = CARD_TYPES;
-window.DOMAINS_CARDS = DOMAINS_CARDS;
-window.getCardsByType = getCardsByType;
-window.getDomainCards = getDomainCards;
-window.getCardImage = getCardImage;
-window.findCardByName = findCardByName;

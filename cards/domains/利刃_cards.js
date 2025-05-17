@@ -202,6 +202,4 @@ window.利刃_CARDS = [
   }
 ];
 
-module.exports = {
-    利刃_CARDS
-};
+window.利刃_CARDS = 利刃_CARDS;

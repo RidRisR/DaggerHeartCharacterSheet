@@ -202,6 +202,4 @@ window.午夜_CARDS = [
   }
 ];
 
-module.exports = {
-    午夜_CARDS
-};
+window.午夜_CARDS = 午夜_CARDS;

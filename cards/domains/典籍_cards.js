@@ -202,6 +202,4 @@ window.典籍_CARDS = [
   }
 ];
 
-module.exports = {
-    典籍_CARDS
-};
+window.典籍_CARDS = 典籍_CARDS;

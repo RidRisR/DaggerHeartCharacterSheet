@@ -202,6 +202,4 @@ window.勇气_CARDS = [
   }
 ];
 
-module.exports = {
-    勇气_CARDS
-};
+window.勇气_CARDS = 勇气_CARDS;

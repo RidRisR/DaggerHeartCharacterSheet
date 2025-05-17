@@ -202,6 +202,4 @@ window.优雅_CARDS = [
   }
 ];
 
-module.exports = {
-    优雅_CARDS
-};
+window.优雅_CARDS = 优雅_CARDS;  // Replace module.exports

@@ -246,4 +246,4 @@ const races = [
     },
 ];
 
-module.exports = RACES_CARD;
+window.races = races;

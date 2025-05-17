@@ -202,6 +202,4 @@ window.辉耀_CARDS = [
   }
 ];
 
-module.exports = {
-    辉耀_CARDS
-};
+window.辉耀_CARDS = 辉耀_CARDS;

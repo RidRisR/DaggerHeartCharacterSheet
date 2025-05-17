@@ -202,6 +202,4 @@ window.奥术_CARDS = [
   }
 ];
 
-module.exports = {
-    奥术_CARDS
-};
+window.奥术_CARDS = 奥术_CARDS;

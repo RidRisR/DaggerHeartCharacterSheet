@@ -201,3 +201,4 @@ window.骸骨_CARDS = [
     "卡图": "resource/领域/骸骨/10心如止水.png"
   }
 ];
+console.log('骸骨_CARDS loaded:', window.骸骨_CARDS.length, 'cards');

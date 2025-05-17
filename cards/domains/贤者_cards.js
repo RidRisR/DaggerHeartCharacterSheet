@@ -202,6 +202,4 @@ window.贤者_CARDS = [
   }
 ];
 
-module.exports = {
-    贤者_CARDS
-};
+window.贤者_CARDS = 贤者_CARDS;
