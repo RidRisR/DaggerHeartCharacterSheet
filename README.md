@@ -1,3 +1,6 @@
+# This project is deprecated, please move to new repo!
+https://github.com/RidRisR/DaggerHeart-CharacterSheet
+
 # Click here to use the sheet online
 https://ridrisr.github.io/DaggerHeartCharacterSheet/
 
